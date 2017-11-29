@@ -373,8 +373,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19eb52854a476b4408b969f709bb1bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineObject: {fileID: 1445109051799236, guid: 99a7e2a68768b98469863f6004f49fbc, type: 2}
-  sphereObject: {fileID: 1810148321086488, guid: 741ddc1e80cadec4c82454324d6df5db,
+  lineObject: {fileID: 1195377178252916, guid: 99a7e2a68768b98469863f6004f49fbc, type: 2}
+  sphereObject: {fileID: 1306960785903018, guid: 741ddc1e80cadec4c82454324d6df5db,
     type: 2}
   Finish_text: {fileID: 424704356}
   Square_text: {fileID: 234757585}
