@@ -116,6 +116,12 @@ UpgradeLog*.XML
 .vs/*
 
 # Unity
+Library
+Temp
+*.pidb
+*.sln
+*.unityproj
+*.userprefs
 *.VersionSpecific.dll
 *.VersionSpecific.dll.meta
 Temp/
