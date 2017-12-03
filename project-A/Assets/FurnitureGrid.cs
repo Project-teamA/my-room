@@ -1,23 +1,32 @@
-﻿using System.Collections;
+﻿//FurnitureGrid.cs(家具グリッド用クラス)
+//
+// 2017年12月4日 更新(菅原涼太)
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events; //UnityEventを使用するため
+using UnityEngine.EventSystems; //
 
+//このクラスは始めにInitしなければならない
+//また，エラーフラグはオブジェクトの色で判断すること
 public class FurnitureGrid : MonoBehaviour
 {
-    float rate = 0.2F; //仮比率
-    public int furniture_ID_ = 0; //仮ID
-    private bool error_flag_ = false; //エラーフラグ
+    private float rate_ = 0.2F; //仮比率(基本ここでしか変更しない) (アクセス不可)
 
+    private int furniture_ID_; //仮家具グリッドID
     private int horizontal_; //横のグリッド数
     private int vertical_; //縦のグリッド数
     private int[][] grid_point_; //家具頂点(時計周り)グリッド基準
     private int vertex_number_; //頂点の個数
-    private Vector3[] vertex_; //頂点
-    private Vector3[] normal_; //法線
-    private int[] triangles_; //頂点インデックス
-    private Mesh mesh_; //メッシュ
+    private Vector3 grid_position_; //グリッド(中心)の3次元位置
     private GameObject furniture_grid_; //家具グリッドオブジェクト
-   
+  
+    //仮家具グリッドID(取得用)
+    public int furniture_ID()
+    {
+        return furniture_ID_;
+    }
 
     //横の頂点数(取得用)
     public int horizontal() 
@@ -31,15 +40,22 @@ public class FurnitureGrid : MonoBehaviour
         return vertical_;
     }
 
-    //家具頂点
-    public int[][] vertex()
+    //グリッド(中心)の3次元位置(取得用)
+    private Vector3 grid_position()
     {
-        return grid_point_;
+        return grid_position();
     }
 
-    //データ初期化
+    //オブジェクト取得用
+    public GameObject furniture_grid()
+    {
+        return furniture_grid_;
+    }
+
+    //データ初期化(FurnitureGridをインスタンス化したとき，このメソッドを使って初期化する)
     public void Init (int grid_ID, string object_name)
     {
+        furniture_ID_ = grid_ID;
         switch (grid_ID)
         {
             case 0:
@@ -87,22 +103,11 @@ public class FurnitureGrid : MonoBehaviour
                 break;
         }
 
+        Vector3[] vertex_ = new Vector3[vertex_number_];
+        Vector3[] normal_ = new Vector3[vertex_number_];
+        int[] triangles_ = new int[(vertex_number_ -1) * 3];
 
-        vertex_ = new Vector3[vertex_number_];
-        normal_ = new Vector3[vertex_number_];
-        triangles_ = new int[(vertex_number_ -1) * 3];
-
-        for (int i = 0; i < vertex_number_; ++i)
-        {
-            vertex_[i] = new Vector3(
-                 (grid_point_[i][0] - grid_point_[0][0]) * rate,
-                 (grid_point_[i][1] - grid_point_[0][1]) * rate,
-                 0);
-
-            normal_[i] = new Vector3(0, 0, 1);
-        }
-
-        for(int i=0; i< vertex_number_ -1; ++i)
+        for (int i = 0; i < vertex_number_ - 1; ++i)
         {
             if (i == vertex_number_ - 2)
             {
@@ -118,43 +123,51 @@ public class FurnitureGrid : MonoBehaviour
             }
         }
 
-        mesh_ = new Mesh();
-        mesh_.vertices = vertex_;
-        mesh_.triangles = triangles_;
-        mesh_.normals = normal_;
+        for (int i = 0; i < vertex_number_; ++i)
+        {
+            vertex_[i] = new Vector3(
+                 (grid_point_[i][0] - grid_point_[0][0]) * rate_ * 0.99f,
+                 (grid_point_[i][1] - grid_point_[0][1]) * rate_ * 0.99f,
+                 0);
 
-        mesh_.RecalculateBounds();
+            normal_[i] = new Vector3(0, 0, 1);
+        }
+        grid_position_ = vertex_[0];
+
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertex_;
+        mesh.triangles = triangles_;
+        mesh.normals = normal_;
+        mesh.RecalculateBounds();
 
         furniture_grid_ = new GameObject();
         furniture_grid_.name = object_name;
+        furniture_grid_.tag = "furniture_grid";
         furniture_grid_.AddComponent<MeshFilter>();
-        furniture_grid_.AddComponent<MeshRenderer>();
-        furniture_grid_.AddComponent<MeshCollider>();
-        furniture_grid_.GetComponent<MeshFilter>().sharedMesh = mesh_;
+        furniture_grid_.GetComponent<MeshFilter>().sharedMesh = mesh;
         furniture_grid_.GetComponent<MeshFilter>().sharedMesh.name = object_name;
-        furniture_grid_.GetComponent<MeshCollider>().sharedMesh = mesh_;
+        furniture_grid_.AddComponent<MeshRenderer>();
         furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-
+        furniture_grid_.AddComponent<MeshCollider>();
+        furniture_grid_.GetComponent<MeshCollider>().sharedMesh = mesh;
+        furniture_grid_.GetComponent<MeshCollider>().convex = true; //これがtrueでないと衝突判定されない
+        furniture_grid_.GetComponent<MeshCollider>().isTrigger = true;
+        furniture_grid_.AddComponent<Rigidbody>();
+        furniture_grid_.GetComponent<Rigidbody>().isKinematic = true;
+        furniture_grid_.AddComponent<GridError>(); //家具オブジェクトにGridError.cs(家具グリッド同士の衝突判定)をアタッチ
         furniture_grid_.SetActive(true);
     }
 
-
-
-    private void Start()
-    {   
-        Init(furniture_ID_,"aaa");
-       
+    //マウス移動
+    public void Translate(Vector3 new_position)
+    {
+        furniture_grid_.transform.position = new_position;
+        grid_position_ = new_position;
     }
 
-    void Update()
+    //マウス回転
+    public void Rotate()
     {
-        if(Input.GetKey(KeyCode.E))
-        {
-            furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
-        }
-        else if(Input.GetKey(KeyCode.N))
-        {
-            furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-        }
+        furniture_grid_.transform.Rotate(0,0,90);
     }
 }
