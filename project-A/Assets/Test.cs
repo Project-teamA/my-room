@@ -3,17 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class wall
+{
+    public float start;
+    public float end;
+    public float other;
+}
+
 public class Test : MonoBehaviour
 {
     public GameObject lineObject;
     public GameObject sphereObject;
+    public GameObject wall;
 
-    int Grid_number = 30;
-    float Grid_density = 2.0f;
+    int Grid_number = 10;
+    float Grid_density = 1.0f;
 
     public GameObject[,] line_x;
     public GameObject[,] line_y;
     public GameObject[,] sphere;
+
+    public GameObject Line_x;
+    public GameObject Line_y;
+    public GameObject Points;
+
+    List<GameObject> Wall_x = new List<GameObject>();
+    List<GameObject> Wall_y = new List<GameObject>();
+
+    List<wall> wall_x = new List<wall>();
+    List<wall> wall_y = new List<wall>();
 
     float first_point_x;
     float first_point_y;
@@ -61,6 +79,7 @@ public class Test : MonoBehaviour
                 if (j < Grid_number - 1)
                 {
                     line_x[j, i] = Instantiate(lineObject, Vector3.zero, Quaternion.identity);
+                    line_x[j, i].transform.parent = Line_x.transform;
                     line_x[j, i].name = "line_x[" + j + "," + i + "]";
                     line_x[j, i].GetComponent<LineRenderer>().material.color = new Color(0, 0, 0);
                     LineRenderer renderer_x = line_x[j, i].GetComponent<LineRenderer>();
@@ -74,6 +93,7 @@ public class Test : MonoBehaviour
                 if (i < Grid_number - 1)
                 {
                     line_y[j, i] = Instantiate(lineObject, Vector3.zero, Quaternion.identity);
+                    line_y[j, i].transform.parent = Line_y.transform;
                     line_y[j, i].name = "line_y[" + j + "," + i + "]";
                     line_y[j, i].GetComponent<LineRenderer>().material.color = new Color(0, 0, 0);
                     LineRenderer renderer_y = line_y[j, i].GetComponent<LineRenderer>();
@@ -85,6 +105,7 @@ public class Test : MonoBehaviour
                 }
 
                 sphere[j, i] = Instantiate(sphereObject, new Vector3(j / Grid_density, i / Grid_density, 0), Quaternion.identity);
+                sphere[j, i].transform.parent = Points.transform;
                 sphere[j, i].name = "sphere[" + j + "," + i + "]";
                 sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
             }
@@ -698,6 +719,131 @@ public class Test : MonoBehaviour
 
     }
 
+    public void Search_Wall_x()
+    {
+        bool mode = false;
+
+        int ID = 0;
+
+        for (int i = 0; i < Grid_number; i++)
+        {
+            for (int j = 0; j < Grid_number; j++)
+            {
+                if (j < Grid_number - 1 && i < Grid_number)
+                {
+                    if (mode == false)
+                    {
+                        if (line_x[j, i].GetComponent<LineRenderer>().material.color == new Color(255, 0, 0))
+                        {                           
+                            wall temp = new wall();  
+                            
+                            wall_x.Add(temp);
+
+                            wall_x[ID].start = j;
+                            wall_x[ID].other = i;
+
+                            mode = true;
+                        }
+                    }
+                    else if (mode == true)
+                    {
+                        if (line_x[j, i].GetComponent<LineRenderer>().material.color != new Color(255, 0, 0))
+                        {                
+                            wall_x[ID].end = j;
+
+                            ID++;
+
+                            mode = false;
+                        }
+                    }
+
+                }
+            }
+
+            if (mode == true)
+            {
+                wall_x[ID].end = Grid_number - 1;
+
+                ID++;
+
+                mode = false;
+            }
+
+        }
+    }
+
+    public void Search_Wall_y()
+    {
+        bool mode = false;
+
+        int ID = 0;
+
+        for (int j = 0; j < Grid_number; j++)           
+        {
+            for (int i = 0; i < Grid_number; i++)
+            {
+                if (j < Grid_number && i < Grid_number - 1)
+                {
+                    if (mode == false)
+                    {
+                        if (line_y[j, i].GetComponent<LineRenderer>().material.color == new Color(255, 0, 0))
+                        {
+                            wall temp = new wall();
+
+                            wall_y.Add(temp);
+
+                            wall_y[ID].start = i;
+                            wall_y[ID].other = j;
+
+                            mode = true;
+                        }
+                    }
+                    else if (mode == true)
+                    {
+                        if (line_y[j, i].GetComponent<LineRenderer>().material.color != new Color(255, 0, 0))
+                        {
+                            wall_y[ID].end = i;
+
+                            ID++;
+
+                            mode = false;
+                        }
+                    }
+
+                }
+            }
+
+            if (mode == true)
+            {
+                wall_y[ID].end = Grid_number - 1;
+
+                ID++;
+
+                mode = false;
+            }
+            
+        }
+    }
+
+    public void Wall_Instantiate()
+    {
+        Debug.Log(wall_x[0].start);
+        Debug.Log(wall_x[0].end);
+
+        for (int i = 0; i < wall_x.Count; i++)
+        {
+            Wall_x.Add(Instantiate(wall, new Vector3((wall_x[i].start + wall_x[i].end) / 2, wall_x[i].other, 0), Quaternion.identity));
+            Wall_x[i].transform.localScale = new Vector3(wall_x[i].end - wall_x[i].start, 0.1f, 3);
+            
+        }
+
+        for (int i = 0; i < wall_y.Count; i++)
+        {
+            Wall_y.Add(Instantiate(wall, new Vector3(wall_y[i].other, (wall_y[i].start + wall_y[i].end) / 2, 0), Quaternion.identity));
+            Wall_y[i].transform.localScale = new Vector3(0.1f, wall_y[i].end - wall_y[i].start, 3);
+        }        
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -763,7 +909,13 @@ public class Test : MonoBehaviour
 
                         Finish_text.enabled = true;
 
-                        Square_measure();                        
+                        Square_measure();
+
+                        Search_Wall_x();
+
+                        Search_Wall_y();
+
+                        Wall_Instantiate();
                     }
                 }
                 break;
