@@ -10,18 +10,18 @@ public class wall
     public float other;
 }
 
-public class Test : MonoBehaviour
+public class Grid_Manager : MonoBehaviour
 {
     public GameObject lineObject;
-    public GameObject sphereObject;
+    public GameObject pointsObject;
     public GameObject wall;
 
-    int Grid_number = 10;
-    float Grid_density = 1.0f;
+    public int Grid_number = 10;
+    public float Grid_density = 0.5f;
 
     public GameObject[,] line_x;
     public GameObject[,] line_y;
-    public GameObject[,] sphere;
+    public GameObject[,] points;
 
     public GameObject Line_x;
     public GameObject Line_y;
@@ -85,8 +85,8 @@ public class Test : MonoBehaviour
                     LineRenderer renderer_x = line_x[j, i].GetComponent<LineRenderer>();
                     renderer_x.SetWidth(0.02f, 0.02f);
                     renderer_x.SetVertexCount(2);
-                    renderer_x.SetPosition(0, new Vector3(j / Grid_density, i / Grid_density, 0));
-                    renderer_x.SetPosition(1, new Vector3((j + 1) / Grid_density, i / Grid_density, 0));
+                    renderer_x.SetPosition(0, new Vector3(j * Grid_density, i * Grid_density, 0));
+                    renderer_x.SetPosition(1, new Vector3((j + 1) * Grid_density, i * Grid_density, 0));
 
                 }
 
@@ -99,15 +99,15 @@ public class Test : MonoBehaviour
                     LineRenderer renderer_y = line_y[j, i].GetComponent<LineRenderer>();
                     renderer_y.SetWidth(0.02f, 0.02f);
                     renderer_y.SetVertexCount(2);
-                    renderer_y.SetPosition(0, new Vector3(j / Grid_density, i / Grid_density, 0));
-                    renderer_y.SetPosition(1, new Vector3(j / Grid_density, (i + 1) / Grid_density, 0));
+                    renderer_y.SetPosition(0, new Vector3(j * Grid_density, i * Grid_density, 0));
+                    renderer_y.SetPosition(1, new Vector3(j * Grid_density, (i + 1) * Grid_density, 0));
 
                 }
 
-                sphere[j, i] = Instantiate(sphereObject, new Vector3(j / Grid_density, i / Grid_density, 0), Quaternion.identity);
-                sphere[j, i].transform.parent = Points.transform;
-                sphere[j, i].name = "sphere[" + j + "," + i + "]";
-                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
+                points[j, i] = Instantiate(pointsObject, new Vector3(j * Grid_density, i * Grid_density, 0), Quaternion.identity);
+                points[j, i].transform.parent = Points.transform;
+                points[j, i].name = "points[" + j + "," + i + "]";
+                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
             }
         }
     }
@@ -118,15 +118,15 @@ public class Test : MonoBehaviour
         {
             for (int j = 0; j < Grid_number; j++)
             {
-                if (start_point_x == sphere[j, i].transform.position.x || start_point_y == sphere[j, i].transform.position.y)
+                if (start_point_x == points[j, i].transform.position.x || start_point_y == points[j, i].transform.position.y)
                 {
-                    if (!(start_point_x == sphere[j, i].transform.position.x && start_point_y == sphere[j, i].transform.position.y))
+                    if (!(start_point_x == points[j, i].transform.position.x && start_point_y == points[j, i].transform.position.y))
                     {
-                        sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                        points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                     }
 
 
-                    if (start_point_x == sphere[j, i].transform.position.x)
+                    if (start_point_x == points[j, i].transform.position.x)
                     {
                         if (j < Grid_number && i < Grid_number - 1)
                         {
@@ -134,7 +134,7 @@ public class Test : MonoBehaviour
                         }
                     }
 
-                    if (start_point_y == sphere[j, i].transform.position.y)
+                    if (start_point_y == points[j, i].transform.position.y)
                     {
                         if (j < Grid_number - 1 && i < Grid_number)
                         {
@@ -149,18 +149,18 @@ public class Test : MonoBehaviour
 
     public void Click()
     {
-        if (sphere[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 255))
+        if (points[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 255))
         {
-            sphere[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color = new Color(0, 255, 0);
+            points[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color = new Color(0, 255, 0);
         }
 
         for (int i = 0; i < Grid_number; i++)
         {
             for (int j = 0; j < Grid_number; j++)
             {
-                if (sphere[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 0, 255))
+                if (points[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 0, 255))
                 {
-                    sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
+                    points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
                 }
                
                 if (j < Grid_number && i < Grid_number - 1)
@@ -182,25 +182,25 @@ public class Test : MonoBehaviour
                 //xが同じ場合
                 if (start_point_x == end_point_x)
                 {
-                    if (sphere[j, i].transform.position.x == end_point_x)
+                    if (points[j, i].transform.position.x == end_point_x)
                     {
                         if (start_point_y < end_point_y)
                         {
-                            if (sphere[j, i].transform.position.y > end_point_y)
+                            if (points[j, i].transform.position.y > end_point_y)
                             {
-                                if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                                if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                                 {
                                     bool line = true;                                  
                                  
-                                    for (int k = i - 1; k > end_point_y * Grid_density; k--)
+                                    for (int k = i - 1; k > end_point_y / Grid_density; k--)
                                     {                                      
                                         if (line)
                                         {
-                                            if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                            if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                             {                                              
                                                 line = false;
                                             }
-                                            else if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                            else if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                             {                                                
                                                 line = false;
 
@@ -210,9 +210,9 @@ public class Test : MonoBehaviour
 
                                     if (line == true)
                                     {
-                                        if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                        if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                         {
-                                            sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                            points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                         }
                                         else
                                         {
@@ -224,9 +224,9 @@ public class Test : MonoBehaviour
 
                                 }
                             }
-                            else if (start_point_y < sphere[j, i].transform.position.y && sphere[j, i].transform.position.y <= end_point_y)
+                            else if (start_point_y < points[j, i].transform.position.y && points[j, i].transform.position.y <= end_point_y)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 line_y[j, i - 1].GetComponent<LineRenderer>().material.color = new Color(255, 0, 0);
                             }
@@ -234,21 +234,21 @@ public class Test : MonoBehaviour
                         }
                         else if (start_point_y > end_point_y)
                         {
-                            if (sphere[j, i].transform.position.y < end_point_y)
+                            if (points[j, i].transform.position.y < end_point_y)
                             {
-                                if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                                if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                                 {
                                     bool line = true;
 
-                                    for (int k = i + 1; k < end_point_y * Grid_density; k++)
+                                    for (int k = i + 1; k < end_point_y / Grid_density; k++)
                                     {
                                         if (line)
                                         {
-                                            if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                            if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                             {
                                                 line = false;
                                             }
-                                            else if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                            else if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                             {
                                                 line = false;
                                                 
@@ -258,9 +258,9 @@ public class Test : MonoBehaviour
 
                                     if (line == true)
                                     {
-                                        if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                        if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                         {
-                                            sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                            points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                         }
                                         else
                                         {
@@ -274,9 +274,9 @@ public class Test : MonoBehaviour
                                     }
                                 }
                             }
-                            else if (start_point_y > sphere[j, i].transform.position.y && sphere[j, i].transform.position.y >= end_point_y)
+                            else if (start_point_y > points[j, i].transform.position.y && points[j, i].transform.position.y >= end_point_y)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 if (j < Grid_number && i < Grid_number - 1)
                                 {
@@ -286,23 +286,23 @@ public class Test : MonoBehaviour
                         }
                     }
 
-                    else if (sphere[j, i].transform.position.y == end_point_y)
+                    else if (points[j, i].transform.position.y == end_point_y)
                     {
-                        if (sphere[j, i].transform.position.x < end_point_x)
+                        if (points[j, i].transform.position.x < end_point_x)
                         {
-                            if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                            if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                             {
                                 bool line = true;
 
-                                for (int k = j + 1; k < end_point_x * Grid_density; k++)
+                                for (int k = j + 1; k < end_point_x / Grid_density; k++)
                                 {
                                     if (line)
                                     {
-                                        if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                        if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                         {
                                             line = false;
                                         }
-                                        else if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                        else if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                         {
                                             line = false;
                                           
@@ -312,9 +312,9 @@ public class Test : MonoBehaviour
 
                                 if (line == true)
                                 {
-                                    if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                    if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                     {
-                                        sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                        points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                     }
                                     else
                                     {
@@ -328,21 +328,21 @@ public class Test : MonoBehaviour
                                 }
                             }
                         }
-                        else if (sphere[j, i].transform.position.x > end_point_x)
+                        else if (points[j, i].transform.position.x > end_point_x)
                         {
-                            if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                            if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                             {
                                 bool line = true;
 
-                                for (int k = j - 1; k > end_point_x * Grid_density; k--)
+                                for (int k = j - 1; k > end_point_x / Grid_density; k--)
                                 {
                                     if (line)
                                     {
-                                        if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                        if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                         {
                                             line = false;
                                         }
-                                        else if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                        else if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                         {
                                             line = false;
                                             
@@ -352,9 +352,9 @@ public class Test : MonoBehaviour
 
                                 if (line == true)
                                 {
-                                    if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                    if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                     {
-                                        sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                        points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                     }
                                     else
                                     {
@@ -371,25 +371,25 @@ public class Test : MonoBehaviour
                 //yが同じ場合
                 else if (start_point_y == end_point_y)
                 {
-                    if (sphere[j, i].transform.position.y == end_point_y)
+                    if (points[j, i].transform.position.y == end_point_y)
                     {
                         if (start_point_x > end_point_x)
                         {
-                            if (sphere[j, i].transform.position.x < end_point_x)
+                            if (points[j, i].transform.position.x < end_point_x)
                             {                                
-                                if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                                if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                                 {
                                     bool line = true;
 
-                                    for (int k = j + 1; k < end_point_x * Grid_density; k++)
+                                    for (int k = j + 1; k < end_point_x / Grid_density; k++)
                                     {                                        
                                         if (line)
                                         {
-                                            if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                            if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                             {
                                                 line = false;
                                             }
-                                            else if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                            else if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                             {
                                                 line = false;
                                             }
@@ -398,9 +398,9 @@ public class Test : MonoBehaviour
 
                                     if (line == true)
                                     {
-                                        if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                        if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                         {
-                                            sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                            points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                         }
                                         else
                                         {
@@ -414,9 +414,9 @@ public class Test : MonoBehaviour
                                     }
                                 }
                             }
-                            else if (start_point_x > sphere[j, i].transform.position.x && sphere[j, i].transform.position.x >= end_point_x)
+                            else if (start_point_x > points[j, i].transform.position.x && points[j, i].transform.position.x >= end_point_x)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 if (j < Grid_number - 1 && i < Grid_number)
                                 {
@@ -426,21 +426,21 @@ public class Test : MonoBehaviour
                         }
                         else if (start_point_x < end_point_x)
                         {
-                            if (sphere[j, i].transform.position.x > end_point_x)
+                            if (points[j, i].transform.position.x > end_point_x)
                             {
-                                if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                                if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                                 {
                                     bool line = true;
 
-                                    for (int k = j - 1; k > end_point_x * Grid_density; k--)
+                                    for (int k = j - 1; k > end_point_x / Grid_density; k--)
                                     {                                        
                                         if (line)
                                         {
-                                            if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                            if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                             {
                                                 line = false;
                                             }
-                                            else if (sphere[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                            else if (points[k, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                             {
                                                 line = false;
                                              
@@ -450,9 +450,9 @@ public class Test : MonoBehaviour
 
                                     if (line == true)
                                     {
-                                        if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                        if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                         {
-                                            sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                            points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                         }
                                         else
                                         {
@@ -464,9 +464,9 @@ public class Test : MonoBehaviour
 
                                 }
                             }
-                            else if (start_point_x < sphere[j, i].transform.position.x && sphere[j, i].transform.position.x <= end_point_x)
+                            else if (start_point_x < points[j, i].transform.position.x && points[j, i].transform.position.x <= end_point_x)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 line_x[j - 1, i].GetComponent<LineRenderer>().material.color = new Color(255, 0, 0);
                             }
@@ -475,23 +475,23 @@ public class Test : MonoBehaviour
                         
                     }
 
-                    else if (sphere[j, i].transform.position.x == end_point_x)
+                    else if (points[j, i].transform.position.x == end_point_x)
                     {
-                        if (sphere[j, i].transform.position.y < end_point_y)
+                        if (points[j, i].transform.position.y < end_point_y)
                         {
-                            if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                            if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                             {
                                 bool line = true;
 
-                                for (int k = i + 1; k < end_point_y * Grid_density; k++)
+                                for (int k = i + 1; k < end_point_y / Grid_density; k++)
                                 {
                                     if (line)
                                     {
-                                        if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                        if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                         {
                                             line = false;
                                         }
-                                        else if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                        else if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                         {
                                             line = false;
                                             
@@ -501,9 +501,9 @@ public class Test : MonoBehaviour
 
                                 if (line == true)
                                 {
-                                    if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                    if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                     {
-                                        sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                        points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                     }
                                     else
                                     {
@@ -517,21 +517,21 @@ public class Test : MonoBehaviour
                                 }
                             }
                         }
-                        else if (sphere[j, i].transform.position.y > end_point_y)
+                        else if (points[j, i].transform.position.y > end_point_y)
                         {
-                            if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                            if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                             {
                                 bool line = true;
 
-                                for (int k = i - 1; k > end_point_y * Grid_density; k--)
+                                for (int k = i - 1; k > end_point_y / Grid_density; k--)
                                 {
                                     if (line)
                                     {
-                                        if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
+                                        if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(255, 0, 0))
                                         {
                                             line = false;
                                         }
-                                        else if (sphere[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                                        else if (points[j, k].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                                         {
                                             line = false;
                                             
@@ -541,9 +541,9 @@ public class Test : MonoBehaviour
 
                                 if (line == true)
                                 {
-                                    if (sphere[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
+                                    if (points[j, i].GetComponent<MeshRenderer>().material.color != new Color(0, 255, 0))
                                     {
-                                        sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
+                                        points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 255);
                                     }
                                     else
                                     {
@@ -557,7 +557,7 @@ public class Test : MonoBehaviour
                     }
                 }
 
-                if (sphere[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
+                if (points[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 255, 0))
                 {
                     start_point_j = j;
                     start_point_i = i;
@@ -568,7 +568,7 @@ public class Test : MonoBehaviour
 
         if (first == true)
         {
-            sphere[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color = new Color(0, 255, 255);
+            points[start_point_j, start_point_i].GetComponent<MeshRenderer>().material.color = new Color(0, 255, 255);
             first = false;
         }
        
@@ -580,9 +580,9 @@ public class Test : MonoBehaviour
         {
             for (int j = 0; j < Grid_number; j++)
             {
-                if (sphere[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 0, 255))
+                if (points[j, i].GetComponent<MeshRenderer>().material.color == new Color(0, 0, 255))
                 {
-                    sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
+                    points[j, i].GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0);
                 }
 
                 if (j < Grid_number && i < Grid_number - 1)
@@ -604,13 +604,13 @@ public class Test : MonoBehaviour
                 //xが同じ場合
                 if (start_point_x == end_point_x)
                 {
-                    if (sphere[j, i].transform.position.x == end_point_x)
+                    if (points[j, i].transform.position.x == end_point_x)
                     {
                         if (start_point_y < end_point_y)
                         {                            
-                            if (start_point_y < sphere[j, i].transform.position.y && sphere[j, i].transform.position.y <= end_point_y)
+                            if (start_point_y < points[j, i].transform.position.y && points[j, i].transform.position.y <= end_point_y)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 line_y[j, i - 1].GetComponent<LineRenderer>().material.color = new Color(255, 0, 0);
                             }
@@ -618,9 +618,9 @@ public class Test : MonoBehaviour
                         }
                         else if (start_point_y > end_point_y)
                         {
-                            if (start_point_y > sphere[j, i].transform.position.y && sphere[j, i].transform.position.y >= end_point_y)
+                            if (start_point_y > points[j, i].transform.position.y && points[j, i].transform.position.y >= end_point_y)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 if (j < Grid_number && i < Grid_number - 1)
                                 {
@@ -634,13 +634,13 @@ public class Test : MonoBehaviour
                 //yが同じ場合
                 else if (start_point_y == end_point_y)
                 {
-                    if (sphere[j, i].transform.position.y == end_point_y)
+                    if (points[j, i].transform.position.y == end_point_y)
                     {
                         if (start_point_x > end_point_x)
                         {
-                            if (start_point_x > sphere[j, i].transform.position.x && sphere[j, i].transform.position.x >= end_point_x)
+                            if (start_point_x > points[j, i].transform.position.x && points[j, i].transform.position.x >= end_point_x)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 if (j < Grid_number - 1 && i < Grid_number)
                                 {
@@ -650,9 +650,9 @@ public class Test : MonoBehaviour
                         }
                         else if (start_point_x < end_point_x)
                         {
-                            if (start_point_x < sphere[j, i].transform.position.x && sphere[j, i].transform.position.x <= end_point_x)
+                            if (start_point_x < points[j, i].transform.position.x && points[j, i].transform.position.x <= end_point_x)
                             {
-                                sphere[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                                points[j, i].GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
 
                                 line_x[j - 1, i].GetComponent<LineRenderer>().material.color = new Color(255, 0, 0);
                             }
@@ -697,9 +697,9 @@ public class Test : MonoBehaviour
                         {
                             Square++;
 
-                            if(sphere[j, i + 1].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
+                            if(points[j, i + 1].GetComponent<MeshRenderer>().material.color != new Color(255, 0, 0))
                             {
-                                sphere[j, i + 1].GetComponent<MeshRenderer>().material.color = new Color(255, 255, 0);
+                                points[j, i + 1].GetComponent<MeshRenderer>().material.color = new Color(255, 255, 0);
                             }
 
                             if (line_x[j - 1, i + 1].GetComponent<LineRenderer>().material.color != new Color(255, 0, 0))
@@ -739,8 +739,8 @@ public class Test : MonoBehaviour
                             
                             wall_x.Add(temp);
 
-                            wall_x[ID].start = j;
-                            wall_x[ID].other = i;
+                            wall_x[ID].start = j * Grid_density;
+                            wall_x[ID].other = i * Grid_density;
 
                             mode = true;
                         }
@@ -749,7 +749,7 @@ public class Test : MonoBehaviour
                     {
                         if (line_x[j, i].GetComponent<LineRenderer>().material.color != new Color(255, 0, 0))
                         {                
-                            wall_x[ID].end = j;
+                            wall_x[ID].end = j * Grid_density;
 
                             ID++;
 
@@ -792,8 +792,8 @@ public class Test : MonoBehaviour
 
                             wall_y.Add(temp);
 
-                            wall_y[ID].start = i;
-                            wall_y[ID].other = j;
+                            wall_y[ID].start = i * Grid_density;
+                            wall_y[ID].other = j * Grid_density;
 
                             mode = true;
                         }
@@ -802,7 +802,7 @@ public class Test : MonoBehaviour
                     {
                         if (line_y[j, i].GetComponent<LineRenderer>().material.color != new Color(255, 0, 0))
                         {
-                            wall_y[ID].end = i;
+                            wall_y[ID].end = i * Grid_density;
 
                             ID++;
 
@@ -849,7 +849,7 @@ public class Test : MonoBehaviour
     {
         line_x = new GameObject[Grid_number, Grid_number];
         line_y = new GameObject[Grid_number, Grid_number];
-        sphere = new GameObject[Grid_number, Grid_number];
+        points = new GameObject[Grid_number, Grid_number];
 
         Finish_text.enabled = false;
 
@@ -915,7 +915,7 @@ public class Test : MonoBehaviour
 
                         Search_Wall_y();
 
-                        Wall_Instantiate();
+                        //Wall_Instantiate();
                     }
                 }
                 break;

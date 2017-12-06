@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135590273006755668}
   - component: {fileID: 23202650036918394}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

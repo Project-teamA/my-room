@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class FurnitureGrid : MonoBehaviour
 {
-    float rate = 0.2F; //仮比率
+    float rate = 0.5F; //仮比率
     public int furniture_ID_ = 0; //仮ID
+    public int furniture_Count_ = 0; //
     private bool error_flag_ = false; //エラーフラグ
 
     private int horizontal_; //横のグリッド数
     private int vertical_; //縦のグリッド数
     private int[][] grid_point_; //家具頂点(時計周り)グリッド基準
-    private int vertex_number_; //頂点の個数
-    private Vector3[] vertex_; //頂点
     private Vector3[] normal_; //法線
     private int[] triangles_; //頂点インデックス
     private Mesh mesh_; //メッシュ
     private GameObject furniture_grid_; //家具グリッドオブジェクト
-   
+
+    public class Furniture
+    {
+        public int vertex_number_; //頂点の個数
+        public Vector3[] vertex_; //頂点
+    }
+
+    public List<Furniture> furniture = new List<Furniture>();
 
     //横の頂点数(取得用)
     public int horizontal() 
@@ -38,14 +44,18 @@ public class FurnitureGrid : MonoBehaviour
     }
 
     //データ初期化
-    public void Init (int grid_ID, string object_name)
+    public void Init (int Count, int grid_ID, string object_name)
     {
+        Furniture temp = new Furniture();
+
+        furniture.Add(temp);
+
         switch (grid_ID)
         {
             case 0:
                 horizontal_ = 4;
                 vertical_ = 4;
-                vertex_number_ = 5;
+                furniture[Count].vertex_number_ = 5;
                 grid_point_ = new int[5][];
                 grid_point_[0] = new int[2] { 2, 2 }; //0(中心)
                 grid_point_[1] = new int[2] { 0, 0 }; //1
@@ -56,7 +66,7 @@ public class FurnitureGrid : MonoBehaviour
             case 1:
                 horizontal_ = 5;
                 vertical_ = 3;
-                vertex_number_ = 7;
+                furniture[Count].vertex_number_ = 7;
                 grid_point_ = new int[7][];
                 grid_point_[0] = new int[2] { 2, 1 }; //0(中心)
                 grid_point_[1] = new int[2] { 0, 0 }; //1
@@ -69,7 +79,7 @@ public class FurnitureGrid : MonoBehaviour
             default:
                 horizontal_ = 4;
                 vertical_ = 4;
-                vertex_number_ = 13;
+                furniture[Count].vertex_number_ = 13;
                 grid_point_ = new int[13][];
                 grid_point_[0] = new int[2] { 2, 2 }; //0(中心)
                 grid_point_[1] = new int[2] { 1, 0 }; //1
@@ -88,13 +98,13 @@ public class FurnitureGrid : MonoBehaviour
         }
 
 
-        vertex_ = new Vector3[vertex_number_];
-        normal_ = new Vector3[vertex_number_];
-        triangles_ = new int[(vertex_number_ -1) * 3];
+        furniture[Count].vertex_ = new Vector3[furniture[Count].vertex_number_];
+        normal_ = new Vector3[furniture[Count].vertex_number_];
+        triangles_ = new int[(furniture[Count].vertex_number_ - 1) * 3];
 
-        for (int i = 0; i < vertex_number_; ++i)
+        for (int i = 0; i < furniture[Count].vertex_number_; ++i)
         {
-            vertex_[i] = new Vector3(
+            furniture[Count].vertex_[i] = new Vector3(
                  (grid_point_[i][0] - grid_point_[0][0]) * rate,
                  (grid_point_[i][1] - grid_point_[0][1]) * rate,
                  0);
@@ -102,9 +112,9 @@ public class FurnitureGrid : MonoBehaviour
             normal_[i] = new Vector3(0, 0, 1);
         }
 
-        for(int i=0; i< vertex_number_ -1; ++i)
+        for(int i = 0; i < furniture[Count].vertex_number_ - 1; ++i)
         {
-            if (i == vertex_number_ - 2)
+            if (i == furniture[Count].vertex_number_ - 2)
             {
                 triangles_[i * 3] = 0;
                 triangles_[i * 3 + 1] = i + 1;
@@ -119,7 +129,7 @@ public class FurnitureGrid : MonoBehaviour
         }
 
         mesh_ = new Mesh();
-        mesh_.vertices = vertex_;
+        mesh_.vertices = furniture[Count].vertex_;
         mesh_.triangles = triangles_;
         mesh_.normals = normal_;
 
@@ -135,6 +145,8 @@ public class FurnitureGrid : MonoBehaviour
         furniture_grid_.GetComponent<MeshCollider>().sharedMesh = mesh_;
         furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
 
+        furniture_grid_.AddComponent<move>();
+
         furniture_grid_.SetActive(true);
     }
 
@@ -142,8 +154,7 @@ public class FurnitureGrid : MonoBehaviour
 
     private void Start()
     {   
-        Init(furniture_ID_,"aaa");
-       
+        //Init(furniture_Count_, furniture_ID_, "aaa");
     }
 
     void Update()
@@ -155,6 +166,10 @@ public class FurnitureGrid : MonoBehaviour
         else if(Input.GetKey(KeyCode.N))
         {
             furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            Init(furniture_Count_, furniture_ID_, "furniture" + furniture_Count_.ToString());
         }
     }
 }

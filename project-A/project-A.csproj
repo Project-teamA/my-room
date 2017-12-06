@@ -225,7 +225,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Test.cs" />
+    <Compile Include="Assets\FurnitureGrid.cs" />
+    <Compile Include="Assets\Grid_Manager.cs" />
+    <Compile Include="Assets\move.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\test.txt" />
