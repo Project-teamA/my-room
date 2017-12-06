@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/2D.unity
+=======
+- path: Assets/ZJ/Scenes/Test/Test1.unity
+>>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
   isLoaded: 1
   isActive: 1
