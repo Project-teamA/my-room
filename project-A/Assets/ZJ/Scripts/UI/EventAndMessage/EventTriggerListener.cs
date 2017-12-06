@@ -1,13 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW"UI框架项目
- *           主题： 事件触发监听      
- *    Description: 
- *           功能： 实现对于任何对象的监听处理。
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
+ *    Title: イベントトリガーの監視
  *   
  */
 using UnityEngine;

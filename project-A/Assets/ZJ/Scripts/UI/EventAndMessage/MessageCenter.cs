@@ -1,13 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题： 消息（传递）中心
- *    Description: 
- *           功能： 负责UI框架中，所有UI窗体中间的数据传值。
- *                  
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
+ *    Title: フォームの間データを送信する
  *    
  *   
  */

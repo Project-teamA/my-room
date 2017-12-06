@@ -1,14 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题： 语言国际化 
- *    Description: 
- *           功能： 使得我们发布的游戏，可以根据不同的国家，显示不同的语言信息。
- *                  
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
+ *    Title: 言語表示 
  *   
  */
 using System.Collections;

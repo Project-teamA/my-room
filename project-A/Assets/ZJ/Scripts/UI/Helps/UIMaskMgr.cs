@@ -1,14 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题： UI遮罩管理器  
- *    Description: 
- *           功能： 负责“弹出窗体”模态显示实现
- *                  
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
+ *    Title: 「ポップアップ」モーダル表示の実装を担当
  *   
  */
 using System.Collections;

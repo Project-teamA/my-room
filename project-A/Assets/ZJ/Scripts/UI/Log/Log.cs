@@ -1,15 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题： 框架日志系统       
- *    Description: 
- *           功能： 
- *           1：更方便于软件（游戏）开发人员，调试系统程序。
- *           2：记录用户程序的流转。为程序调试、项目上线后记录核心信息使用。
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
+ *    Title: フレームワークログシステム  
  *   
  */
 using System.Collections;

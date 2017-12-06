@@ -1,15 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题： 通用配置管理器接口   
- *    Description: 
- *           功能： 
- *                基于“键值对”配置文件的通用解析
- *                  
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
+ *    Title: Key-Valueペアプロファイルに基づく一般的な解析
  *   
  */
 

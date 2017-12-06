@@ -1,15 +1,6 @@
 ﻿/***
  * 
- *    Title: "SUIFW" UI框架项目
- *           主题：基于Json 配置文件的“配置管理器”  
- *    Description: 
- *           功能：
- *                  
- *    Date: 2017
- *    Version: 0.1版本
- *    Modify Recoder: 
- *    
- *   
+ *    Title: 構成マネージャー
  */
 
 using System;
