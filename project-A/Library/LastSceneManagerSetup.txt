@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/3D.unity
+- path: Assets/ZJ/Scenes/Test/Test1.unity
   isLoaded: 1
   isActive: 1
