@@ -1,4 +1,4 @@
-FurnitureManagement.csの説明(2017年12月4日 更新)
+FurnitureManagement.csの説明(2017年12月12日 更新)
 
 FurnitureManagement.csは家具グリッドを出したり消したり回転させたり移動させたりを一括管理するためのクラスであり，MonoBehaviourを継承している．
 

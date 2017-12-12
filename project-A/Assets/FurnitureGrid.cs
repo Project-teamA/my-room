@@ -1,6 +1,6 @@
 ﻿//FurnitureGrid.cs(家具グリッド用クラス)
 //
-// 2017年12月4日 更新(菅原涼太)
+// 2017年12月12日 更新(菅原涼太)
 
 using System.Collections;
 using System.Collections.Generic;
@@ -10,56 +10,50 @@ using UnityEngine.EventSystems; //
 
 //このクラスは始めにInitしなければならない
 //また，エラーフラグはオブジェクトの色で判断すること
+//オブジェクトの重なりの順番はobjectのz位置で判断(z値が小さいほど上に載っている判定)
+//オブジェクトのエラー判定はオブジェクトの色で判断すること
 public class FurnitureGrid : MonoBehaviour
 {
-<<<<<<< HEAD
-    float rate = 0.5F; //仮比率
-    public int furniture_ID_ = 0; //仮ID
-    public int furniture_Count_ = 0; //
-    private bool error_flag_ = false; //エラーフラグ
-=======
+    //NotPlaced = この家具グリッドは別の家具グリッドに乗れない
+    //CanPlaced = この家具グリッドは別の家具グリッドに乗れる
+    public enum ObjectType { NotPlaced, CanPlaced }; 
+
+    //NotPut = 長方形の上に別の家具グリッドを乗せれない
+    //CanPut = 長方形の上に別の家具グリッドを乗せれる
+    public enum QuadType { NotPut, CanPut }; 
+
     private float rate_ = 0.2F; //仮比率(基本ここでしか変更しない) (アクセス不可)
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
 
     private int furniture_ID_; //仮家具グリッドID
     private int horizontal_; //横のグリッド数
     private int vertical_; //縦のグリッド数
-    private int[][] grid_point_; //家具頂点(時計周り)グリッド基準
-<<<<<<< HEAD
-    private Vector3[] normal_; //法線
-    private int[] triangles_; //頂点インデックス
-    private Mesh mesh_; //メッシュ
-    private GameObject furniture_grid_; //家具グリッドオブジェクト
+    private GameObject furniture_grid_; //家具グリッド親オブジェクト
+    private Vector3 grid_position_ = new Vector3(0f,0f,0f); //グリッド(中心)の3次元位置
+    private Vector3[] vertices_all_; //頂点
+    private float height_ = 0; //家具の高さ
 
-    public class Furniture
-    {
-        public int vertex_number_; //頂点の個数
-        public Vector3[] vertex_; //頂点
-    }
-
-    public List<Furniture> furniture = new List<Furniture>();
-=======
-    private int vertex_number_; //頂点の個数
-    private Vector3 grid_position_; //グリッド(中心)の3次元位置
-    private GameObject furniture_grid_; //家具グリッドオブジェクト
-  
     //仮家具グリッドID(取得用)
     public int furniture_ID()
     {
         return furniture_ID_;
     }
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
 
-    //横の頂点数(取得用)
+    //横のグリッド数(取得用)
     public int horizontal() 
     {
         return horizontal_;
     }
 
-    //縦の頂点数(取得用)
+    //縦の縦のグリッド数(取得用)
     public int vertical()
     {
         return vertical_;
+    }
+
+    //オブジェクト(取得用)
+    public GameObject furniture_grid()
+    {
+        return furniture_grid_;
     }
 
     //グリッド(中心)の3次元位置(取得用)
@@ -68,163 +62,210 @@ public class FurnitureGrid : MonoBehaviour
         return grid_position();
     }
 
-<<<<<<< HEAD
-    //データ初期化
-    public void Init (int Count, int grid_ID, string object_name)
+    //頂点群(取得用)
+    private Vector3[] vertices_all()
     {
-        Furniture temp = new Furniture();
+        return vertices_all_;
+    }
 
-        furniture.Add(temp);
-
-=======
-    //オブジェクト取得用
-    public GameObject furniture_grid()
+    //家具の高さ(取得用)(現在はALL0)
+    private float height()
     {
-        return furniture_grid_;
+        return height_;
     }
 
     //データ初期化(FurnitureGridをインスタンス化したとき，このメソッドを使って初期化する)
     public void Init (int grid_ID, string object_name)
     {
         furniture_ID_ = grid_ID;
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
+        furniture_grid_ = new GameObject();
+
+        int[] center_point_;
+        int[][] grid_point_;
+        int[][] triangles;
+        ObjectType object_type_;
+        QuadType[] quad_type_;
+        int children_number_; //子オブジェクトの数
+        GameObject[] children_grid_; //家具グリッド子オブジェクト
+        int vertices_number; //頂点の数
+
         switch (grid_ID)
         {
             case 0:
-                horizontal_ = 4;
-                vertical_ = 4;
-                furniture[Count].vertex_number_ = 5;
-                grid_point_ = new int[5][];
-                grid_point_[0] = new int[2] { 2, 2 }; //0(中心)
-                grid_point_[1] = new int[2] { 0, 0 }; //1
-                grid_point_[2] = new int[2] { 0, 4 }; //2
-                grid_point_[3] = new int[2] { 4, 4 }; //3
-                grid_point_[4] = new int[2] { 4, 0 }; //4
+                object_type_ = ObjectType.NotPlaced;
+                horizontal_ = 10;
+                vertical_ = 5;
+                children_number_ = 2;
+                center_point_ = new int[2] {5, 2}; //中心のグリッド座標
+                //使用する頂点グリッド
+                vertices_number = 6;
+                grid_point_ = new int[vertices_number][];
+                grid_point_[0] = new int[2] { 0, 0 }; //0
+                grid_point_[1] = new int[2] { 0, 5 }; //1
+                grid_point_[2] = new int[2] { 8, 0 }; //2
+                grid_point_[3] = new int[2] { 8, 5 }; //3
+                grid_point_[4] = new int[2] { 10, 0 }; //4
+                grid_point_[5] = new int[2] { 10, 5 }; //5
+                children_grid_ = new GameObject[children_number_];
+                //頂点インデックス生成
+                triangles = new int[children_number_][];
+                quad_type_ = new QuadType[2] {QuadType.CanPut, QuadType.NotPut };
+                triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
+                triangles[1] = new int[4] { 2, 3, 4, 5 }; //上に置けない
                 break;
+
             case 1:
+                object_type_ = ObjectType.NotPlaced;
+                horizontal_ = 8;
+                vertical_ = 5;
+                children_number_ = 5;
+                center_point_ = new int[2] { 4, 3 }; //中心のグリッド座標
+                //使用する頂点グリッド
+                vertices_number = 14;
+                grid_point_ = new int[vertices_number][];
+                grid_point_[0] = new int[2] { 0, 0 }; //0
+                grid_point_[1] = new int[2] { 0, 5 }; //1
+                grid_point_[2] = new int[2] { 2, 0 }; //2
+                grid_point_[3] = new int[2] { 2, 2 }; //3
+                grid_point_[4] = new int[2] { 2, 5 }; //4
+                grid_point_[5] = new int[2] { 3, 2 }; //5
+                grid_point_[6] = new int[2] { 3, 5 }; //6
+                grid_point_[7] = new int[2] { 5, 2 }; //7
+                grid_point_[8] = new int[2] { 5, 5 }; //8
+                grid_point_[9] = new int[2] { 6, 0 }; //9
+                grid_point_[10] = new int[2] { 6, 2 }; //10
+                grid_point_[11] = new int[2] { 6, 5 }; //11
+                grid_point_[12] = new int[2] { 8, 0 }; //12
+                grid_point_[13] = new int[2] { 8, 5 }; //13
+                children_grid_ = new GameObject[children_number_];
+                //頂点インデックス生成
+                triangles = new int[children_number_][];
+                quad_type_ = new QuadType[5] { QuadType.CanPut, QuadType.CanPut, QuadType.NotPut, QuadType.CanPut, QuadType.CanPut };
+                triangles[0] = new int[4] { 0, 1, 2, 4 }; //上における1
+                triangles[1] = new int[4] { 3, 4, 5, 6 }; //上における1
+                triangles[2] = new int[4] { 5, 6, 7, 8 }; //上におけない
+                triangles[3] = new int[4] { 7, 8, 10, 11 }; //上における2
+                triangles[4] = new int[4] { 9, 11, 12, 13 }; //上における2
+                break;
+
+            case 2:
+                object_type_ = ObjectType.CanPlaced;
+                horizontal_ = 4;
+                vertical_ = 2;
+                children_number_ = 1;
+                center_point_ = new int[2] { 2, 1 }; //中心のグリッド座標
+                //使用する頂点グリッド
+                vertices_number = 4;
+                grid_point_ = new int[vertices_number][];
+                grid_point_[0] = new int[2] { 0, 0 }; //0
+                grid_point_[1] = new int[2] { 0, 2 }; //1
+                grid_point_[2] = new int[2] { 4, 0 }; //2
+                grid_point_[3] = new int[2] { 4, 2 }; //3
+                children_grid_ = new GameObject[children_number_];
+                //頂点インデックス生成
+                triangles = new int[children_number_][];
+                quad_type_ = new QuadType[1] { QuadType.CanPut };
+                triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
+                break;
+
+            default:
+                object_type_ = ObjectType.CanPlaced;
                 horizontal_ = 5;
                 vertical_ = 3;
-                furniture[Count].vertex_number_ = 7;
-                grid_point_ = new int[7][];
-                grid_point_[0] = new int[2] { 2, 1 }; //0(中心)
-                grid_point_[1] = new int[2] { 0, 0 }; //1
+                children_number_ = 2;
+                center_point_ = new int[2] { 2, 1 }; //中心のグリッド座標
+                //使用する頂点グリッド
+                vertices_number = 7;
+                grid_point_ = new int[vertices_number][];
+                grid_point_[0] = new int[2] { 0, 0 }; //0
+                grid_point_[1] = new int[2] { 0, 2 }; //1
                 grid_point_[2] = new int[2] { 0, 3 }; //2
-                grid_point_[3] = new int[2] { 2, 3 }; //3
-                grid_point_[4] = new int[2] { 2, 1 }; //4
-                grid_point_[5] = new int[2] { 5, 1 }; //5
-                grid_point_[6] = new int[2] { 5, 0 }; //6
-                break;
-            default:
-                horizontal_ = 4;
-                vertical_ = 4;
-                furniture[Count].vertex_number_ = 13;
-                grid_point_ = new int[13][];
-                grid_point_[0] = new int[2] { 2, 2 }; //0(中心)
-                grid_point_[1] = new int[2] { 1, 0 }; //1
-                grid_point_[2] = new int[2] { 1, 1 }; //2
-                grid_point_[3] = new int[2] { 0, 1 }; //3
-                grid_point_[4] = new int[2] { 0, 3 }; //4
-                grid_point_[5] = new int[2] { 1, 3 }; //5
-                grid_point_[6] = new int[2] { 1, 4 }; //6
-                grid_point_[7] = new int[2] { 3, 4 }; //6
-                grid_point_[8] = new int[2] { 3, 3 }; //8
-                grid_point_[9] = new int[2] { 4, 3 }; //9
-                grid_point_[10] = new int[2] { 4, 1 }; //10
-                grid_point_[11] = new int[2] { 3, 1 }; //11
-                grid_point_[12] = new int[2] { 3, 0 }; //12
+                grid_point_[3] = new int[2] { 2, 2 }; //3
+                grid_point_[4] = new int[2] { 2, 3 }; //4
+                grid_point_[5] = new int[2] { 5, 0 }; //5
+                grid_point_[6] = new int[2] { 5, 2 }; //6
+                children_grid_ = new GameObject[children_number_];
+                //頂点インデックス生成
+                triangles = new int[children_number_][];
+                quad_type_ = new QuadType[2] { QuadType.CanPut, QuadType.NotPut };
+                triangles[0] = new int[4] { 0, 1, 5, 6 }; //上における
+                triangles[1] = new int[4] { 1, 2, 3, 4 }; //上におけない
                 break;
         }
-
-        Vector3[] vertex_ = new Vector3[vertex_number_];
-        Vector3[] normal_ = new Vector3[vertex_number_];
-        int[] triangles_ = new int[(vertex_number_ -1) * 3];
-
-<<<<<<< HEAD
-        furniture[Count].vertex_ = new Vector3[furniture[Count].vertex_number_];
-        normal_ = new Vector3[furniture[Count].vertex_number_];
-        triangles_ = new int[(furniture[Count].vertex_number_ - 1) * 3];
-
-        for (int i = 0; i < furniture[Count].vertex_number_; ++i)
+        vertices_all_ = new Vector3[vertices_number];
+        for (int i = 0; i < vertices_number; ++i)
         {
-            furniture[Count].vertex_[i] = new Vector3(
-                 (grid_point_[i][0] - grid_point_[0][0]) * rate,
-                 (grid_point_[i][1] - grid_point_[0][1]) * rate,
+            vertices_all_[i] = new Vector3(
+                 (grid_point_[i][0] - center_point_[0]) * rate_ * 0.99f,
+                 (grid_point_[i][1] - center_point_[1]) * rate_ * 0.99f,
                  0);
-
-            normal_[i] = new Vector3(0, 0, 1);
         }
 
-        for(int i = 0; i < furniture[Count].vertex_number_ - 1; ++i)
-=======
-        for (int i = 0; i < vertex_number_ - 1; ++i)
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
+        Vector3[] normals_ = new Vector3[4];
+        for(int i = 0; i < 4; ++i)
         {
-            if (i == furniture[Count].vertex_number_ - 2)
-            {
-                triangles_[i * 3] = 0;
-                triangles_[i * 3 + 1] = i + 1;
-                triangles_[i * 3 + 2] = 1;
-            }
-            else
-            {
-                triangles_[i * 3] = 0;
-                triangles_[i * 3 + 1] = i + 1;
-                triangles_[i * 3 + 2] = i + 2;
-            }
+            normals_[i] = new Vector3(0F, 0F, 1F );
         }
 
-<<<<<<< HEAD
-        mesh_ = new Mesh();
-        mesh_.vertices = furniture[Count].vertex_;
-        mesh_.triangles = triangles_;
-        mesh_.normals = normal_;
-=======
-        for (int i = 0; i < vertex_number_; ++i)
+        int[] triangles_static = new int[6] { 0, 1, 2, 2, 1, 3};
+        for(int i = 0; i < children_number_; ++i)
         {
-            vertex_[i] = new Vector3(
-                 (grid_point_[i][0] - grid_point_[0][0]) * rate_ * 0.99f,
-                 (grid_point_[i][1] - grid_point_[0][1]) * rate_ * 0.99f,
-                 0);
+            Mesh mesh = new Mesh();
+            Vector3[] vertices = new Vector3[4];
+            for(int j = 0; j < 4; ++j)
+            {
+                vertices[j] = vertices_all_[triangles[i][j]];
+            }
+            mesh.vertices = vertices;
+            mesh.triangles = triangles_static;
+            mesh.normals = normals_;
+            mesh.RecalculateBounds();
+            string children_name = "_children_" + i.ToString();
+            children_grid_[i] = new GameObject();
+            children_grid_[i].name = object_name + children_name;
+            children_grid_[i].AddComponent<MeshFilter>();
+            children_grid_[i].GetComponent<MeshFilter>().sharedMesh = mesh;
+            children_grid_[i].GetComponent<MeshFilter>().sharedMesh.name = object_name;
+            children_grid_[i].AddComponent<MeshRenderer>();
+            
+            if (quad_type_[i] == QuadType.NotPut)
+            {
+                children_grid_[i].tag = "notput_quad"; //上にオブジェクトおけない
+                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+            }
+            else if (quad_type_[i] == QuadType.CanPut)
+            {
+                children_grid_[i].tag = "canput_quad"; //上にオブジェクトおける
+                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(0, 255, 255);
+            }
 
-            normal_[i] = new Vector3(0, 0, 1);
+            float quad_horizontal = (vertices[2] - vertices[0]).magnitude; //四角形の横の長さ
+            float quad_vertical = (vertices[1] - vertices[0]).magnitude; //四角形の縦の長さ
+                                                                       
+            furniture_grid_.AddComponent<BoxCollider>();
+            furniture_grid_.GetComponents<BoxCollider>()[i].center = vertices[0] + new Vector3(quad_horizontal / 2, quad_vertical / 2, 0);
+            furniture_grid_.GetComponents<BoxCollider>()[i].size = new Vector3(quad_horizontal, quad_vertical, 1);
+            children_grid_[i].AddComponent<Rigidbody>();
+            children_grid_[i].GetComponent<Rigidbody>().isKinematic = true;
+            children_grid_[i].SetActive(true);
+            children_grid_[i].transform.parent = furniture_grid_.transform; //親オブジェクトに登録
         }
-        grid_position_ = vertex_[0];
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
-
-        Mesh mesh = new Mesh();
-        mesh.vertices = vertex_;
-        mesh.triangles = triangles_;
-        mesh.normals = normal_;
-        mesh.RecalculateBounds();
-
-        furniture_grid_ = new GameObject();
         furniture_grid_.name = object_name;
-        furniture_grid_.tag = "furniture_grid";
-        furniture_grid_.AddComponent<MeshFilter>();
-        furniture_grid_.GetComponent<MeshFilter>().sharedMesh = mesh;
-        furniture_grid_.GetComponent<MeshFilter>().sharedMesh.name = object_name;
+        if (object_type_ == ObjectType.NotPlaced)
+        {
+            furniture_grid_.tag = "furniture_grid_base"; //必ず地面に接する
+        }
+        else if (object_type_ == ObjectType.CanPlaced)
+        {
+            furniture_grid_.tag = "furniture_grid"; //家具の上においてもよい
+        }
+      
         furniture_grid_.AddComponent<MeshRenderer>();
         furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-<<<<<<< HEAD
-
-        furniture_grid_.AddComponent<move>();
-
-        furniture_grid_.SetActive(true);
-    }
-
-
-
-    private void Start()
-    {   
-        //Init(furniture_Count_, furniture_ID_, "aaa");
-=======
-        furniture_grid_.AddComponent<MeshCollider>();
-        furniture_grid_.GetComponent<MeshCollider>().sharedMesh = mesh;
-        furniture_grid_.GetComponent<MeshCollider>().convex = true; //これがtrueでないと衝突判定されない
-        furniture_grid_.GetComponent<MeshCollider>().isTrigger = true;
+        furniture_grid_.AddComponent<GridError>(); //家具オブジェクトにGridError.cs(家具グリッド同士の衝突判定)をアタッチ
+        furniture_grid_.GetComponent<BoxCollider>().isTrigger = true;
         furniture_grid_.AddComponent<Rigidbody>();
         furniture_grid_.GetComponent<Rigidbody>().isKinematic = true;
-        furniture_grid_.AddComponent<GridError>(); //家具オブジェクトにGridError.cs(家具グリッド同士の衝突判定)をアタッチ
         furniture_grid_.SetActive(true);
     }
 
@@ -233,27 +274,11 @@ public class FurnitureGrid : MonoBehaviour
     {
         furniture_grid_.transform.position = new_position;
         grid_position_ = new_position;
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
     }
 
     //マウス回転
     public void Rotate()
     {
-<<<<<<< HEAD
-        if(Input.GetKey(KeyCode.E))
-        {
-            furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
-        }
-        else if(Input.GetKey(KeyCode.N))
-        {
-            furniture_grid_.GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-        }
-        else if (Input.GetKeyDown(KeyCode.I))
-        {
-            Init(furniture_Count_, furniture_ID_, "furniture" + furniture_Count_.ToString());
-        }
-=======
         furniture_grid_.transform.Rotate(0,0,90);
->>>>>>> 32a3f018e818e8cd413f6f8a95af347dfe66369c
     }
 }

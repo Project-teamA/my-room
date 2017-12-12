@@ -1,6 +1,6 @@
 ﻿//FurnitureManagement.cs(家具グリッドを出したり消したり回転させたり移動させたりの一括管理)
 //
-// 2017年12月4日 更新(菅原涼太)
+// 2017年12月12日 更新(菅原涼太)
 
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,6 @@ public class FurnitureManagement : MonoBehaviour {
     private int target_number_ = -1; //クリックまたはドラッグされている家具グリッドをもったクラスのナンバー 何もクリックしていない場合-1(アクセス不可)
     private Vector3 screen_point_; //オブジェクトのスクリーン上での位置 (アクセス不可)
     private Vector3 point_offset_; //オブジェクト中心とのオフセット (アクセス不可)
-
     private List<FurnitureGrid> furniture_grid_ = new List<FurnitureGrid>(); //FurnitureGrid.csで実装されているクラスのリスト(最大50)
     private int object_number_ = 0; //FurnitureGridクラス生成回数
     private TransformMode mode_ = TransformMode.Translate; //現在のモード(初期モードは移動モード)
@@ -131,6 +130,13 @@ public class FurnitureManagement : MonoBehaviour {
                 furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
                 furniture_grid_[furniture_grid_.Count - 1].Init(2, object_name);
             } //Input.GetKeyDown(KeyCode.Keypad2)
+            else if (Input.GetKeyDown(KeyCode.Keypad3))
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(3, object_name);
+            }
         } //furniture_grid_.Count < 50
 
         if (Input.GetMouseButtonDown(0))
@@ -141,7 +147,7 @@ public class FurnitureManagement : MonoBehaviour {
             {
                 for (int i = 0; i < furniture_grid_.Count; ++i)
                 {
-                    if (clicked_object.name == furniture_grid_[i].furniture_grid().name)
+                    if (clicked_object.transform.root.gameObject == furniture_grid_[i].furniture_grid())
                     {
                        target_number_ = i;
                     }
@@ -187,7 +193,7 @@ public class FurnitureManagement : MonoBehaviour {
             {
                 for (int i = 0; i < furniture_grid_.Count; ++i)
                 {
-                    if (clicked_object.name == furniture_grid_[i].furniture_grid().name)
+                    if (clicked_object.transform.root.gameObject == furniture_grid_[i].furniture_grid())
                     {
                         target_number_ = i;
                     }
