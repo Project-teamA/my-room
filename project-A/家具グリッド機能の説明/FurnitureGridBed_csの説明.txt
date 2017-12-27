@@ -1,0 +1,6 @@
+FurnitureGridBed.csの説明(2017年12月27日 更新)
+
+FurnitureGridBed.csはFutnitureGridクラスの分割クラスであり，ベッドタイプ家具グリッドの情報を生成する関数GetGridDataBedの実装部分が記述されている
+
+
+基本的に外部からのアクセス不可

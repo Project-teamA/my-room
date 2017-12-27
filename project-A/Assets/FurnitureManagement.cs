@@ -137,6 +137,49 @@ public class FurnitureManagement : MonoBehaviour {
                 furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
                 furniture_grid_[furniture_grid_.Count - 1].Init(3, object_name);
             }
+            else if (Input.GetKeyDown(KeyCode.Keypad4)) //カーペット
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(4, object_name);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad5)) //壁掛け
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(5, object_name);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad6)) //ドア
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(6, object_name);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad7)) //天井
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(7, object_name);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad8)) //窓
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(8, object_name);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad9)) //ベッド
+            {
+                object_number_ += 1;
+                string object_name = "furniture_grid_" + object_number_.ToString();
+                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+                furniture_grid_[furniture_grid_.Count - 1].Init(9, object_name);
+            }
+
         } //furniture_grid_.Count < 50
 
         if (Input.GetMouseButtonDown(0))

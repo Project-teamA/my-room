@@ -1,23 +1,58 @@
-FurnitureGrid.cs‚Ìà–¾(2017”N12Œ12“ú XV)
+FurnitureGrid.cs‚Ìà–¾(2017”N12Œ27“ú XV)
 
 FurnitureGrid.cs‚Í‰Æ‹ïƒOƒŠƒbƒh‚ÌŒ`ó‚âƒvƒƒpƒeƒB‚ği‚éƒNƒ‰ƒXƒtƒ@ƒCƒ‹‚Å‚ ‚èCMonoBehaviour‚ğŒp³‚µ‚Ä‚¢‚éD
+‚±‚ÌƒNƒ‰ƒX‚Í’·‚­‚È‚é‚±‚Æ‚ª—\‘z‚³‚ê‚é‚½‚ßCFurnitureGridOne.csCFurnitureGridBed.cs‚Æ‚¢‚¤ƒtƒ@ƒCƒ‹‚ÉÀ‘••”•ª‚ğˆê•”•ªŠ„‚µ‚Ä‚¢‚éD
+
 * ‰Æ‹ïƒOƒŠƒbƒh“¯m‚ÌÕ“Ë‚ÍD‰Æ‹ïƒOƒŠƒbƒh“¯m‚ª‚Ò‚Á‚½‚è‚­‚Á‚Â‚¢‚½‚Æ‚«‚É‚à”­¶‚·‚é‚½‚ßCƒOƒŠƒbƒhŠÔ‚Ì’·‚³‚ÍŠî€’l‚æ‚è‚í‚¸‚©‚ÉkÚ‚µ‚½’l‚É‚µ‚Ä‚¢‚é
-* ¡ŒãC‰Æ‹ïƒOƒŠƒbƒh‚Í‚¢‚­‚Â‚©‚ÌPlaneƒIƒuƒWƒFƒNƒg‚ğqƒIƒuƒWƒFƒNƒg‚É‚µ‚ÄÀ‘•‚·‚é‚Â‚à‚è‚Å‚ ‚éD
 * ‰ñ“]‚Ì’†S(ŠÔæ‚èƒOƒŠƒbƒh‚É‡‚í‚¹‚é“_)‚É‚Â‚¢‚Ä‚ÍŒ»İ•ÏX—\’è‚Í‚È‚¢D
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-ƒAƒNƒZƒX‰Â”\‚È—ñ‹“Œ^‚ÌĞ‰î
+ƒAƒNƒZƒX‰Â”\‚È—ñ‹“Œ^C\‘¢‘Ì‚ÌĞ‰î
 
-enum ObjectType { NotPlaced, CanPlaced } = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚ª•Ê‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Ìã‚Éæ‚ê‚é‚©‚Ç‚¤‚©
+enum ObjectType { NotPlaced, CanPlaced, Rugs, WallMounted, Door, CeilingHook, Window  } = ‰Æ‹ïƒOƒŠƒbƒh‚Ìƒ^ƒCƒv
   NotPlaced = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í•Ê‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Éæ‚ê‚È‚¢
   CanPlaced = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í•Ê‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Éæ‚ê‚é
+  Rugs = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í•~•¨‚Å‚ ‚é
+  CeilingHook = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í“VˆäŠ|‚¯‚Å‚ ‚é
+  WallMounted = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í•ÇŠ|‚¯‚Å‚ ‚é
+  Door = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚ÍƒhƒA‚Å‚ ‚é
+  Window = ‚±‚Ì‰Æ‹ïƒOƒŠƒbƒh‚Í‘‹‚Å‚ ‚é
 
 enum QuadType { NotPut, CanPut } = (‰Æ‹ïƒOƒŠƒbƒh‚ğ•ªŠ„‚µ‚Ä‚Å‚«‚é)’·•ûŒ`‚Ìã‚É‰Æ‹ïƒOƒŠƒbƒh‚ğæ‚¹‚ê‚é‚©‚Ç‚¤‚©
   NotPut = ’·•ûŒ`‚Ìã‚É•Ê‚ÌƒIƒuƒWƒFƒNƒg‚ğæ‚¹‚ê‚È‚¢
   CanPut = ’·•ûŒ`‚Ìã‚É•Ê‚ÌƒIƒuƒWƒFƒNƒg‚ğæ‚¹‚ê‚é
 
+
+
+struct FiveElements
+    {
+        float wood; //–Ø
+        float fire; //‰Î
+        float earth; //“y
+        float metal; //‹à
+        float water; //…
+    }
+  ‚±‚Ì‰Æ‹ï‚ª‚Á‚Ä‚¢‚éŒÜs‚Ì’l(–¢g—p)
+
+struct YinYang
+    {
+        float yin; //‰A
+        float yang; //—z
+    }
+  ‚±‚Ì‰Æ‹ï‚ª‚Á‚Ä‚¢‚é‰A—z‚Ì’l(–¢g—p)
+
+
+struct ColorType
+    {
+
+    }
+  ‚±‚Ì‰Æ‹ï‚ª‚Á‚Ä‚¢‚éF‚Ì‘®«(–¢g—p)
+
+enum FurnitureType { Bed, Desk } = ‰Æ‹ïƒ^ƒCƒv(Œ»İBed=ƒxƒbƒhCDesk = Š÷‚Ì‚İ‚¾‚ª¡Œã‘‚¦‚é)
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 ƒAƒNƒZƒX‰Â”\‚ÈƒtƒB[ƒ‹ƒh(ƒƒ“ƒo•Ï”)‚ÌĞ‰î 
 
@@ -25,8 +60,10 @@ enum QuadType { NotPut, CanPut } = (‰Æ‹ïƒOƒŠƒbƒh‚ğ•ªŠ„‚µ‚Ä‚Å‚«‚é)’·•ûŒ`‚Ìã‚É‰Æ‹
   —á  aaa_‚Æ‚¢‚¤ƒtƒB[ƒ‹ƒh‚ÉƒAƒNƒZƒX‚µ‚½‚¢‚Æ‚«‚Í››.aaa_‚Å‚Í‚È‚­››.aaa()‚Æ‹Lq‚·‚é
 
 int furniture_ID_ = ‰Æ‹ïƒOƒŠƒbƒh‚ÌID(‰Æ‹ïƒOƒŠƒbƒh‚Ìí—Ş‚ğ¯•Ê‚·‚é‚½‚ß‚Ì”š) Œ»İ0, 1, 2‚Ì3‚Â‚Ì‰Æ‹ïƒOƒŠƒbƒh‚ª‚ ‚éD
-int horizontal__ = ‰¡‚ÌƒOƒŠƒbƒh‚ÌÅ‘å”
-int vertical_ = c‚ÌƒOƒŠƒbƒh‚ÌÅ‘å”
+FurnitureType furniture_type_ = ‰Æ‹ï‚Ìí—Ş(ƒxƒbƒhCŠ÷‚È‚Ç)
+float[] parameta_ = •]‰¿ŠÖ”‚Ég‚¤—pƒpƒ‰ƒ[ƒ^(‰Æ‹ï‚Ìí—Ş‚É‰‚¶‚Ä”z—ñ’·CˆÓ–¡‡‚¢‚ªˆÙ‚È‚é)
+  * Bed‚Ìê‡C”z—ñ’·‚Í2‚Å‚ ‚èparameta_[0] = ‰¡‚ÌƒOƒŠƒbƒh”(”¼•ª)Cparameta_[1] = c‚ÌƒOƒŠƒbƒh”(”¼•ª)
+
 GameObject furniture_grid_ = ‰Æ‹ïƒOƒŠƒbƒheƒIƒuƒWƒFƒNƒg
 Vector3 grid_position_ = ƒOƒŠƒbƒh(’†S)‚Ì3ŸŒ³ˆÊ’u(‚½‚¾‚µz’l‚Í”½‰f‚³‚ê‚È‚¢)
 * z’l‚ğ”½‰f‚³‚¹‚½’†S‚ª—~‚µ‚¢ê‡CeƒIƒuƒWƒFƒNƒg‚Ìtransform.position‚ğQÆ‚·‚éD
@@ -34,8 +71,19 @@ Vector3 grid_position_ = ƒOƒŠƒbƒh(’†S)‚Ì3ŸŒ³ˆÊ’u(‚½‚¾‚µz’l‚Í”½‰f‚³‚ê‚È‚¢)
 Vector3[] vertices_all_ = ‰Æ‹ïƒOƒŠƒbƒh‘½ŠpŒ`‚Ì’¸“_(–¼‘O•Ï‚í‚è‚Ü‚µ‚½)
 * vertices_all_‚Å“¾‚ç‚ê‚é’¸“_‚Í‰ŠúˆÊ’u‚©‚ç•Ï‰»‚µ‚È‚¢Dƒ[ƒ‹ƒhÀ•W‚Å‚Ì’¸“_‚ÌˆÊ’u‚ğ“¾‚½‚¢ê‡
   ‚Ü‚¸eƒIƒuƒWƒFƒNƒg‚Ìtransform.rotation‚ğ¶‚©‚çŠ|‚¯‚ÄCeƒIƒuƒWƒFƒNƒg‚Ìtransform.position‚ğ‰ÁZ‚·‚éD
+* vertices(int index)‚Å”z—ñ”Ô†‚ğw’è‚µ‚Äæ“¾‚Å‚«‚é
+
 
 float height_ = ‰Æ‹ï‚Ì‚‚³(Œ»İ‚ÍALL0)
+Vector3 up_direction_ = ãŒü‚«‚Ì•ûŒü(‰ñ“]‚ÅŒü‚«•Ï‰»)
+Vector3 right_direction_ = ‰EŒü‚«‚Ì•ûŒü(‰ñ“]‚ÅŒü‚«•Ï‰»)
+FiveElements five_elements_ = ŒÜsî•ñ
+YinYang yin_yang_ = ‰A—zî•ñ
+Color furniture_color_ = F‘®«
+* ‚±‚Ì‚Ü‚Ü‚Ì–¼‘O‚Å‚Íæ“¾‚Å‚«‚È‚¢. furniture_color()‚ÅRGBŒ`®‚ÅCfurniture_color_HSV(out float h, out float s, out float v)‚ÅHSVŒ`®‚Åæ“¾‰Â”\
+
+ColorType color_type_ = ‚±‚Ì‰Æ‹ï‚ª‚Á‚Ä‚¢‚éF‚Ì‘®«
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -63,7 +111,7 @@ z’l‚ªl—¶‚³‚ê‚½‰Æ‹ïƒOƒŠƒbƒh‚Ì’†S‚ÌˆÊ’u------[GameObjectƒNƒ‰ƒX–¼].transform.posi
 void Init (int grid_ID, string object_name)
 grid_ID‚ğŠî‚ÉCŠeƒtƒB[ƒ‹ƒh‚ª‰Šú‰»‚³‚ê‚é(’l‚ª‘ã“ü‚³‚ê‚é)
 -------------------------------------------
-ˆø”int grid_ID = ‚Â‚­‚è‚½‚¢‰Æ‹ïƒOƒŠƒbƒh‚ÌID
+ˆø”int grid_ID = ‚Â‚­‚è‚½‚¢‰Æ‹ïƒOƒŠƒbƒh‚ÌID(Œ»İ1~9‚Ü‚Å)
 ˆø”string object_name = ‰Æ‹ïƒOƒŠƒbƒhƒIƒuƒWƒFƒNƒgfurniture_grid_‚ÌƒIƒuƒWƒFƒNƒgƒl[ƒ€
 
 
