@@ -6,8 +6,6 @@ using UnityEngine.EventSystems; //
 
 public partial class FurnitureGrid : MonoBehaviour
 { 
-    
-
     partial void GetGridData(int grid_ID)
     {
         switch (grid_ID)

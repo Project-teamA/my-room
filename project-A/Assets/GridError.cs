@@ -13,15 +13,8 @@ using UnityEngine;
 public class GridError : MonoBehaviour {
 
     private Bounds[] bounds_;
-    private float own_height_; //自分自身の高さ
     private List<GameObject> collision_objects_ = new List<GameObject>(); //衝突しているオブジェクト
     private List<GameObject> error_objects_ = new List<GameObject>(); //エラーの元になっているオブジェクト 
-
-    //自分自身の高さ初期化
-    public void SetHeight(float own_height)
-    {
-        own_height_ = own_height;
-    }
 
     //他の家具グリッドにぶつかっているとき
     void OnTriggerStay(Collider collider)
