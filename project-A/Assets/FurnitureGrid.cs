@@ -1,7 +1,9 @@
 ﻿//FurnitureGrid.cs(家具グリッド用クラス)
 //
-//家具の高さの要素を削除(代わりに特性で高い，低いを指定できるようになった)
-// 2017年12月12日 更新(菅原涼太)
+// 2017年1月17日以降変更した箇所(菅原涼太)
+// FurnitureTypeにTable(テーブル追加)
+// 家具の部屋ない方角位置の書き込み関数を追加
+//
 
 using System.Collections;
 using System.Collections.Generic;
@@ -29,9 +31,9 @@ public partial class FurnitureGrid : MonoBehaviour
     public enum QuadType { NotPut, CanPut };
 
     //家具のタイプ
-    //ベッド，机，ソファ，観葉植物，造花，水槽，カーペット，カーテン，家電(TV,PC,冷蔵庫,レンジ,洗濯機,ストーブ,エアコン,加湿器),
+    //ベッド，机，テーブル,ソファ，観葉植物，造花，水槽，カーペット，カーテン，家電(TV,PC,冷蔵庫,レンジ,洗濯機,ストーブ,エアコン,加湿器),
     //鏡，照明，電気スタンド，椅子，額縁，ぬいぐるみ，窓，ドア，タンス, その他
-    public enum FurnitureType { Bed, Desk, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
+    public enum FurnitureType { Bed, Desk, Table, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
         ConsumerElectronics, Dresser, Illumination, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Bureau ,Otherwise};
 
     //カラー
@@ -188,6 +190,11 @@ public partial class FurnitureGrid : MonoBehaviour
         return placed_direction_;
     }
 
+    //(部屋の中から見た)家具が置かれている方角(セット用)
+    public void set_direction(PlacedDirection placed_direction)
+    {
+        placed_direction_ = placed_direction;
+    }
 
 
 
@@ -255,16 +262,41 @@ public partial class FurnitureGrid : MonoBehaviour
         furniture_ID_ = grid_ID;
         furniture_grid_ = new GameObject();
 
-        if (grid_ID >= 0 && grid_ID <= 8)
+        //ここから個別に家具グリッドを取得
+        if (grid_ID >= 0 && grid_ID <= 8) //そのうち消す
         {
-           
             GetGridData(grid_ID);
         }
-        else if(grid_ID == 9) //該当するのはベッド
+        else if (grid_ID == 9) //該当するのはベッド
         {
             GetGridDataBed(grid_ID);
         }
-       
+        else if (grid_ID == 10) //該当するのはソファ
+        {
+            GetGridDataSofa(grid_ID);
+        }
+        else if (grid_ID == 11) //該当するのは机
+        {
+            GetGridDataDesk(grid_ID);
+        }
+        else if (grid_ID == 12) //該当するのはテーブル
+        {
+            GetGridDataTable(grid_ID);
+        }
+        else if (grid_ID == 13) //該当するのはカーペット
+        {
+            GetGridDataCarpet(grid_ID);
+        }
+        else if (grid_ID == 14) //該当するのは家電
+        {
+            GetGridDataConsumerElectronics(grid_ID);
+        }
+        else if (grid_ID == 15) //該当するのは鏡
+        {
+            GetGridDataDresser(grid_ID);
+        }
+        //ここまで個別に家具グリッドを取得
+
         vertices_all_ = new Vector3[vertices_number_];
         for (int i = 0; i < vertices_number_; ++i)
         {
@@ -402,6 +434,12 @@ public partial class FurnitureGrid : MonoBehaviour
         right_direction_ = quaternion * right_direction_;
     }
 
-    partial void GetGridData(int grid_ID); //初期実験用
+    partial void GetGridData(int grid_ID); //初期実験用(そのうち消す)
     partial void GetGridDataBed(int grid_ID); //ベッド実験
+    partial void GetGridDataSofa(int grid_ID); //ソファ実験
+    partial void GetGridDataDesk(int grid_ID); //机実験
+    partial void GetGridDataTable(int grid_ID); //テーブル
+    partial void GetGridDataCarpet(int grid_ID); //カーペット
+    partial void GetGridDataConsumerElectronics(int grid_ID); //家電
+    partial void GetGridDataDresser(int grid_ID); //鏡(ドレッサー)
 }

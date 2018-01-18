@@ -1,12 +1,15 @@
 ﻿//FurnitureManagement.cs(家具グリッドを出したり消したり回転させたり移動させたりの一括管理)
 //
+//
 // 2017年12月12日 更新(菅原涼太)
+// 外部からの値の入力で家具が追加されるAddFurniture関数の実装
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FurnitureManagement : MonoBehaviour {
+public class FurnitureManagement : MonoBehaviour
+{
     public enum TransformMode { Translate, Rotate }; //(Translate = 移動モード，Rotate = 回転モード)
 
     private int target_number_ = -1; //クリックまたはドラッグされている家具グリッドをもったクラスのナンバー 何もクリックしていない場合-1(アクセス不可)
@@ -25,7 +28,7 @@ public class FurnitureManagement : MonoBehaviour {
     //インスタンス化されているFurnitureGridクラスを配列番号指定で取得
     public FurnitureGrid furniture_grid(int number)
     {
-        if(number > -1 && number < furniture_grid_.Count)
+        if (number > -1 && number < furniture_grid_.Count)
         {
             return furniture_grid_[number];
         }
@@ -35,9 +38,9 @@ public class FurnitureManagement : MonoBehaviour {
     //インスタンス化されているFurnitureGridクラスをオブジェクトネームで取得
     public FurnitureGrid furniture_grid(string name)
     {
-        for(int i = 0; i< furniture_grid_.Count; ++i)
+        for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if(furniture_grid_[i].furniture_grid().name == name)
+            if (furniture_grid_[i].furniture_grid().name == name)
             {
                 return furniture_grid_[i];
             }
@@ -71,10 +74,102 @@ public class FurnitureManagement : MonoBehaviour {
         return clicked_object;
     }
 
-    // コンストラクタの代わり?
-    private void Start ()
-    {   
+
+    //ここからインターフェースで呼び出されるであろう関数群***********************************************************************************************************************************************************
+
+    //移動モードに変更
+    public void ChangeTranslate()
+    {
+        mode_ = TransformMode.Translate;
+        Debug.Log("移動モード");
     }
+
+    //回転モードに変更
+    public void ChangeRotate()
+    {
+        mode_ = TransformMode.Rotate;
+        Debug.Log("回転モード");
+    }
+
+    //値を代入して家具グリッドを追加(基本的に外部で呼び出される)
+    public void AddFurniture(int grid_ID)
+    {
+        if (furniture_grid_.Count < 50)
+        {
+            object_number_ += 1;
+            string object_name = "furniture_grid_" + object_number_.ToString();
+
+            furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
+            furniture_grid_[furniture_grid_.Count - 1].Init(grid_ID, object_name);
+        }
+    }
+
+    //番号を指定して家具グリッドを削除
+    public void RemoveFurniture(int target_number)
+    {
+        if (target_number > -1 && target_number < furniture_grid_.Count)
+        {
+            Destroy(furniture_grid_[target_number].furniture_grid());
+            furniture_grid_.RemoveAt(target_number);
+        }
+    }
+
+    //家具グリッドのマウス操作(左クリックとドラッグ)
+    public void MouseOperation()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //どのグリッドをクリックしたか判定
+            GameObject clicked_object = ClickObject();
+            if (clicked_object != null)
+            {
+                for (int i = 0; i < furniture_grid_.Count; ++i)
+                {
+                    if (clicked_object.transform.root.gameObject == furniture_grid_[i].furniture_grid())
+                    {
+                        target_number_ = i;
+                    }
+                } //i
+            }
+
+            if (target_number_ > -1 && target_number_ < furniture_grid_.Count)
+            {
+                screen_point_ = Camera.main.WorldToScreenPoint(furniture_grid_[target_number_].furniture_grid().transform.position);
+                point_offset_ = furniture_grid_[target_number_].furniture_grid().transform.position
+                    - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screen_point_.z));
+                if (mode_ == TransformMode.Translate)
+                {
+                }
+                else if (mode_ == TransformMode.Rotate)
+                {
+                    furniture_grid_[target_number_].Rotate();
+                }
+            }
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            if (target_number_ > -1 && target_number_ < furniture_grid_.Count)
+            {
+                if (mode_ == TransformMode.Translate)
+                {
+                    Vector3 currentScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screen_point_.z);
+                    Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + point_offset_;
+                    furniture_grid_[target_number_].Translate(currentPosition);
+
+                } //mode_ == Mode.Translate
+                else if (mode_ == TransformMode.Rotate)
+                {
+                } //mode_ == Mode.Rotate
+            }
+        }
+        else
+        {
+            target_number_ = -1;
+        }
+    }
+
+
+    //ここまでインターフェースで呼び出されるであろう関数群***********************************************************************************************************************************************************
 
     // 1フレームごとに更新(マウス入力やキーボード入力をここで処理している)
     //
@@ -90,142 +185,65 @@ public class FurnitureManagement : MonoBehaviour {
     //家具グリッドを左クリックで家具90°回転
     //
     //家具グリッドを右クリックで家具グリッド削除
-    private void Update () {
-
-        if(Input.GetKeyDown(KeyCode.T))
+    private void Update()
+    {
+        //ここからそのうち削除する部分----------------------------------------------------------------------------------------------------------------------------------------------
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            mode_ = TransformMode.Translate;
-            Debug.Log("移動モード");
-        } //Input.GetKeyDown(KeyCode.T)
-        else if(Input.GetKeyDown(KeyCode.R))
+            ChangeTranslate();
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
         {
-            mode_ = TransformMode.Rotate;
-            Debug.Log("回転モード");
-        } //Input.GetKeyDown(KeyCode.R)
+            ChangeRotate();
+        }
 
-        if (furniture_grid_.Count < 50)
+
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            if (Input.GetKeyDown(KeyCode.Keypad0))
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(0, object_name);
-            } //Input.GetKeyDown(KeyCode.Keypad0)
-            else if (Input.GetKeyDown(KeyCode.Keypad1))
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(1, object_name);
-            } //Input.GetKeyDown(KeyCode.Keypad1)
-            else if (Input.GetKeyDown(KeyCode.Keypad2))
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(2, object_name);
-            } //Input.GetKeyDown(KeyCode.Keypad2)
-            else if (Input.GetKeyDown(KeyCode.Keypad3))
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(3, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad4)) //カーペット
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(4, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad5)) //壁掛け
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(5, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad6)) //ドア
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(6, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad7)) //天井
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(7, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad8)) //窓
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(8, object_name);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad9)) //ベッド
-            {
-                object_number_ += 1;
-                string object_name = "furniture_grid_" + object_number_.ToString();
-                furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-                furniture_grid_[furniture_grid_.Count - 1].Init(9, object_name);
-            }
-
-        } //furniture_grid_.Count < 50
-
-        if (Input.GetMouseButtonDown(0))
+            AddFurniture(0); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            //どのグリッドをクリックしたか判定
-            GameObject clicked_object = ClickObject();
-            if (clicked_object != null)
-            {
-                for (int i = 0; i < furniture_grid_.Count; ++i)
-                {
-                    if (clicked_object.transform.root.gameObject == furniture_grid_[i].furniture_grid())
-                    {
-                       target_number_ = i;
-                    }
-                } //i
-            } //clicked_object != null
-
-
-            if (target_number_ > -1 && target_number_ < furniture_grid_.Count)
-            {
-                screen_point_ = Camera.main.WorldToScreenPoint(furniture_grid_[target_number_].furniture_grid().transform.position);
-                point_offset_ = furniture_grid_[target_number_].furniture_grid().transform.position
-                    - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screen_point_.z));
-                if (mode_ == TransformMode.Translate)
-                {
-                } //(mode_ == Mode.Translate
-                else if (mode_ == TransformMode.Rotate)
-                {
-                    furniture_grid_[target_number_].Rotate();
-                } //(mode_ == Mode.Rotate
-            } //target_number_ > -1 && target_number_ < furniture_grid_.Count
-        } //Input.GetMouseButtonDown(0)
-        else if (Input.GetMouseButton(0))
+            AddFurniture(1); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            if (target_number_ > -1 && target_number_ < furniture_grid_.Count)
-            {
-                if (mode_ == TransformMode.Translate)
-                {
-                    Vector3 currentScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screen_point_.z);
-                    Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + point_offset_;
-                    furniture_grid_[target_number_].Translate(currentPosition);
+            AddFurniture(2); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            AddFurniture(3); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad4)) //カーペット
+        {
+            AddFurniture(4); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad5)) //壁掛け
+        {
+            AddFurniture(5); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad6)) //ドア
+        {
+            AddFurniture(6); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad7)) //天井
+        {
+            AddFurniture(7); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad8)) //窓
+        {
+            AddFurniture(8); //家具グリッド追加
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad9)) //ベッド
+        {
+            AddFurniture(9); //家具グリッド追加
+        }
+        //そのうち消す部分ここまで---------------------------------------------------------------------------------------------------------------------------------------
 
-                } //mode_ == Mode.Translate
-                else if (mode_ == TransformMode.Rotate)
-                {
-                } //mode_ == Mode.Rotate
-            } //target_number_ > -1 && target_number_ < furniture_grid_.Count
-        } //Input.GetMouseButton(0)
-        else if (Input.GetMouseButtonDown(1))
+       
+
+        if (Input.GetMouseButtonDown(1))
         {
             //どのグリッドをクリックしたか判定
             GameObject clicked_object = ClickObject();
@@ -240,16 +258,13 @@ public class FurnitureManagement : MonoBehaviour {
                 } //i
             } //clicked_object != null
 
+            RemoveFurniture(target_number_); //家具グリッド削除
 
-            if (target_number_ > -1 && target_number_ < furniture_grid_.Count)
-            {
-                Destroy(furniture_grid_[target_number_].furniture_grid() );
-                furniture_grid_.RemoveAt(target_number_);
-            } //target_number_ > -1 && target_number_ < furniture_grid_.Count
         } //GetMouseButtonDown(1)
         else
         {
-            target_number_ = -1;
+            MouseOperation(); //マウス操作(左クリックとドラッグ)
         }
+
     }// Update
 }

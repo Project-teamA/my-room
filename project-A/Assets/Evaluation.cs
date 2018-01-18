@@ -360,42 +360,42 @@ public partial class Evaluation : MonoBehaviour
         if (room_direction_ == Direction.North)
         {
             //北は水の気が強い
-            elements_water_ *= 2;
+            elements_water_ += 100;
         }
         else if (room_direction_ == Direction.NorthEast)
         {
             //北東は土の気が強い(山)
-            elements_earth_ *= 2;
+            elements_earth_ += 100;
         }
         else if (room_direction_ == Direction.East)
         {
             //東は木の気が強い(若木)
-            elements_wood_ *= 2;
+            elements_wood_ += 100;
         }
         else if (room_direction_ == Direction.SouthEast)
         {
             //南東は木の気が強い(大木)
-            elements_wood_ *= 2;
+            elements_wood_ += 100;
         }
         else if (room_direction_ == Direction.South)
         {
             //南は火の気が強い
-            elements_fire_ *= 2;
+            elements_fire_ += 100;
         }
         else if (room_direction_ == Direction.SouthWest)
         {
             //南西は土の気が強い
-            elements_earth_ *= 2;
+            elements_earth_ += 100;
         }
         else if (room_direction_ == Direction.West)
         {
             //西は金の気が強い
-            elements_metal_ *= 2;
+            elements_metal_ += 100;
         }
         else if (room_direction_ == Direction.NorthWest)
         {
             //北西は金の気が強い
-            elements_metal_ *= 2;
+            elements_metal_ += 100;
         }
         else
         {
@@ -419,61 +419,61 @@ public partial class Evaluation : MonoBehaviour
         //相生効果(木は火を生む)
         if(elements_wood_ > elements_fire_)
         {
-            fire_displacement += elements_fire_;
-            wood_displacement -= elements_fire_;
+            fire_displacement += elements_fire_/2;
+            wood_displacement -= elements_fire_/4;
         }
         else
         {
-            fire_displacement += elements_wood_;
-            wood_displacement -= elements_wood_;
+            fire_displacement += elements_wood_/2;
+            wood_displacement -= elements_wood_/4;
         }
 
         //相生効果(火は土を生む)
         if (elements_fire_ > elements_earth_)
         {
-            earth_displacement += elements_earth_;
-            fire_displacement -= elements_earth_;
+            earth_displacement += elements_earth_/2;
+            fire_displacement -= elements_earth_/4;
         }
         else
         {
-            earth_displacement += elements_fire_;
-            fire_displacement -= elements_fire_;
+            earth_displacement += elements_fire_/2;
+            fire_displacement -= elements_fire_/4;
         }
 
         //相生効果(土は金を生む)
         if (elements_earth_ > elements_metal_)
         {
-            metal_displacement += elements_metal_;
-            earth_displacement -= elements_metal_;
+            metal_displacement += elements_metal_/2;
+            earth_displacement -= elements_metal_/4;
         }
         else
         {
-            metal_displacement += elements_earth_;
-            earth_displacement -= elements_earth_;
+            metal_displacement += elements_earth_/2;
+            earth_displacement -= elements_earth_/4;
         }
 
         //相生効果(金は水を生む)
         if (elements_metal_ > elements_water_)
         {
-            water_displacement += elements_water_;
-            metal_displacement -= elements_water_;
+            water_displacement += elements_water_/2;
+            metal_displacement -= elements_water_/4;
         }
         else
         {
-            water_displacement += elements_metal_;
-            metal_displacement -= elements_metal_;
+            water_displacement += elements_metal_/2;
+            metal_displacement -= elements_metal_/4;
         }
 
         //相生効果(水は木を生む)
         if (elements_water_ > elements_wood_)
         {
-            wood_displacement += elements_wood_;
-            water_displacement -= elements_wood_;
+            wood_displacement += elements_wood_/2;
+            water_displacement -= elements_wood_/4;
         }
         else
         {
-            wood_displacement += elements_water_;
-            water_displacement -= elements_water_;
+            wood_displacement += elements_water_/2;
+            water_displacement -= elements_water_/4;
         }
 
         
@@ -481,61 +481,61 @@ public partial class Evaluation : MonoBehaviour
         //相克効果(木は土を消す)
         if (elements_wood_ > elements_earth_)
         {
-            earth_displacement -= elements_earth_;
-            wood_displacement -= elements_earth_ / 2; 
+            earth_displacement -= elements_earth_ /2;
+            wood_displacement -= elements_earth_ / 4; 
         }
         else
         {
-            earth_displacement -= elements_wood_;
-            wood_displacement -= elements_wood_ / 2;
+            earth_displacement -= elements_wood_ /2;
+            wood_displacement -= elements_wood_ / 4;
         }
 
         //相克効果(火は金を消す)
         if (elements_fire_ > elements_metal_)
         {
-            metal_displacement -= elements_metal_;
-            fire_displacement -= elements_metal_ / 2;
+            metal_displacement -= elements_metal_ /2;
+            fire_displacement -= elements_metal_ / 4;
         }
         else
         {
-            metal_displacement -= elements_fire_;
-            fire_displacement -= elements_fire_ / 2;
+            metal_displacement -= elements_fire_ /2;
+            fire_displacement -= elements_fire_ / 4;
         }
 
         //相克効果(土は水を消す)
         if (elements_earth_ > elements_water_)
         {
-            water_displacement -= elements_water_;
-            earth_displacement -= elements_water_ / 2;
+            water_displacement -= elements_water_ /2;
+            earth_displacement -= elements_water_ / 4;
         }
         else
         {
-            water_displacement -= elements_earth_;
-            earth_displacement -= elements_earth_ / 2;
+            water_displacement -= elements_earth_/2;
+            earth_displacement -= elements_earth_ / 4;
         }
 
         //相克効果(金は木を消す)
         if (elements_metal_ > elements_wood_)
         {
-            wood_displacement -= elements_wood_;
-            metal_displacement -= elements_wood_ / 2;
+            wood_displacement -= elements_wood_ /2;
+            metal_displacement -= elements_wood_ / 4;
         }
         else
         {
-            wood_displacement -= elements_metal_;
-            metal_displacement -= elements_metal_ / 2;
+            wood_displacement -= elements_metal_ /2;
+            metal_displacement -= elements_metal_ / 4;
         }
 
         //相克効果(水は火を消す)
         if (elements_water_ > elements_fire_)
         {
-            fire_displacement -= elements_fire_;
-            water_displacement -= elements_fire_ / 2;
+            fire_displacement -= elements_fire_/2;
+            water_displacement -= elements_fire_ / 4;
         }
         else
         {
-            fire_displacement -= elements_water_;
-            water_displacement -= elements_water_ / 2;
+            fire_displacement -= elements_water_/2;
+            water_displacement -= elements_water_ / 4;
         }
 
         elements_wood_ += wood_displacement;
@@ -756,64 +756,105 @@ public partial class Evaluation : MonoBehaviour
         if (room_direction_ == Direction.North)
         {
             //北は金運と恋愛運
-            economic_luck_ = energy_strength_ / 10;
-            love_luck_ = energy_strength_ / 10;
+            int buffer_water = elements_water_;
+            if(buffer_water > 200)
+            {
+                buffer_water = 200;
+            }
+            economic_luck_ += ( energy_strength_ + buffer_water )/ 10;
+            love_luck_ += ( energy_strength_ + buffer_water )/ 10;
+            
         }
         else if (room_direction_ == Direction.NorthEast)
         {
+            int buffer_earth = elements_earth_;
+            if(buffer_earth > 200)
+            {
+                buffer_earth = 200;
+            }
             //変化を司る方位なので陰陽バランスが悪いと，運気が悪くなる
             if(yin_yang_ >= -20 && yin_yang_ <= 200)
             {
                 //まんべんなく運気上がる
-                health_luck_ += energy_strength_ / 20;
-                economic_luck_ += energy_strength_ / 20;
-                love_luck_ += energy_strength_ / 20;
-                work_luck_ += energy_strength_ / 20;
-                popular_luck_ += energy_strength_ / 20;
+                health_luck_ += ( energy_strength_ + buffer_earth ) / 20;
+                economic_luck_ += ( energy_strength_ + buffer_earth )/ 20;
+                love_luck_ += ( energy_strength_ + buffer_earth )/ 20;
+                work_luck_ += ( energy_strength_ + buffer_earth )/ 20;
+                popular_luck_ += ( energy_strength_ + buffer_earth )/ 20;
             }
             else
             {
                 //まんべんなく運気が下がる
-                health_luck_ -= energy_strength_ / 40;
-                economic_luck_ -= energy_strength_ / 40;
-                love_luck_ -= energy_strength_ / 40;
-                work_luck_ -= energy_strength_ / 40;
-                popular_luck_ -= energy_strength_ / 40;
+                health_luck_ -= energy_strength_ + buffer_earth / 40;
+                economic_luck_ -= energy_strength_ + buffer_earth / 40;
+                love_luck_ -= energy_strength_ + buffer_earth/ 40;
+                work_luck_ -= energy_strength_ + buffer_earth/ 40;
+                popular_luck_ -= energy_strength_ + buffer_earth/ 40;
             }
         }
         else if (room_direction_ == Direction.East)
         {
             //東は仕事運
-            work_luck_ = energy_strength_ / 5;
+            int buffer_wood = elements_wood_;
+            if(buffer_wood > 200)
+            {
+                buffer_wood = 200;
+            }
+            work_luck_ += (energy_strength_ + buffer_wood)/ 5;
         }
         else if (room_direction_ == Direction.SouthEast)
         {
             //南東は恋愛運
-            love_luck_ = energy_strength_ / 5;
+            int buffer_wood = elements_wood_;
+            if(buffer_wood > 200)
+            {
+                buffer_wood = 200;
+            }
+            love_luck_ += (energy_strength_ + buffer_wood) / 5;
         }
         else if (room_direction_ == Direction.South)
         {
             //南は人気運と健康運
-            health_luck_ = energy_strength_ / 10;
-            popular_luck_ = energy_strength_ / 10;
+            int buffer_fire = elements_fire_;
+            if(buffer_fire > 200)
+            {
+                buffer_fire = 200;
+            }
+            health_luck_ += ( energy_strength_ + buffer_fire ) / 10;
+            popular_luck_ += ( energy_strength_ + buffer_fire )/ 10;
         }
         else if (room_direction_ == Direction.SouthWest)
         {
             //南西は健康運と仕事運
-            health_luck_ = energy_strength_ / 10;
-            work_luck_ = energy_strength_ / 10;
+            int buffer_earth = elements_earth_;
+            if(buffer_earth > 200)
+            {
+                buffer_earth = 200;
+            }
+            health_luck_ += ( energy_strength_ + buffer_earth ) / 10;
+            work_luck_ += ( energy_strength_ + buffer_earth ) / 10;
         }
         else if (room_direction_ == Direction.West)
         {
             //西は金運と恋愛運
-            economic_luck_ = energy_strength_ / 10;
-            love_luck_ = energy_strength_ / 10;
+            int buffer_metal = elements_metal_;
+            if(buffer_metal > 200)
+            {
+                buffer_metal = 200;
+            }
+            economic_luck_ += ( energy_strength_ + buffer_metal )/ 10;
+            love_luck_ += ( energy_strength_ + buffer_metal )/ 10;
         }
         else if (room_direction_ == Direction.NorthWest)
         {
             //北西は金運と仕事運
-            economic_luck_ = energy_strength_ / 10;
-            work_luck_ = energy_strength_ / 10;
+            int buffer_metal = elements_metal_;
+            if (buffer_metal > 200)
+            {
+                buffer_metal = 200;
+            }
+            economic_luck_ += (energy_strength_ + 200) / 10;
+            work_luck_ += (energy_strength_ + 200) / 10;
         }
         else
         {
@@ -872,5 +913,7 @@ public partial class Evaluation : MonoBehaviour
         }
     }
 
+
+    partial void EvaluationTotaTestDummy();
     partial void Comment(int comment_ID);
 }
