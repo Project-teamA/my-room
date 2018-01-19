@@ -3,7 +3,21 @@
 //
 //8個ほど同じ位置に重なると処理がかなり重い
 //
-// 2017年12月12日 更新(菅原涼太)
+// 2018年1月17日 仕様変更の検討(菅原涼太)
+// 家具を乗せれる家具は家具右クリック→プロパティで実現(乗せれる家具はあらかじめ確定)
+// 消したいときも乗せている家具グリッドを右クリック→プロパティで削除
+// 乗せた家具乗せられた家具は一つの家具とみなされる．(家具を数えるときは乗っている家具をすっ飛ばす．運勢評価のときは乗っている家具も数える)
+// 乗せる家具と乗る家具の移動は完全同期
+//
+// 窓の家具グリッド，ドアの家具グリッドは(家具を数えるときはすっ飛ばす, 運勢評価のときは数える)
+//
+// 新たに追加する家具グリッド
+// 床・・・床全体の模様が変わる効果．一番下，そもそも動かせないしグリッドももたない(もつのはテクスチャのみ)，運勢評価時には数えるが，家具の数を数えるときは飛ばす．(どう森と一緒)
+// 壁紙・・・壁全体の模様が変わる効果, そもそも動かせないしグリッドももたない(もつのはテクスチャのみ)，運勢評価時には数えるが，家具の数を数えるときは飛ばす．(どう森と一緒)
+//
+// エラー判定
+// 家具グリッドがはみ出してしまう
+// カーペット系，天井につるす照明系の家具以外は基本全て重なってはダメ．(上に乗せれる乗せれない判定は大体削除対象)
 
 using System.Collections;
 using System.Collections.Generic;
@@ -15,11 +29,12 @@ public class GridError : MonoBehaviour {
     private Bounds[] bounds_;
     private List<GameObject> collision_objects_ = new List<GameObject>(); //衝突しているオブジェクト
     private List<GameObject> error_objects_ = new List<GameObject>(); //エラーの元になっているオブジェクト 
+    private string error_comment_ = ""; //エラーコメント保存用
 
     //他の家具グリッドにぶつかっているとき
     void OnTriggerStay(Collider collider)
     {
-        if ( (((((collider.gameObject.tag == "furniture_grid_base" || collider.gameObject.tag == "furniture_grid")
+        if ( ((((collider.gameObject.tag == "furniture_grid"
             || collider.gameObject.tag == "furniture_grid_rugs")
             || collider.gameObject.tag == "furniture_grid_wall")
             || collider.gameObject.tag == "furniture_grid_door")
@@ -41,69 +56,10 @@ public class GridError : MonoBehaviour {
                 collision_objects_.Add(collider.gameObject);
             }
            
-
             int my_child_number = transform.childCount; //自分の子オブジェクトの数
             int opponent_child_number = collider.gameObject.transform.childCount; //相手の子オブジェクトの数
-            Vector3[] my_vertices = new Vector3[my_child_number * 4]; //自分の頂点
-            Vector3[] opponent_vertices = new Vector3[opponent_child_number * 4]; //相手の頂点
-            bool[] put_flag = Enumerable.Repeat<bool>(false, my_vertices.Length).ToArray(); //自分が乗っているか
-            bool[] placed_flag = Enumerable.Repeat<bool>(false, opponent_vertices.Length).ToArray(); //自分が乗せているか
-            for (int j = 0; j < my_child_number; ++j )
-            {
-                for(int i = 0; i< 4; ++i)
-                {
-                    int in_count = 0;
-                    my_vertices[j * 4 + i] = transform.rotation * transform.GetChild(j).GetComponent<MeshFilter>().mesh.vertices[i] + transform.position;
-                    for(int k = 0; k < opponent_child_number; ++k)
-                    {
-                      if (collider.gameObject.transform.GetChild(k).tag == "canput_quad" &&
-                      collider.gameObject.GetComponents<BoxCollider>()[k].bounds.Contains(my_vertices[j * 4 + i]) == true)
-                        {
-                            ++in_count;
-                        } // collider.gameObject.GetComponents<BoxCollider>()[k].bounds.Contains(my_vertices[j * 4 + i]) == true
-                    } //k
+           
 
-                    if(in_count > 0)
-                    {
-                        put_flag[j * 4 + i] = true;
-                    } //in_count > 0
-                    else
-                    {
-                        put_flag[j * 4 + i] = false;
-                    } //in_count < 0
-
-                } //j
-
-            } //i
-
-            for (int j = 0; j < opponent_child_number; ++j)
-            {
-                for (int i = 0; i < 4; ++i)
-                {
-                    int in_count = 0;
-                    opponent_vertices[j * 4 + i] = collider.gameObject.transform.rotation * collider.gameObject.transform.GetChild(j).GetComponent<MeshFilter>().mesh.vertices[i] + collider.gameObject.transform.position;
-                    for (int k = 0; k < my_child_number; ++k)
-                    {
-                     if(transform.GetChild(k).tag == "canput_quad" &&
-                      GetComponents<BoxCollider>()[k].bounds.Contains(opponent_vertices[j * 4 + i]) == true)
-                        {
-                            ++in_count;
-                        } //GetComponents<BoxCollider>()[k].bounds.Contains(opponent_vertices[j * 4 + i]) == true
-
-                    } //k
-
-                    if (in_count > 0)
-                    {
-                        placed_flag[j * 4 + i] = true;
-                    } //in_count > 0
-                    else
-                    {
-                        placed_flag[j * 4 + i] = false;
-                    } //in_count < 0
-
-                } //j
-
-            } //i
 
             //true = エラー, false = ok
             bool error_flag = false;
@@ -116,185 +72,63 @@ public class GridError : MonoBehaviour {
                || transform.tag == "furniture_grid_door" )
                || transform.tag == "furniture_grid_window")
             {
+                //壁掛け，ドア，窓は詳しく決めていない
+                //詳しく決めていない
 
             }
-            else if ((collider.transform.tag == "furniture_grid_wall"
-               || collider.transform.tag == "furniture_grid_door")
-               || collider.transform.tag == "furniture_grid_window")
+            else if (transform.tag == "furniture_grid_rugs" ) //自分が敷物の場合
             {
-
-            }
-            else if(((put_flag.All(i => i == true) == false && placed_flag.All(i => i == true) == false))) //どっちもずれている場合
-            {
-                if((transform.tag == "furniture_grid_rugs" ^ collider.transform.tag == "furniture_grid_rugs"))
+                if(collider.transform.tag == "furniture_grid_rugs")
                 {
-                    error_flag = false;
-                    if (transform.tag == "furniture_grid_rugs")
-                    {
-                        up_down = 1;
-                    }
-                    else
-                    {
-                        up_down = 2;
-                    }
-                }
-                else if ((transform.tag == "furniture_grid_ceil" ^ collider.transform.tag == "furniture_grid_ceil"))
-                {
-                    error_flag = false;
-                    if (transform.tag == "furniture_grid_ceil")
-                    {
-                        up_down = 2;
-                    }
-                    else
-                    {
-                        up_down = 1;
-                    }
-                }
-                else if((transform.tag == "furniture_grid_wall" ^ collider.transform.tag == "furniture_grid_wall"))
-                {
-                    error_flag = false;
-                    if(transform.tag == "furniture_grid_wall")
-                    {
-                        if (collider.transform.tag == "furniture_grid_door")
-                        {
-                            error_flag = false; //壁掛けドアとは重なってもよい
-                        }
-                        else if(collider.transform.tag == "furniture_grid_window")
-                        {
-                            error_flag = false; //壁掛け窓は高さによる
-                        }
-                        else
-                        {
-                            error_flag = false; //壁掛けと家具との重なりは高さによる
-                        }
-                        up_down = 2; //これも高さによる
-                    }
-                    else
-                    {
-                        if (transform.tag == "furniture_grid_door")
-                        {
-                            error_flag = false; //壁掛けドアとは重なってもよい
-                        }
-                        else if(transform.tag == "furniture_grid_window")
-                        {
-                            error_flag = false; //壁掛け窓は高さによる
-                        }
-                        else
-                        {
-                            error_flag = false; //高さによる
-                        }
-                        up_down = 1; //これも高さによる
-                    }
-                }
-                else if((transform.tag == "furniture_grid_wall" && collider.transform.tag == "furniture_grid_wall"))
-                {
-                    error_flag = false; //壁掛け同士高さで評価して完全にずれていればfalse
-                    up_down = 1;//(高さによる)
+                    //相手が敷物ならばエラー
+                    error_flag = true;
+                    error_comment_ = "敷物同士は重ねることができません";
                 }
                 else
                 {
-                    error_flag = true; //エラー
-                }
-            }
-            else if (put_flag.All(i => i == true) == true) //自分が乗っているかどうか
-            {
-                if(transform.tag == "furniture_grid_rugs")
-                {
-                    if(collider.transform.tag == "furniture_grid_rugs")
-                    {
-                        error_flag = true; //敷物が敷物に乗っているのはエラー
-                    }
-                    else
-                    {
-                        error_flag = false; //敷物と敷物以外はOK(敷物下)
-                        up_down = 1;
-                    }
-                }
-                else if(transform.tag == "furniture_grid_ceil")
-                {
-                    if (collider.transform.tag == "furniture_grid_ceil")
-                    {
-                        error_flag = true; //天井掛けと天井掛けが重なっているのはエラー
-                    }
-                    else
-                    {
-                        error_flag = false; //天井掛けと天井掛け以外はOK
-                        up_down = 2;
-                    }
-                }
-                else if (transform.tag == "furniture_grid_base")
-                {
-                    if(collider.transform.tag == "furniture_grid_rugs")
-                    {
-                        error_flag = false; //下にしか置けない家具グリッドと敷物はOK(敷物が下)
-                        up_down = 2;
-                    }
-                    else if(collider.transform.tag == "furniture_grid_ceil")
-                    {
-                        error_flag = false; //下にしか置けない家具グリッドと天井掛けは高さによる(家具グリッドが下)
-                        up_down = 1;
-                    }
-                    else
-                    {
-                        error_flag = true; //下にしか置けない家具を家具の上に置けない
-                    } 
-                }
-                else
-                {
-                    error_flag = false; //その他の家具は高さによる(自分は上に行く)
-                    up_down = 2; 
-                }
-
-            } //put_flag.All(i => i == true) == true && transform.tag == "furniture_grid"
-            else if (placed_flag.All(i => i == true) == true) //自分が乗せているかどうか
-            {
-                if (transform.tag == "furniture_grid_rugs")
-                {
-                    if (collider.transform.tag == "furniture_grid_rugs")
-                    {
-                        error_flag = true; //敷物が敷物に乗っているのはエラー
-                    }
-                    else
-                    {
-                        error_flag = false; //敷物と敷物以外はOK(敷物下)
-                        up_down = 1;
-                    }
-                }
-                else if (transform.tag == "furniture_grid_ceil")
-                {
-                    if (collider.transform.tag == "furniture_grid_ceil")
-                    {
-                        error_flag = true; //天井掛けと天井掛けが重なっているのはエラー
-                    }
-                    else
-                    {
-                        error_flag = false; //天井掛けと天井掛け以外はOK
-                        up_down = 2;
-                    }
-                }
-                else if(collider.transform.tag == "furniture_grid_base")
-                {
-                    if(transform.tag == "furniture_grid_rugs")
-                    {
-                        error_flag = false; //下にしか置けない家具グリッドと敷物はOK(敷物が下)
-                        up_down = 1;
-                    }
-                    else if(transform.tag == "furniture_grid_ceil")
-                    {
-                        error_flag = false; //下にしか置けない家具グリッドと天井掛けは高さによる(家具グリッドが下)
-                        up_down = 2;
-                    }
-                    else
-                    {
-                        error_flag = true; //下にしか置けない家具グリッドが上にあるのはダメ
-                    }
-                }
-                else
-                {
-                    error_flag = false; //その他の家具は高さによる(自分は下に行く)
+                    //相手が敷物でなければOK(自分が下になる)
+                    error_flag = false;
                     up_down = 1;
                 }
-            } //placed_flag.All(i => i == true) == true
+            }
+            else if (transform.tag == "furniture_grid_ceil") //自分が天井なら
+            {
+                if(collider.transform.tag == "furniture_grid_ceil")
+                {
+                    //相手が天井ならばエラー
+                    error_flag = true;
+                    error_comment_ = "天井掛け同士は重ねることができません";
+                }
+                else
+                {
+                    //相手が天井以外ならOK(自分が上になる)
+                    error_flag = false;
+                    up_down = 2;
+                }
+            }
+            else if(transform.tag == "furniture_grid") //自分が普通の家具なら
+            {
+                if(collider.transform.tag == "furniture_grid")
+                {
+                    //あいてが普通の家具ならエラー
+                    error_flag = true;
+                    error_comment_ = "普通の家具同士は重ねることができません";
+                }
+                else if(collider.transform.tag == "furniture_grid_rugs")
+                {
+                    //あいてが敷物ならOK(自分が上になる)
+                    error_flag = false;
+                    up_down = 2;
+                }
+                else if(collider.transform.tag == "furniture_grid_rugs")
+                {
+                    //相手が天井掛けならOK(自分が下になる)
+                    error_flag = false;
+                    up_down = 1;
+                }
+            }
+
+
 
             if(error_flag == false)
             {
@@ -311,17 +145,9 @@ public class GridError : MonoBehaviour {
                 {
                     for (int i = 0; i < transform.childCount; ++i)
                     {
-
-                        if (transform.GetChild(i).tag == "canput_quad")
-                        {
-                            transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(0, 255, 255);
-                        } //transform.GetChild(i).tag == "canput_quad"
-                        else
-                        {
-                            transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-                        } //transform.GetChild(i).tag != "canput_quad"
-
+                        transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
                     } //i
+                    error_comment_ = "";
                 }
 
                 if(up_down == 1)
@@ -394,7 +220,7 @@ public class GridError : MonoBehaviour {
 
     void OnTriggerExit(Collider collider)
     {
-        if ((((((collider.gameObject.tag == "furniture_grid_base" || collider.gameObject.tag == "furniture_grid")
+        if (((((collider.gameObject.tag == "furniture_grid"
            || collider.gameObject.tag == "furniture_grid_rugs")
            || collider.gameObject.tag == "furniture_grid_wall")
            || collider.gameObject.tag == "furniture_grid_door")
@@ -461,23 +287,19 @@ public class GridError : MonoBehaviour {
         {
             for (int i = 0; i < transform.childCount; ++i)
             {
-
-                if (transform.GetChild(i).tag == "canput_quad")
-                {
-                    transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(0, 255, 255);
-                } //transform.GetChild(i).tag == "canput_quad"
-                else
-                {
-                    transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
-                } //transform.GetChild(i).tag != "canput_quad"
-
+                transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
             } //i
-
+            error_comment_ = "";
             Vector3 buffer_position = transform.position;
             buffer_position.z = 0F;
             transform.position = buffer_position;
 
         } //off_trigger_stay_ == true
+
+        if(error_comment_ != "")
+        {
+            Debug.Log(error_comment_);
+        }
 
     } //Update()
 

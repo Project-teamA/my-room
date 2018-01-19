@@ -11,7 +11,7 @@ public partial class FurnitureGrid : MonoBehaviour
         switch (grid_ID)
         {
             case 0:
-                object_type_ = ObjectType.NotPlaced;
+                object_type_ = ObjectType.Normal;
                 children_number_ = 2;
                 center_point_ = new int[2] { 5, 2 }; //中心のグリッド座標
                                                      //使用する頂点グリッド
@@ -26,13 +26,12 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[2] { QuadType.CanPut, QuadType.NotPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 triangles[1] = new int[4] { 2, 3, 4, 5 }; //上に置けない
                 break;
 
             case 1:
-                object_type_ = ObjectType.NotPlaced;
+                object_type_ = ObjectType.Normal;
                 children_number_ = 5;
                 center_point_ = new int[2] { 4, 3 }; //中心のグリッド座標
                 //使用する頂点グリッド
@@ -55,7 +54,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[5] { QuadType.CanPut, QuadType.CanPut, QuadType.NotPut, QuadType.CanPut, QuadType.CanPut };
                 triangles[0] = new int[4] { 0, 1, 2, 4 }; //上における1
                 triangles[1] = new int[4] { 3, 4, 5, 6 }; //上における1
                 triangles[2] = new int[4] { 5, 6, 7, 8 }; //上におけない
@@ -64,7 +62,7 @@ public partial class FurnitureGrid : MonoBehaviour
                 break;
 
             case 2:
-                object_type_ = ObjectType.CanPlaced;
+                object_type_ = ObjectType.Normal;
                 children_number_ = 1;
                 center_point_ = new int[2] { 2, 1 }; //中心のグリッド座標
                 //使用する頂点グリッド
@@ -77,12 +75,11 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.CanPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
 
             case 3:
-                object_type_ = ObjectType.CanPlaced;
+                object_type_ = ObjectType.Normal;
                 children_number_ = 2;
                 center_point_ = new int[2] { 2, 1 }; //中心のグリッド座標
                 //使用する頂点グリッド
@@ -98,7 +95,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[2] { QuadType.CanPut, QuadType.NotPut };
                 triangles[0] = new int[4] { 0, 1, 5, 6 }; //上における
                 triangles[1] = new int[4] { 1, 2, 3, 4 }; //上におけない
                 break;
@@ -117,7 +113,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.CanPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
 
@@ -135,7 +130,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.CanPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
 
@@ -153,7 +147,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.NotPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
 
@@ -171,7 +164,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.NotPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
 
@@ -189,7 +181,6 @@ public partial class FurnitureGrid : MonoBehaviour
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
                 triangles = new int[children_number_][];
-                quad_type_ = new QuadType[1] { QuadType.NotPut };
                 triangles[0] = new int[4] { 0, 1, 2, 3 }; //上における
                 break;
         }
