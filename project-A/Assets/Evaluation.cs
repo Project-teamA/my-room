@@ -5,6 +5,10 @@
 //②次にUpdateGrid,またはDeleteGridで家具グリッドの更新
 //③その後EvaluationTotalで運勢評価
 //②に戻る
+//
+//2018年1月21日
+//五行陰陽評価ラスト関数 EvaluationLast() 追加
+//運勢評価ラスト関数 FortuneLast() 追加
 
 using System.Collections;
 using System.Collections.Generic;
@@ -204,6 +208,7 @@ public partial class Evaluation : MonoBehaviour
         EvaluationRoom(); //部屋の種類による五行陰陽評価関数(部屋の)
         EvaluationDirection(); //方位五行陰陽評価関数(部屋の)
         EvaluationFiveElements(); //五行による相生効果と相克効果
+        EvaluationeLast();
 
         //ここから五行の気の強さの加算
         if(elements_wood_ > 200)
@@ -252,6 +257,8 @@ public partial class Evaluation : MonoBehaviour
         }
         //ここまで五行の気の強さの加算
 
+
+
         for(int i = 0; i < furniture_grid_.Count; ++i)
         {
             FortuneItem(furniture_grid_[i]); //アイテムによる運勢補正
@@ -274,6 +281,8 @@ public partial class Evaluation : MonoBehaviour
             love_luck_ -= (yin_yang_ - 200);
             work_luck_ -= (yin_yang_ - 200);
         }
+
+        FortuneLast();
 
         all_luck_ = health_luck_ + economic_luck_ + love_luck_ + work_luck_ + popular_luck_;
     }
@@ -578,6 +587,37 @@ public partial class Evaluation : MonoBehaviour
 
     //**************************************************************************************************************************************************************************************************
 
+    //仕上げの五行陰陽補正(観葉植物による陰陽中和など)
+    //
+    //ここでは五行陰陽に対し加算ではなく乗算による補正が行われる
+    private void EvaluationeLast()
+    {
+        int wood_displacement = 0; //木の気変化量
+        int fire_displacement = 0; //火の気変化量
+        int earth_displacement = 0; //土の気変化量
+        int metal_displacement = 0; //金の気変化量
+        int water_displacement = 0; //水の気変化量
+        int yin_yang_displacement = 0; //陰陽の気変化量
+
+        //ここから使用例(それぞれ1.2倍の場合)
+        //wood_displacement += elements_wood_ /5;
+        //fire_displacement += elements_fire_ / 5;
+        //earth_displacement += elements_earth_ / 5;
+        //metal_displacement += elements_metal_ / 5;
+        //water_displacement += elements_water_ / 5;
+        //yin_yang_displacement += yin_yang_ / 5;
+
+        //最後に元の五行陰陽に補正を加算
+        elements_wood_ += wood_displacement;
+        elements_fire_ += fire_displacement;
+        elements_earth_ += earth_displacement;
+        elements_metal_ += metal_displacement;
+        elements_water_ += water_displacement;
+        yin_yang_ += yin_yang_displacement;
+    }
+    
+    //**************************************************************************************************************************************************************************************************
+
     //アイテムによる運勢補正
     private void FortuneItem(FurnitureGrid furniture_grid)
     {
@@ -587,22 +627,22 @@ public partial class Evaluation : MonoBehaviour
             if (furniture_grid.up_direction() == Vector3.up)
             {
                 //ベッドが北枕(1番良い, 安眠できる)
-                health_luck_ += 50;
+                health_luck_ += 30;
             }
             else if (furniture_grid.up_direction() == Vector3.down)
             {
                 //ベッドが南枕(1番ダメ, 安眠出来ない)
-                health_luck_ -= 50;
+                health_luck_ -= 30;
             }
             else if (furniture_grid.up_direction() == Vector3.right)
             {
                 //ベッドが東枕(2番目に良い)
-                health_luck_ += 30;
+                health_luck_ += 20;
             }
             else if (furniture_grid.up_direction() == Vector3.left)
             {
                 //ベッドが西枕(2番目に良くない)
-                health_luck_ -= 30;
+                health_luck_ -= 20;
             }
 
             //シングルベッドをつなげるとダメ
@@ -913,6 +953,33 @@ public partial class Evaluation : MonoBehaviour
         }
     }
 
+    //***********************************************************************************************************************************************************************************************
+
+    //仕上げの運勢補正(鏡による運勢増減など)
+    //
+    //ここでは運勢に対し加算ではなく乗算による補正が行われる
+    private void FortuneLast()
+    {
+        int work_displacement = 0;
+        int popular_displacement = 0;
+        int health_displacement = 0;
+        int economic_displacement = 0;
+        int love_displacement = 0;
+
+        //ここから使用例(それぞれ0.8倍の場合)
+        //work_displacement -= work_luck_/5;
+        //popular_displacement -= popular_luck_/5;
+        //health_displacement -= health_luck_/5;
+        //economic_displacement -= economic_luck_/5;
+        //love_displacement -= love_luck_/5;
+
+        //最後に元の運勢に補正を加算
+        work_luck_ += work_displacement;
+        popular_luck_ += popular_displacement;
+        health_luck_ += health_displacement;
+        economic_luck_ += economic_displacement;
+        love_luck_ += love_displacement;
+    }
 
     partial void EvaluationTotaTestDummy();
     partial void Comment(int comment_ID);

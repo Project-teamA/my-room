@@ -1,8 +1,10 @@
 ﻿//FurnitureGrid.cs(家具グリッド用クラス)
 //
-// 2017年1月17日以降変更した箇所(菅原涼太)
+// 2018年1月17日以降変更した箇所(菅原涼太)
 // FurnitureTypeにTable(テーブル追加)
 // 家具の部屋ない方角位置の書き込み関数を追加
+//
+// 2018年1月21日以降更新した箇所(菅原涼太)
 //
 
 using System.Collections;
@@ -15,7 +17,7 @@ using UnityEngine.EventSystems; //
 //また，エラーフラグはオブジェクトの色で判断すること
 //オブジェクトの重なりの順番はobjectのz位置で判断(z値が小さいほど上に載っている判定)
 //オブジェクトのエラー判定はオブジェクトの色で判断すること
-//
+//家具の色，ColorNameに 温かみのある色=Warmを追加
 
 
 public partial class FurnitureGrid : MonoBehaviour
@@ -35,8 +37,8 @@ public partial class FurnitureGrid : MonoBehaviour
         ConsumerElectronics, Dresser, Illumination, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Bureau ,Otherwise};
 
     //カラー
-    //白，黒，灰，赤，ピンク，青，オレンジ，黄色，緑，ベージュ，クリーム，茶，金，銀，紫, その他
-    public enum ColorName { White, Black, Gray, Red, Pink, Blue, Orange, Yellow, Green, Beige, Cream, Brown, Gold, Silver, Purple, Othrewise};
+    //白，黒，灰，赤，ピンク，青，オレンジ，黄色，緑，ベージュ，クリーム，茶，金，銀，紫, 温かみのある色，その他
+    public enum ColorName { White, Black, Gray, Red, Pink, Blue, Orange, Yellow, Green, Beige, Cream, Brown, Gold, Silver, Purple, Warm, Othrewise};
 
     //材質
     //木製，天然素材，化学素材，プラスチック，陶磁器，大理石，金属，鉱物, ガラス，水, その他
@@ -53,8 +55,8 @@ public partial class FurnitureGrid : MonoBehaviour
     public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Sharp,Othrewise};
 
     //その他特性
-    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，その他(特性なし)
-    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Otherwise};
+    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，その他(特性なし)
+    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Otherwise};
 
 
 
