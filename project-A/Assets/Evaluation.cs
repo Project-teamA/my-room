@@ -39,12 +39,13 @@ public partial class Evaluation : MonoBehaviour
 
     private int all_luck_ = 0; //総合運
 
-    private string comment_ = "あなたの部屋の評価\n"; //コメント
-
     private Room room_role_; //部屋の種類
     private Direction room_direction_; //部屋の方角
 
     private List<FurnitureGrid> furniture_grid_ = new List<FurnitureGrid>(); //FurnitureGrid.csで実装されているクラスのリスト(最大50)
+
+    private List<int> comment_flag_ = new List<int>(); //コメントフラグ ( comment_flag_.add()でコメントフラグ追加 )
+    private string comment_ = "あなたの部屋の評価\n"; //コメント ( コメントフラグに応じていくつかのコメントを出力 )
 
     //*******************************************************************************************************************************************************************************************
 

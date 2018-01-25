@@ -17,7 +17,7 @@ using UnityEngine.EventSystems; //
 //また，エラーフラグはオブジェクトの色で判断すること
 //オブジェクトの重なりの順番はobjectのz位置で判断(z値が小さいほど上に載っている判定)
 //オブジェクトのエラー判定はオブジェクトの色で判断すること
-//家具の色，ColorNameに 温かみのある色=Warmを追加
+//家具の色，ColorNameに 温かみのある色=Warm, 花関連 = flowerを追加
 
 
 public partial class FurnitureGrid : MonoBehaviour
@@ -55,8 +55,8 @@ public partial class FurnitureGrid : MonoBehaviour
     public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Sharp,Othrewise};
 
     //その他特性
-    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，その他(特性なし)
-    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Otherwise};
+    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，花関連,その他(特性なし)
+    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Otherwise};
 
 
 
@@ -294,7 +294,7 @@ public partial class FurnitureGrid : MonoBehaviour
         else if (grid_ID == 9) //該当するのはベッド
         {
             furniture_type_ = FurnitureType.Bed;
-            parameta_ = new float[2];
+            parameta_ = new float[6];
             GetGridDataBed(grid_ID);
         }
         else if (grid_ID == 10) //該当するのはソファ

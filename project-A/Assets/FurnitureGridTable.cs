@@ -42,8 +42,8 @@ public partial class FurnitureGrid : MonoBehaviour
             case 12:
                 object_type_ = ObjectType.Normal;
                 children_number_ = 1;
-                center_point_ = new int[2] { 2, 5 }; //中心のグリッド座標
-                put_point_ = new int[2] { 2, 5 }; //上に乗る家具の中心が合わせる座標
+                center_point_ = new int[2] { 5, 2 }; //中心のグリッド座標
+                put_point_ = new int[2] { 5, 2 }; //上に乗る家具の中心が合わせる座標
                 //使用する頂点グリッド
                 vertices_number_ = 4;
                 grid_point_ = new int[vertices_number_][];
