@@ -1,4 +1,12 @@
 ﻿//このファイルはEvaluationの分割ファイルであり評価の際のコメントを呼び出す関数である
+//
+//
+// comment_flag_とflag_weight_を参照にして
+// comment_とcomment_weight_を設定する
+// comment_weight_がより高い5つの文が表示される. 
+//
+// 基本的には風水コメントその2の条件をもとにコメントを出力する
+
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6,43 +14,87 @@ using UnityEngine;
 
 public partial class Evaluation : MonoBehaviour
 {
-
-	partial void Comment(int comment_ID)
+    //ほんの一例だけ(中途半端)
+	partial void Comment()
     {
-        switch (comment_ID)
+        if(comment_flag_.Contains(CommentFlag.WeakWork))
         {
-            case 0:
-                comment_ += "木の気が多すぎます\n";
-                break;
-            case 1:
-                comment_ += "火の気が多すぎます\n";
-                break;
-            case 2:
-                comment_ += "土の気が多すぎます\n";
-                break;
-            case 3:
-                comment_ += "金の気が多すぎます\n";
-                break;
-            case 4:
-                comment_ += "水の気が多すぎます\n";
-                break;
-            case 5:
-                comment_ += "木の気が多すぎます\n";
-                break;
-            case 6:
-                comment_ += "火の気が多すぎます\n";
-                break;
-            case 7:
-                comment_ += "土の気が多すぎます\n";
-                break;
-            case 8:
-                comment_ += "金の気が多すぎます\n";
-                break;
-            case 9:
-                comment_ += "水の気が多すぎます\n";
-                break;
-            default:
-                break;
+           if(comment_flag_.Contains(CommentFlag.WeakWood))
+            {
+                comment_.Add("木の気が弱すぎて仕事運が上がっていません");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.WeakFire))
+            {
+                comment_.Add("火の気が弱すぎて仕事運が上がっていません");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.WeakEarth))
+            {
+                comment_.Add("土の気が弱すぎて仕事運が上がっていません");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.WeakWater))
+            {
+                comment_.Add("水の気が弱すぎて仕事運が上がっていません");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.OverWood))
+            {
+                comment_.Add("木の気が強すぎて仕事運に悪影響を及ぼしています");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.OverFire))
+            {
+                comment_.Add("火の気が強すぎて仕事運に悪影響を及ぼしています");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+            if (comment_flag_.Contains(CommentFlag.OverYang))
+            {
+                comment_.Add("陽気がつよすぎて仕事運に悪影響を及ぼしています");
+
+                //flag_weight_利用してcomment_weightを設定
+                comment_weight_.Add(1);
+            }
+
+        }
+
+        if (comment_flag_.Contains(CommentFlag.WeakPopular))
+        {
+          
+        }
+
+        if (comment_flag_.Contains(CommentFlag.WeakHealth))
+        {
+
+        }
+
+        if (comment_flag_.Contains(CommentFlag.WeakEconomic))
+        {
+
+        }
+
+        if (comment_flag_.Contains(CommentFlag.WeakWork))
+        {
+
         }
     }
 }

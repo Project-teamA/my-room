@@ -6,9 +6,20 @@
 //③その後EvaluationTotalで運勢評価
 //②に戻る
 //
+//
+//
 //2018年1月21日
 //五行陰陽評価ラスト関数 EvaluationLast() 追加
 //運勢評価ラスト関数 FortuneLast() 追加
+//コメントの型をList<string>に変更し,優先度の高いコメントを出力させる
+//
+//ノルマ変数を追加
+//ノルマ入力関数を追加
+//
+//とりあえずコメントはこのようにして出力させますという方針をプログラム内に記述
+//comment_flag_とflag_weight_を利用
+//comment_flag_のenumの名前によってflag_weight_の利用の仕方が異なる(例えばWeakWoodのweightがOverWoodのweightより小さい場合であっても処理ルートが違うため，WeakWoodのフラグをつかったコメントが優先的に呼び出されることもある)
+//同族同士のcomment_flagは基本的にweightが大きい方が優先
 
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +29,18 @@ public partial class Evaluation : MonoBehaviour
 {
     public enum Room { Entrance, Living, kitchen, Workroom, Bedroom, Bathroom, Toilet };
     public enum Direction { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest };
+
+    //コメントのフラグ(列挙型)
+    //基本的にボーナス点，ペナルティ点が呼び出されたら必ずコメントフラグが呼び出される．
+    public enum CommentFlag
+    {
+        WeakWood, WeakFire, WeakEarth, WeakMetal, WeakWater, WeakEnergy, //気が弱い
+        OverWood, OverFire, OverEarth, OverMetal, OverWater, //気が強すぎ
+        WoodSosho, FireSosho, EarthSosho, MetalSosho, WaterSosho, //相生効果により上がった気
+        WoodSokoku, FireSokoku, EarthSokoku, MetalSokoku, WaterSokoku, //相克効果により下がった気
+        OverYin, OverYang, //陰陽の強すぎ
+        WeakWork, WeakPopular, WeakHealth, WeakEconomic, WeakLove, WeakAllLuck, //運気が低い(ノルマ未達成)
+    };
 
     //五行(200以上で超過 ここは確定するように調整) 0未満にならない
     private int elements_wood_ = 0; //五行木
@@ -31,21 +54,33 @@ public partial class Evaluation : MonoBehaviour
     private int yin_yang_ = 0; //陰陽(プラスで陽，マイナスで陰)
 
     //今のところ無制限(あとでバランス調整)
+    private int work_luck_ = 0; //仕事運(マイナスあり)
+    private int popular_luck_ = 0; //人気運(マイナスあり)
     private int health_luck_ = 0; //健康運(マイナスあり)
     private int economic_luck_ = 0; //金運(マイナスあり)
     private int love_luck_ = 0; //恋愛運(マイナスあり)
-    private int work_luck_ = 0; //仕事運(マイナスあり)
-    private int popular_luck_ = 0; //人気運(マイナスあり)
-
+    
     private int all_luck_ = 0; //総合運
+
+    //(運気の)ノルマ変数
+    private int work_norma_ = 0; //仕事運のノルマ
+    private int popular_norma_ = 0; //人気運のノルマ
+    private int health_norma_ = 0; //健康運のノルマ
+    private int economic_norma_ = 0; //金運のノルマ
+    private int love_norma_ = 0; //恋愛運のノルマ
+
+    private int all_norma_ = 0; //総合運のノルマ
 
     private Room room_role_; //部屋の種類
     private Direction room_direction_; //部屋の方角
 
     private List<FurnitureGrid> furniture_grid_ = new List<FurnitureGrid>(); //FurnitureGrid.csで実装されているクラスのリスト(最大50)
 
-    private List<int> comment_flag_ = new List<int>(); //コメントフラグ ( comment_flag_.add()でコメントフラグ追加 )
-    private string comment_ = "あなたの部屋の評価\n"; //コメント ( コメントフラグに応じていくつかのコメントを出力 )
+    private List<CommentFlag> comment_flag_ = new List<CommentFlag>(); //コメントフラグ ( comment_flag_.add()でコメントフラグ追加 ), 基本的enumが重複することはない
+    private List<int> flag_weight_ = new List<int>(); //コメントの優先度(数値がおおきいほど優先度が高い)
+
+    private List<string> comment_ = new List<string>(); //コメント ( コメントフラグに応じていくつかのコメントを出力 )
+    private List<int> comment_weight_ = new List<int>(); //コメントの優先度(要る？)
 
     //*******************************************************************************************************************************************************************************************
 
@@ -127,8 +162,47 @@ public partial class Evaluation : MonoBehaviour
 
 
 
+    //健康運ノルマ(取得用)
+    public int health_norma()
+    {
+        return health_norma_;
+    }
+
+    //金運(取得用)
+    public int economic_norma()
+    {
+        return economic_norma_;
+    }
+
+    //恋愛運(取得用)
+    public int love_norma()
+    {
+        return love_norma_;
+    }
+
+    //仕事運(取得用)
+    public int work_norma()
+    {
+        return work_norma_;
+    }
+
+    //人気運(取得用)
+    public int popular_norma()
+    {
+        return popular_norma_;
+    }
+
+    //総合運(取得用)
+    private int all_norma()
+    {
+        return all_norma_;
+    }
+
+
+
+
     //コメント(取得用)
-    public string comment()
+    public List<string> comment()
     {
         return comment_;
     }
@@ -145,6 +219,22 @@ public partial class Evaluation : MonoBehaviour
         room_role_ = room_role;
         room_direction_ = room_direction;
         furniture_grid_ = furniture_grid;
+    }
+
+    //*******************************************************************************************************************************************************************************************
+
+    //ノルマセット関数
+    //
+    //引数
+    //work_norma = 仕事運ノルマ, popular_norma = 人気運ノルマ, health_norma = 健康運ノルマ, economic_norma = 金運ノルマ, love_norma = 人気運ノルマ
+    public void SetNorma(int work_norma, int popular_norma, int health_norma, int economic_norma, int love_norma, int all_norma)
+    {
+        work_norma_ = work_norma;
+        popular_norma_ = popular_norma;
+        health_norma_ = health_norma;
+        economic_norma_ = economic_norma;
+        love_norma_ = love_norma;
+        all_norma_ = all_norma;
     }
 
     //*******************************************************************************************************************************************************************************************
@@ -214,46 +304,81 @@ public partial class Evaluation : MonoBehaviour
         //ここから五行の気の強さの加算
         if(elements_wood_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverWood);
+            flag_weight_.Add(elements_wood_);
             energy_strength_ += 200; 
         }
         else
         {
+            if(elements_wood_ <= 20 )
+            {
+                comment_flag_.Add(CommentFlag.WeakWood);
+                flag_weight_.Add( -elements_wood_);
+            }
             energy_strength_ += elements_wood_;
         }
 
         if (elements_fire_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverFire);
+            flag_weight_.Add(elements_fire_);
             energy_strength_ += 200;
         }
         else
         {
+            if (elements_fire_ <= 20)
+            {
+                comment_flag_.Add(CommentFlag.WeakFire);
+                flag_weight_.Add( -elements_fire_);
+            }
             energy_strength_ += elements_fire_;
         }
 
         if (elements_earth_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverEarth);
+            flag_weight_.Add(elements_fire_);
             energy_strength_ += 200;
         }
         else
         {
+            if(elements_earth_ <= 20)
+            {
+                comment_flag_.Add(CommentFlag.WeakEarth);
+                flag_weight_.Add(-elements_earth_);
+            }
             energy_strength_ += elements_earth_;
         }
 
         if (elements_metal_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverMetal);
+            flag_weight_.Add(elements_metal_);
             energy_strength_ += 200;
         }
         else
         {
+            if (elements_metal_ <= 20)
+            {
+                comment_flag_.Add(CommentFlag.WeakMetal);
+                flag_weight_.Add(-elements_metal_);
+            }
             energy_strength_ += elements_metal_;
         }
 
         if (elements_water_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverWater);
+            flag_weight_.Add(elements_water_);
             energy_strength_ += 200;
         }
         else
         {
+            if (elements_water_ <= 20)
+            {
+                comment_flag_.Add(CommentFlag.WeakWater);
+                flag_weight_.Add(-elements_water_);
+            }
             energy_strength_ += elements_water_;
         }
         //ここまで五行の気の強さの加算
@@ -271,6 +396,9 @@ public partial class Evaluation : MonoBehaviour
         //陰陽による運勢補正
         if(yin_yang_ < -20)
         {
+            comment_flag_.Add(CommentFlag.OverYin);
+            flag_weight_.Add(-yin_yang_);
+
             //陰の気が強すぎて運気ダウン
             health_luck_ += (yin_yang_ + 20);
             love_luck_ += (yin_yang_ + 20);
@@ -278,6 +406,9 @@ public partial class Evaluation : MonoBehaviour
         }
         else if(yin_yang_ > 200)
         {
+            comment_flag_.Add(CommentFlag.OverYang);
+            flag_weight_.Add(-yin_yang_);
+
             //陽の気が強すぎて運気ダウン
             love_luck_ -= (yin_yang_ - 200);
             work_luck_ -= (yin_yang_ - 200);
@@ -285,7 +416,43 @@ public partial class Evaluation : MonoBehaviour
 
         FortuneLast();
 
-        all_luck_ = health_luck_ + economic_luck_ + love_luck_ + work_luck_ + popular_luck_;
+        if(work_luck_ < work_norma_)
+        {
+            comment_flag_.Add(CommentFlag.WeakWork);
+            flag_weight_.Add(work_luck_);
+        }
+
+        if (popular_luck_ < popular_norma_)
+        {
+            comment_flag_.Add(CommentFlag.WeakPopular);
+            flag_weight_.Add(popular_luck_);
+        }
+
+        if (health_luck_ < health_norma_)
+        {
+            comment_flag_.Add(CommentFlag.WeakHealth);
+            flag_weight_.Add(health_luck_);
+        }
+
+        if (economic_luck_ < economic_norma_)
+        {
+            comment_flag_.Add(CommentFlag.WeakEconomic);
+            flag_weight_.Add(economic_luck_);
+        }
+
+        if (love_luck_ < love_norma_)
+        {
+            comment_flag_.Add(CommentFlag.WeakLove);
+            flag_weight_.Add(love_luck_);
+        }
+
+        if(all_luck_ < all_norma_ )
+        {
+            comment_flag_.Add(CommentFlag.WeakAllLuck);
+            flag_weight_.Add(all_luck_);
+        }
+
+        all_luck_ = work_luck_ + popular_luck_ + health_luck_ + economic_luck_ + love_luck_;
     }
 
     //*******************************************************************************************************************************************************************************************
@@ -419,71 +586,76 @@ public partial class Evaluation : MonoBehaviour
     //五行評価関数(内部的に陰陽も変化)
     private void EvaluationFiveElements()
     {
-        int wood_displacement = 0;
-        int fire_displacement = 0;
-        int earth_displacement = 0;
-        int metal_displacement = 0;
-        int water_displacement = 0;
+        int wood_sosho = 0;
+        int fire_sosho = 0;
+        int earth_sosho = 0;
+        int metal_sosho = 0;
+        int water_sosho = 0;
 
+        int wood_sokoku = 0;
+        int fire_sokoku = 0;
+        int earth_sokoku = 0;
+        int metal_sokoku = 0;
+        int water_sokoku = 0;
 
         //相生効果(木は火を生む)
         if(elements_wood_ > elements_fire_)
         {
-            fire_displacement += elements_fire_/2;
-            wood_displacement -= elements_fire_/4;
+            fire_sosho += elements_fire_/2;
+            wood_sosho -= elements_fire_/4;
         }
         else
         {
-            fire_displacement += elements_wood_/2;
-            wood_displacement -= elements_wood_/4;
+            fire_sosho += elements_wood_/2;
+            wood_sosho -= elements_wood_/4;
         }
 
         //相生効果(火は土を生む)
         if (elements_fire_ > elements_earth_)
         {
-            earth_displacement += elements_earth_/2;
-            fire_displacement -= elements_earth_/4;
+            earth_sosho += elements_earth_/2;
+            fire_sosho -= elements_earth_/4;
         }
         else
         {
-            earth_displacement += elements_fire_/2;
-            fire_displacement -= elements_fire_/4;
+            earth_sosho += elements_fire_/2;
+            fire_sosho -= elements_fire_/4;
         }
 
         //相生効果(土は金を生む)
         if (elements_earth_ > elements_metal_)
         {
-            metal_displacement += elements_metal_/2;
-            earth_displacement -= elements_metal_/4;
+            metal_sosho += elements_metal_/2;
+            earth_sosho -= elements_metal_/4;
         }
         else
         {
-            metal_displacement += elements_earth_/2;
-            earth_displacement -= elements_earth_/4;
+            metal_sosho += elements_earth_/2;
+            earth_sosho -= elements_earth_/4;
         }
 
         //相生効果(金は水を生む)
         if (elements_metal_ > elements_water_)
         {
-            water_displacement += elements_water_/2;
-            metal_displacement -= elements_water_/4;
+            water_sosho += elements_water_/2;
+            metal_sosho -= elements_water_/4;
         }
         else
         {
-            water_displacement += elements_metal_/2;
-            metal_displacement -= elements_metal_/4;
+            water_sosho += elements_metal_/2;
+            metal_sosho -= elements_metal_/4;
         }
 
         //相生効果(水は木を生む)
         if (elements_water_ > elements_wood_)
         {
-            wood_displacement += elements_wood_/2;
-            water_displacement -= elements_wood_/4;
+            wood_sosho += elements_wood_/2;
+            water_sosho -= elements_wood_/4;
         }
         else
         {
-            wood_displacement += elements_water_/2;
-            water_displacement -= elements_water_/4;
+            wood_sosho += elements_water_/2;
+            water_sosho -= elements_water_/4;
         }
 
         
@@ -491,68 +663,133 @@ public partial class Evaluation : MonoBehaviour
         //相克効果(木は土を消す)
         if (elements_wood_ > elements_earth_)
         {
-            earth_displacement -= elements_earth_ /2;
-            wood_displacement -= elements_earth_ / 4; 
+            earth_sokoku -= elements_earth_ /2;
+            wood_sokoku -= elements_earth_ / 4; 
         }
         else
         {
-            earth_displacement -= elements_wood_ /2;
-            wood_displacement -= elements_wood_ / 4;
+            earth_sokoku -= elements_wood_ /2;
+            wood_sokoku -= elements_wood_ / 4;
         }
 
         //相克効果(火は金を消す)
         if (elements_fire_ > elements_metal_)
         {
-            metal_displacement -= elements_metal_ /2;
-            fire_displacement -= elements_metal_ / 4;
+            metal_sokoku -= elements_metal_ /2;
+            fire_sokoku -= elements_metal_ / 4;
         }
         else
         {
-            metal_displacement -= elements_fire_ /2;
-            fire_displacement -= elements_fire_ / 4;
+            metal_sokoku -= elements_fire_ /2;
+            fire_sokoku -= elements_fire_ / 4;
         }
 
         //相克効果(土は水を消す)
         if (elements_earth_ > elements_water_)
         {
-            water_displacement -= elements_water_ /2;
-            earth_displacement -= elements_water_ / 4;
+            water_sokoku -= elements_water_ /2;
+            earth_sokoku -= elements_water_ / 4;
         }
         else
         {
-            water_displacement -= elements_earth_/2;
-            earth_displacement -= elements_earth_ / 4;
+            water_sokoku -= elements_earth_/2;
+            earth_sokoku -= elements_earth_ / 4;
         }
 
         //相克効果(金は木を消す)
         if (elements_metal_ > elements_wood_)
         {
-            wood_displacement -= elements_wood_ /2;
-            metal_displacement -= elements_wood_ / 4;
+            wood_sokoku -= elements_wood_ /2;
+            metal_sokoku -= elements_wood_ / 4;
         }
         else
         {
-            wood_displacement -= elements_metal_ /2;
-            metal_displacement -= elements_metal_ / 4;
+            wood_sokoku -= elements_metal_ /2;
+            metal_sokoku -= elements_metal_ / 4;
         }
 
         //相克効果(水は火を消す)
         if (elements_water_ > elements_fire_)
         {
-            fire_displacement -= elements_fire_/2;
-            water_displacement -= elements_fire_ / 4;
+            fire_sokoku -= elements_fire_/2;
+            water_sokoku -= elements_fire_ / 4;
         }
         else
         {
-            fire_displacement -= elements_water_/2;
-            water_displacement -= elements_water_ / 4;
+            fire_sokoku -= elements_water_/2;
+            water_sokoku -= elements_water_ / 4;
         }
 
-        elements_wood_ += wood_displacement;
-        elements_fire_ += fire_displacement;
-        elements_earth_ += earth_displacement;
-        elements_metal_ += metal_displacement;
-        elements_water_ += water_displacement;
+        //コメント用ここから----------------------------------------------------------------
+        if(wood_sosho > 100)
+        {
+            comment_flag_.Add(CommentFlag.WaterSosho);
+            flag_weight_.Add(wood_sosho);
+        }
+
+        if (fire_sosho > 100)
+        {
+            comment_flag_.Add(CommentFlag.FireSosho);
+            flag_weight_.Add(fire_sosho);
+        }
+
+        if (earth_sosho > 100)
+        {
+            comment_flag_.Add(CommentFlag.EarthSosho);
+            flag_weight_.Add(earth_sosho);
+        }
+
+        if (metal_sosho > 100)
+        {
+            comment_flag_.Add(CommentFlag.MetalSosho);
+            flag_weight_.Add(metal_sosho);
+        }
+
+        if (water_sosho > 100)
+        {
+            comment_flag_.Add(CommentFlag.WaterSosho);
+            flag_weight_.Add(water_sosho);
+        }
+
+        //--------------------------------------------------------------------------------------
+
+        if (wood_sokoku < -100)
+        {
+            comment_flag_.Add(CommentFlag.WaterSokoku);
+            flag_weight_.Add(wood_sokoku);
+        }
+
+        if (fire_sokoku < -100)
+        {
+            comment_flag_.Add(CommentFlag.FireSosho);
+            flag_weight_.Add(fire_sosho);
+        }
+
+        if (earth_sokoku < -100)
+        {
+            comment_flag_.Add(CommentFlag.EarthSokoku);
+            flag_weight_.Add(earth_sokoku);
+        }
+
+        if (metal_sokoku < -100)
+        {
+            comment_flag_.Add(CommentFlag.MetalSokoku);
+            flag_weight_.Add(metal_sokoku);
+        }
+
+        if (water_sokoku < -100)
+        {
+            comment_flag_.Add(CommentFlag.WaterSokoku);
+            flag_weight_.Add(water_sokoku);
+        }
+
+        //コメント用ここまで----------------------------------------------------------------
+
+        elements_wood_ += wood_sosho + wood_sokoku;
+        elements_fire_ += fire_sosho + fire_sokoku;
+        elements_earth_ += earth_sosho + earth_sokoku;
+        elements_metal_ += metal_sosho + metal_sokoku;
+        elements_water_ += water_sosho + water_sokoku;
 
         if(elements_wood_ < 0)
         {
@@ -983,5 +1220,5 @@ public partial class Evaluation : MonoBehaviour
     }
 
     partial void EvaluationTotaTestDummy();
-    partial void Comment(int comment_ID);
+    partial void Comment();
 }
