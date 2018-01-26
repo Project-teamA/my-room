@@ -11,7 +11,7 @@
 //2018年1月21日
 //五行陰陽評価ラスト関数 EvaluationLast() 追加
 //運勢評価ラスト関数 FortuneLast() 追加
-//コメントの型をList<string>に変更し,優先度の高いコメントを出力させる
+//運気をプラス成分(旺気)，マイナス成分(邪気)に分け，後で足した方が良い
 //
 //ノルマ変数を追加
 //ノルマ入力関数を追加
@@ -53,6 +53,7 @@ public partial class Evaluation : MonoBehaviour
 
     private int yin_yang_ = 0; //陰陽(プラスで陽，マイナスで陰)
 
+
     //今のところ無制限(あとでバランス調整)
     private int work_luck_ = 0; //仕事運(マイナスあり)
     private int popular_luck_ = 0; //人気運(マイナスあり)
@@ -70,6 +71,20 @@ public partial class Evaluation : MonoBehaviour
     private int love_norma_ = 0; //恋愛運のノルマ
 
     private int all_norma_ = 0; //総合運のノルマ
+
+    //運気の変化(プラスの運気成分(旺気))
+    //private int work_plus_ = 0; //仕事運(プラス)
+    //private int popular_plus_ = 0; //人気運(プラス)
+    //private int health__plus_ = 0; //健康運(プラス)
+    //private int economic_plus_ = 0; //金運(プラス)
+    //private int love_plus_ = 0; //恋愛運(プラス)
+
+    //運気の変化(マイナスの運気成分(邪気))
+    //private int work_minus_ = 0; //仕事運(プラス)
+    //private int popular_minus_ = 0; //人気運(プラス)
+    //private int health__minus_ = 0; //健康運(プラス)
+    //private int economic_minus_ = 0; //金運(プラス)
+    //private int love_minus_ = 0; //恋愛運(プラス)
 
     private Room room_role_; //部屋の種類
     private Direction room_direction_; //部屋の方角

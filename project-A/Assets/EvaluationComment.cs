@@ -24,6 +24,7 @@ public partial class Evaluation : MonoBehaviour
                 comment_.Add("木の気が弱すぎて仕事運が上がっていません");
 
                 //flag_weight_利用してcomment_weightを設定
+                //flag_weight_[comment_flag.IndexOf(CommentFlag.WeakWood)]
                 comment_weight_.Add(1);
             }
 
