@@ -29,7 +29,13 @@ public class GridError : MonoBehaviour {
     private Bounds[] bounds_;
     private List<GameObject> collision_objects_ = new List<GameObject>(); //衝突しているオブジェクト
     private List<GameObject> error_objects_ = new List<GameObject>(); //エラーの元になっているオブジェクト 
-    private string error_comment_ = ""; //エラーコメント保存用
+    private bool errored_ = false; //エラーかどうか判定
+
+    //エラーかどうか判定
+    public bool errored()
+    {
+        return errored_;
+    }
 
     //他の家具グリッドにぶつかっているとき
     void OnTriggerStay(Collider collider)
@@ -82,7 +88,6 @@ public class GridError : MonoBehaviour {
                 {
                     //相手が敷物ならばエラー
                     error_flag = true;
-                    error_comment_ = "敷物同士は重ねることができません";
                 }
                 else
                 {
@@ -97,7 +102,6 @@ public class GridError : MonoBehaviour {
                 {
                     //相手が天井ならばエラー
                     error_flag = true;
-                    error_comment_ = "天井掛け同士は重ねることができません";
                 }
                 else
                 {
@@ -112,7 +116,6 @@ public class GridError : MonoBehaviour {
                 {
                     //あいてが普通の家具ならエラー
                     error_flag = true;
-                    error_comment_ = "普通の家具同士は重ねることができません";
                 }
                 else if(collider.transform.tag == "furniture_grid_rugs")
                 {
@@ -145,9 +148,9 @@ public class GridError : MonoBehaviour {
                 {
                     for (int i = 0; i < transform.childCount; ++i)
                     {
-                        transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+                        transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
                     } //i
-                    error_comment_ = "";
+                    errored_ = false;
                 }
 
                 if(up_down == 1)
@@ -208,8 +211,9 @@ public class GridError : MonoBehaviour {
 
                 for (int i = 0; i < my_child_number; ++i)
                 {
-                    transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+                   transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 0, 0);
                 } //i
+                errored_ = true;
             }
 
         } //gameObject.tag == "furniture_grid_base" || gameObject.tag == "furniture_grid"
@@ -282,24 +286,18 @@ public class GridError : MonoBehaviour {
             }
         }
 
-        Debug.Log(error_objects_.Count);
         if (collision_objects_.Count == 0)
         {
             for (int i = 0; i < transform.childCount; ++i)
             {
-                transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+               transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
             } //i
-            error_comment_ = "";
+            errored_ = false;
             Vector3 buffer_position = transform.position;
             buffer_position.z = 0F;
             transform.position = buffer_position;
 
         } //off_trigger_stay_ == true
-
-        if(error_comment_ != "")
-        {
-            Debug.Log(error_comment_);
-        }
 
     } //Update()
 

@@ -41,8 +41,6 @@ public partial class Evaluation : MonoBehaviour
     //基本的にボーナス点，ペナルティ点が呼び出されたら必ずコメント識別子が呼び出される．
     public enum CommentIdentifier
     {
-        WoodSosho, FireSosho, EarthSosho, MetalSosho, WaterSosho, //相生効果により上がった気
-        WoodSokoku, FireSokoku, EarthSokoku, MetalSokoku, WaterSokoku, //相克効果により下がった気
         OverYin, OverYang, //陰陽の強すぎ
         WeakWork, WeakPopular, WeakHealth, WeakEconomic, WeakLove, WeakAllLuck, //運気が低い(ノルマ未達成)
 
@@ -75,6 +73,20 @@ public partial class Evaluation : MonoBehaviour
         WeakWood, WeakFire, WeakEarth, WeakMetal, WeakWater, WeakEnergy, //気が弱い
         OverWood, OverFire, OverEarth, OverMetal, OverWater, //気が強すぎ
     };
+
+    //------------------------------------------------------------------------------------------------------------------------------------------------
+
+    //コメント識別認識補助(Comment関数内でif文でコメントを分けるために使用する)
+    public enum CommentSupport
+    {
+        WoodSosho, FireSosho, EarthSosho, MetalSosho, WaterSosho, //相生効果により上がった気
+        WoodSokoku, FireSokoku, EarthSokoku, MetalSokoku, WaterSokoku, //相克効果により下がった気
+        OverYin, OverYang,
+
+        WeakWood, WeakFire, WeakEarth, WeakMetal, WeakWater, WeakEnergy, //気が弱い
+        OverWood, OverFire, OverEarth, OverMetal, OverWater, //気が強すぎ
+    }
+
 
     //elements_の各要素について
     //[0] = 木，[1] = 火, [2] = 土，[3] = 金, [4] = 水
@@ -131,7 +143,7 @@ public partial class Evaluation : MonoBehaviour
     {
         public CommentIdentifier comment_identifier_; //コメント識別子
         public int flag_weight_; //コメントの重要度(数値がおおきいほど重要度が高い)
-        private int luck_identifier_;  //影響を受けた運気の識別子 [0] = 仕事運，[1] = 人気運, [2] = 健康運, [3] = 金運, [4] = 恋愛運
+        public int luck_identifier_;  //影響を受けた運気の識別子 [0] = 仕事運，[1] = 人気運, [2] = 健康運, [3] = 金運, [4] = 恋愛運
 
         public CommentFlag(CommentIdentifier comment_identifier, int flag_weight, int luck_identifier)
         {
@@ -139,7 +151,17 @@ public partial class Evaluation : MonoBehaviour
             flag_weight_ = flag_weight;
             luck_identifier_ = luck_identifier;
         }
+
+        public void WeightAdd(int addend)
+        {
+            flag_weight_ += addend;
+        }
     }
+
+    //コメント選択補助用構造体(部屋の条件によってコメント変更)
+    //
+    //もしかしたらcomment_identifierみたいに構造体にするかもしれない
+    private List<CommentSupport> comment_support_ = new List<CommentSupport>();
 
     private List<CommentFlag> comment_flag_ = new List<CommentFlag>();
     private List<string> comment_ = new List<string>(); //コメント ( コメントフラグに応じていくつかのコメントを出力 )
@@ -610,8 +632,6 @@ public partial class Evaluation : MonoBehaviour
     //**************************************************************************************************************************************************************************************************
 
     //方位評価関数(部屋の)
-    //
-    //内容はこの方位がもともと持っている気を倍加
     private void EvaluationDirection()
     {
         if (room_direction_ == Direction.North)

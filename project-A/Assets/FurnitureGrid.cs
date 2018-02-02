@@ -387,11 +387,11 @@ public partial class FurnitureGrid : MonoBehaviour
             if (grid_ID >= 9)
             {
                 children_grid_[i].GetComponent<MeshRenderer>().material.mainTexture = texture_;
-                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
             }
             else
             {
-                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(255, 255, 255);
+                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
             }
 
             float quad_horizontal = (vertices[2] - vertices[0]).magnitude; //四角形の横の長さ
