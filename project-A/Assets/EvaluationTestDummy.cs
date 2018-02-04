@@ -7,9 +7,11 @@ public partial class Evaluation : MonoBehaviour
 
     public void EvaluationTotalTestDummy()
     {
+        is_finished_game_ = true;
+        advaice_mode_ = 0;
         //数値をいじる
         room_role_ = Room.Bedroom; //部屋の種類
-        room_direction_ = Direction.South; //部屋の方角
+        room_direction_ = Direction.NorthWest; //部屋の方角
         for (int i = 0; i < 5; ++i)
         {
             split_elements_[i] = new int[8];
@@ -114,7 +116,15 @@ public partial class Evaluation : MonoBehaviour
         }
 
         all_luck_ = luck_[0] + luck_[1] + luck_[2] + luck_[3] + luck_[4];
-        Comment();
+
+        if (is_finished_game_)
+        {
+            Comment();
+        }
+        else
+        {
+            CommentMini();
+        }
 
         Debug.Log(elements_[0]);
         Debug.Log(elements_[1]);
@@ -128,12 +138,11 @@ public partial class Evaluation : MonoBehaviour
         Debug.Log(luck_[2]);
         Debug.Log(luck_[3]);
         Debug.Log(luck_[4]);
-        Debug.Log( all_luck_);
+        Debug.Log(all_luck_);
 
         for (int i = 0; i < comment_.Count; ++i)
         {
             Debug.Log(comment_[i]);
         }
-       
     }
 }

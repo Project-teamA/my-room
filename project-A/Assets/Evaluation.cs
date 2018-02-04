@@ -42,12 +42,11 @@ public partial class Evaluation : MonoBehaviour
     public enum CommentIdentifier
     {
         OverYin, OverYang, //陰陽の強すぎ
-        WeakWork, WeakPopular, WeakHealth, WeakEconomic, WeakLove, WeakAllLuck, //運気が低い(ノルマ未達成)
 
         EntranceYinNorthEast, EntranceYinSouthWest, EntranceNoCarpet, EntranceSmell, EntranceMulti, //玄関関連
-        BedroomLuckyDirection, BedroomNorthEast, BedroomBeauty, BedroomWood, BedroomBlue, BedroomMulti, //寝室関連
+        BedroomLuckyDirection, BedroomNorthEast, BedroomBeauty, BedroomWoodNatural, BedroomBlue, BedroomMulti, //寝室関連
         LivingMulti, //リビング関連
-        KitchenDamage, KitchenAiry, KitchenNorthWest, //キッチン関連
+        KitchenDamage, KitchenAiry, //キッチン関連
         WorkroomNorthWest, WorkroomMulti, //仕事部屋関連
         BathroomAiry, BathroomYin, //風呂関連
         //便所関連
@@ -60,15 +59,15 @@ public partial class Evaluation : MonoBehaviour
         SouthPurification, //南の運勢
         SouthWestLow, //南西の運勢
         WestWestern, WestLuxury, //西の運勢
-        NorthWestLuxury, NorthWestLuxuryZero, NorthWestSilver, NorthWestGray, NorthWestVain, //北西の運勢
+        NorthWestLuxury, NorthWestLuxuryZero, NorthWestSilverGray, NorthWestVain, //北西の運勢
 
-        WhiteResetYinYang, WhitePurification, BlackStrengthening, RedOne, PinkOne, PinkNoOrange, BlueOne, BlueNoOrange, OrangeNoPink, OrangeNoBlue,
+        WhiteResetYinYang, WhitePurification, BlackStrengthening, RedOne, PinkOne, PinkNoOrange, BlueOne, BlueNoOrange, OrangeNoPink, OrangeNoBlue, //色関連
         YellowBrownOne, GreenPurification, BeigeIneger, Cream, GoldMulti,  //色関連
-        //素材関連
-       //模様関連
+                                                                           //素材関連
+                                                                           //模様関連
         SquareFix, CircleGoodRelation, CircleCirculation, SharpBadRelation, //形状関連
         SweetSmell, Luminescence, FlowerAssociative, //その他特性
-        ExcessFurniture,  ShortageFurniture,  //家具の数関連
+        ExcessFurniture, ShortageFurniture,  //家具の数関連
 
         WeakWood, WeakFire, WeakEarth, WeakMetal, WeakWater, WeakEnergy, //気が弱い
         OverWood, OverFire, OverEarth, OverMetal, OverWater, //気が強すぎ
@@ -79,12 +78,11 @@ public partial class Evaluation : MonoBehaviour
     //コメント識別認識補助(Comment関数内でif文でコメントを分けるために使用する)
     public enum CommentSupport
     {
-        WoodSosho, FireSosho, EarthSosho, MetalSosho, WaterSosho, //相生効果により上がった気
-        WoodSokoku, FireSokoku, EarthSokoku, MetalSokoku, WaterSokoku, //相克効果により下がった気
-        OverYin, OverYang,
-
-        WeakWood, WeakFire, WeakEarth, WeakMetal, WeakWater, WeakEnergy, //気が弱い
+        WoodToFireSosho, FireToEarthSosho, EarthToMetalSosho, MetalToWaterSosho, WaterToWoodSosho, //相生効果により上がった気
+        WoodToEarthSokoku, FireToMetalSokoku, EarthToWaterSokoku, MetalToWoodSokoku, WaterToFireSokoku, //相克効果により下がった気
+        OverYin, OverYang, //陰陽が強すぎ
         OverWood, OverFire, OverEarth, OverMetal, OverWater, //気が強すぎ
+        ChemicalOrPlastic,
     }
 
 
@@ -139,7 +137,7 @@ public partial class Evaluation : MonoBehaviour
     private List<FurnitureGrid> furniture_grid_ = new List<FurnitureGrid>(); //FurnitureGrid.csで実装されているクラスのリスト(最大50)
 
     //コメント選択用構造体(あとで優先順位準にソートする)
-    private struct CommentFlag
+    private class CommentFlag
     {
         public CommentIdentifier comment_identifier_; //コメント識別子
         public int flag_weight_; //コメントの重要度(数値がおおきいほど重要度が高い)
@@ -167,6 +165,7 @@ public partial class Evaluation : MonoBehaviour
     private List<string> comment_ = new List<string>(); //コメント ( コメントフラグに応じていくつかのコメントを出力 )
 
     private bool is_finished_game_; //ゲームが終わったかどうかのフラグ (ture = ゲーム終了 false = ゲーム終了せず)
+    private int advaice_mode_; //アドバイスモード(0 = 仕事運重視，1 = 人気運重視，2 = 健康運重視，3 = 金運重視，4 = 恋愛運重視, 5 = デフォルト(ノルマ重視))
 
     //*******************************************************************************************************************************************************************************************
 
@@ -296,16 +295,13 @@ public partial class Evaluation : MonoBehaviour
     //*******************************************************************************************************************************************************************************************
 
     //初期化関数(この関数は最初に1回だけ実行すること)
-    // 
-    // room_role_ = 部屋の種類
-    // room_direction_ = 部屋の方角
-    // furniture_grid_ = 家具の更新
     public void Init(Room room_role, Direction room_direction, List<FurnitureGrid> furniture_grid)
     {
         room_role_ = room_role;
         room_direction_ = room_direction;
         furniture_grid_ = furniture_grid;
-        is_finished_game_ = false;
+        is_finished_game_ = true;
+        advaice_mode_ = 5;
 
         for (int i = 0; i < 5; ++i)
         {
@@ -313,13 +309,8 @@ public partial class Evaluation : MonoBehaviour
         }
     }
 
-    //*******************************************************************************************************************************************************************************************
-
     //ノルマセット関数
-    //
-    //引数
-    //work_norma = 仕事運ノルマ, popular_norma = 人気運ノルマ, health_norma = 健康運ノルマ, economic_norma = 金運ノルマ, love_norma = 人気運ノルマ
-    public void SetNorma(int work_norma, int popular_norma, int health_norma, int economic_norma, int love_norma, int all_norma)
+    public void set_norma(int work_norma, int popular_norma, int health_norma, int economic_norma, int love_norma, int all_norma)
     {
         norma_luck_[0] = work_norma;
         norma_luck_[1] = popular_norma;
@@ -329,11 +320,7 @@ public partial class Evaluation : MonoBehaviour
         all_norma_ = all_norma;
     }
 
-    //*******************************************************************************************************************************************************************************************
-
     //家具の更新関数(変更する可能性がかなり高い)
-    //
-    //furniture_grid = 変更，更新する家具グリッド
     public void UpdateGrid(FurnitureGrid furniture_grid)
     {
         for (int i = 0; i < furniture_grid_.Count; ++i)
@@ -347,11 +334,7 @@ public partial class Evaluation : MonoBehaviour
         }
     }
 
-    //*******************************************************************************************************************************************************************************************
-
     //家具の削除関数(変更する可能性がかなり高い)
-    //
-    //delete_number = 削除する家具グリッドの添字ナンバー
     public void DeleteGrid(int delete_number)
     {
         if (-1 < delete_number && furniture_grid_.Count > delete_number)
@@ -360,19 +343,25 @@ public partial class Evaluation : MonoBehaviour
         }
     }
 
-    //*******************************************************************************************************************************************************************************************
-
     //is_finised_gameに値をセット
-    public void SetIsFinishedGame(bool is_finished_game)
+    public void set_is_finishedGame(bool is_finished_game)
     {
         is_finished_game_ = is_finished_game;
+    }
+
+    //advaice_mode_に値をセット
+    public void set_advaice_mode(int advaice_mode)
+    {
+        if (advaice_mode < 0 || advaice_mode > 5)
+        {
+            Debug.Log("アドバイスモードの設定がおかしいのでデフォルトにします．");
+        }
+        advaice_mode_ = advaice_mode;
     }
 
     //*******************************************************************************************************************************************************************************************
 
     //総合評価関数(評価の一連の流れ)
-    //
-    //
     public void EvaluationTotal()
     {
         for (int i = 0; i < 5; ++i)
@@ -400,10 +389,10 @@ public partial class Evaluation : MonoBehaviour
         energy_strength_ = 0;
         all_luck_ = 0;
 
-        EvaluationItem(); //部屋のアイテムによる五行陰陽評価関数
-        EvaluationRoom(); //部屋の種類による五行陰陽評価関数(部屋の)
-        EvaluationDirection(); //方位五行陰陽評価関数(部屋の)
-        EvaluationFiveElements(); //五行による相生効果と相克効果
+        EvaluationItem();
+        EvaluationRoom();
+        EvaluationDirection();
+        EvaluationFiveElements();
         EvaluationeLast();
 
         comment_.Clear(); //コメントの初期化
@@ -434,9 +423,9 @@ public partial class Evaluation : MonoBehaviour
         //}
         FortuneItem(); //アイテムによる運勢補正(要素は関数の中で検索した方がコメントを付けるときやりやすい)
 
-        FortuneRoom(); //部屋による運勢補正
-        FortuneDirection(); //方位による運勢補正
-        FortuneFiveElement(); //五行による運勢補正
+        FortuneRoom();
+        FortuneDirection();
+        FortuneFiveElement();
 
         //陰陽による運勢補正
         if (yin_yang_ < -30)
@@ -452,6 +441,8 @@ public partial class Evaluation : MonoBehaviour
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, -(yin_yang_ + 30), 2));
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, -(yin_yang_ + 30), 4));
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, -(yin_yang_ + 30) * 4, 5));
+
+            comment_support_.Add(CommentSupport.OverYin);
         }
         else if (yin_yang_ > 300)
         {
@@ -464,6 +455,8 @@ public partial class Evaluation : MonoBehaviour
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, (yin_yang_ - 300), 2));
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, (yin_yang_ - 300), 4));
             comment_flag_.Add(new CommentFlag(CommentIdentifier.OverYang, (yin_yang_ - 300) * 3, 5));
+
+            comment_support_.Add(CommentSupport.OverYang);
         }
 
         FortuneLast();
@@ -474,7 +467,16 @@ public partial class Evaluation : MonoBehaviour
         }
 
         all_luck_ = luck_[0] + luck_[1] + luck_[2] + luck_[3] + luck_[4];
-        Comment();
+
+        if (is_finished_game_)
+        {
+            Comment();
+        }
+        else
+        {
+            CommentMini();
+        }
+
     }
 
     //*******************************************************************************************************************************************************************************************
@@ -562,8 +564,6 @@ public partial class Evaluation : MonoBehaviour
     //*****************************************************************************************************************************************************************************************
 
     //部屋評価関数(基本五行と陰陽のみ)
-    //
-    //
     private void EvaluationRoom()
     {
         if (room_role_ == Room.Entrance)
@@ -772,8 +772,6 @@ public partial class Evaluation : MonoBehaviour
             }
         }
 
-        //コメント用ここまで----------------------------------------------------------------
-
         for (int j = 0; j < 8; ++j)
         {
             //五行による陰陽補正
@@ -787,8 +785,6 @@ public partial class Evaluation : MonoBehaviour
     //**************************************************************************************************************************************************************************************************
 
     //仕上げの五行陰陽補正(観葉植物による陰陽中和など)
-    //
-    //ここでは五行陰陽に対し加算ではなく乗算による補正が行われる
     private void EvaluationeLast()
     {
         int[] displacement_elements_stock = new int[5] { 0, 0, 0, 0, 0 };
@@ -805,169 +801,19 @@ public partial class Evaluation : MonoBehaviour
     //**************************************************************************************************************************************************************************************************
 
     //アイテムによる運勢補正
-    private void FortuneItem(FurnitureGrid furniture_grid)
-    {
-        if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Bed)
-        {
-            //ベッドの枕の位置(安眠できるかどうかで，健康運，美容運にかかわる)
-            if (furniture_grid.up_direction() == Vector3.up)
-            {
-                //ベッドが北枕(1番良い, 安眠できる)
-                plus_luck_[2] += 30;
-            }
-            else if (furniture_grid.up_direction() == Vector3.down)
-            {
-                //ベッドが南枕(1番ダメ, 安眠出来ない)
-                minus_luck_[2] += 30;
-            }
-            else if (furniture_grid.up_direction() == Vector3.right)
-            {
-                //ベッドが東枕(2番目に良い)
-                plus_luck_[2] += 20;
-            }
-            else if (furniture_grid.up_direction() == Vector3.left)
-            {
-                //ベッドが西枕(2番目に良くない)
-                minus_luck_[2] -= 20;
-            }
-
-            //シングルベッドをつなげるとダメ
-            for (int i = 0; i < furniture_grid_.Count; ++i)
-            {
-                if (furniture_grid_[i].furniture_grid().GetComponent<BoxCollider>().bounds.Contains
-                    (furniture_grid_[i].grid_position() + (furniture_grid_[i].parameta(0) + 1) * 0.2F * furniture_grid_[i].right_direction()) == true)
-                {
-
-                }
-
-                if (furniture_grid_[i].furniture_grid().GetComponent<BoxCollider>().bounds.Contains
-                    (furniture_grid_[i].grid_position() - (furniture_grid_[i].parameta(0) + 1) * 0.2F * furniture_grid_[i].right_direction()) == true)
-                {
-
-                }
-
-            }
-
-            //ベッドと壁の隙間ダメ
-
-
-            //ドアベクトルがベッドの頭指すだめ(ドア側で実装)
-
-
-            //鏡写しダメ(鏡側で実装)
-
-
-            //窓の近くにベッドダメ(1つでもあったら)
-            GameObject surrounding = furniture_grid.furniture_grid();
-            surrounding.transform.localScale = new Vector3(3F, 3F, 3F);
-            bool window_near_flag = false;
-            for (int i = 0; i < surrounding.transform.childCount; ++i)
-            {
-                surrounding.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
-                for (int j = 0; j < furniture_grid_.Count; ++j)
-                {
-                    if (furniture_grid_[j].tag == "furniture_grid_window")
-                    {
-                        for (int k = 0; k < furniture_grid_[j].transform.childCount; ++k)
-                        {
-                            if (surrounding.GetComponents<BoxCollider>()[i].bounds.Intersects(furniture_grid_[j].GetComponents<BoxCollider>()[k].bounds))
-                            {
-                                window_near_flag = true;
-                                break;
-                            }
-
-                        } //k
-                    }
-                } //j
-            } //i
-
-            if (window_near_flag == true)
-            {
-
-            }
-
-
-            //角がベッドの顔に向いたらだめ
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Desk)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Sofa)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.FoliagePlant)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.ArtificialFlower)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.WaterTank)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Carpet)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Curtain)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.ConsumerElectronics)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Dresser)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Illumination)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.DeskLamp)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Chair)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.PictureFrame)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.PlushDoll)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Window)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Door)
-        {
-
-        }
-        else if (furniture_grid.furniture_type() == FurnitureGrid.FurnitureType.Bureau)
-        {
-
-        }
-        else
-        {
-            Debug.Log("ありえん");
-        }
-    }
-
-    //*************************************************************************************************************************************************************************************************
-
-    //アイテムによる運勢補正
     private void FortuneItem()
     {
+        //プラスチック, または化学繊維の家具があるかどうか(CommentSupport用).
+        for (int i = 0; i < furniture_grid_.Count; ++i)
+        {
+            if (Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Chemical) >= 0
+                || Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Plastic) >= 0)
+            {
+                comment_support_.Add(CommentSupport.ChemicalOrPlastic);
+                break;
+            }
+        }
+
         int[] color_luck_plus_stock = new int[5] { 0, 0, 0, 0, 0 };
         int[] color_luck_minus_stock = new int[5] { 0, 0, 0, 0, 0 };
 
@@ -976,7 +822,7 @@ public partial class Evaluation : MonoBehaviour
         {
             if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Red) >= 0)
             {
-                color_luck_plus_stock [0] += 10;
+                color_luck_plus_stock[0] += 10;
                 color_luck_plus_stock[1] += 30;
                 color_luck_plus_stock[2] += 10;
                 color_luck_plus_stock[4] += 10;
@@ -995,7 +841,7 @@ public partial class Evaluation : MonoBehaviour
         }
 
         //ピンクの家具1つでも置くと恋愛アップ
-        bool pink_at_least = false; 
+        bool pink_at_least = false;
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
             if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Pink) >= 0)
@@ -1043,9 +889,9 @@ public partial class Evaluation : MonoBehaviour
             }
         }
 
-        if(orange_at_least)
+        if (orange_at_least)
         {
-            if(pink_at_least)
+            if (pink_at_least)
             {
                 //オレンジとピンクで恋愛運アップ
                 color_luck_plus_stock[4] += 30;
@@ -1057,7 +903,7 @@ public partial class Evaluation : MonoBehaviour
                 comment_flag_.Add(new CommentFlag(CommentIdentifier.OrangeNoPink, 30, 5));
             }
 
-            if(blue_at_least)
+            if (blue_at_least)
             {
                 //オレンジと黄色で健康運アップ
                 color_luck_plus_stock[0] += 30;
@@ -1069,13 +915,13 @@ public partial class Evaluation : MonoBehaviour
                 comment_flag_.Add(new CommentFlag(CommentIdentifier.OrangeNoBlue, 30, 5));
             }
         }
-        else if(pink_at_least)
+        else if (pink_at_least)
         {
             //ピンクがあるのでオレンジと合わせましょう
             comment_flag_.Add(new CommentFlag(CommentIdentifier.PinkNoOrange, 30, 4));
             comment_flag_.Add(new CommentFlag(CommentIdentifier.PinkNoOrange, 30, 5));
         }
-        else if(blue_at_least)
+        else if (blue_at_least)
         {
             //青があるのでオレンジと合わせましょう
             comment_flag_.Add(new CommentFlag(CommentIdentifier.BlueNoOrange, 30, 0));
@@ -1104,7 +950,7 @@ public partial class Evaluation : MonoBehaviour
 
         //黒が1つでもあればカラーによる運気補正がさらに高まる(実装がかなり面倒)
 
-        for(int i = 0; i< 5; ++i )
+        for (int i = 0; i < 5; ++i)
         {
             plus_luck_[i] += color_luck_plus_stock[i];
             minus_luck_[i] += color_luck_minus_stock[i];
@@ -1201,12 +1047,12 @@ public partial class Evaluation : MonoBehaviour
             else
             {
                 //寝室を吉方位にすれば運気上がる(方向は定まっているので要らないコメント？)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5, 0));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5, 1));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 10, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5, 3));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 10, 4));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 35, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5 / 2, 0));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5 / 2, 1));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 10 / 2, 2));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 5 / 2, 3));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 10 / 2, 4));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomLuckyDirection, 35 / 2, 5));
             }
 
             //北東の寝室は金運アップにつながる
@@ -1217,8 +1063,8 @@ public partial class Evaluation : MonoBehaviour
             else
             {
                 //寝室を北東にすれば運気上がる(方向は定まっているので要らないコメント？)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomNorthEast, 20, 3));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomNorthEast, 20, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomNorthEast, 20 / 2, 3));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomNorthEast, 20 / 2, 5));
             }
 
             //東，南東，西，北西の寝室は美容運アップ(人気運，健康運，恋愛運アップ)につながる
@@ -1233,28 +1079,30 @@ public partial class Evaluation : MonoBehaviour
             else
             {
                 //寝室を東，南東，西，北西にすれば美容運アップ(人気運，健康運，恋愛運アップ)(方向は定まって…)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 10, 1));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 5, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 5, 4));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 20, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 10 / 2, 1));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 5 / 2, 2));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 5 / 2, 4));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomBeauty, 20 / 2, 5));
             }
 
-            //木材家具1個につき健康運アップ
-            int wooden_item = 0;
+            //木材家具, 天然素材1個につき健康運アップ(両方の特性を持っている場合は1個にカウント)
+            int wood_natural_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Wooden) >= 0)
+                if (Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Wooden) >= 0
+                    || Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Natural) >= 0)
                 {
-                    ++wooden_item;
+                    ++wood_natural_item;
                 }
-            }
-            plus_luck_[2] += wooden_item * 10;
 
-            if (wooden_item < 3)
+            }
+            plus_luck_[2] += wood_natural_item * 10;
+
+            if (wood_natural_item < 3)
             {
-                //木材家具さらに置けば健康運アップにつながる
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomWood, 30 - wooden_item * 10, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomWood, 30 - wooden_item * 10, 5));
+                //木材家具，天然素材さらに置けば健康運アップにつながる
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomWoodNatural, 30 - wood_natural_item * 10, 2));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BedroomWoodNatural, 30 - wood_natural_item * 10, 5));
             }
 
             //青い家具一個につき安眠で健康運アップ
@@ -1290,20 +1138,20 @@ public partial class Evaluation : MonoBehaviour
             else
             {
                 //西，南西のキッチンは健康運に悪影響があるので健康運を上げるように心がける
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenDamage, 30, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenDamage, 30, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenDamage, 30 / 2, 2));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenDamage, 30 / 2, 5));
             }
 
             //東，南東，北西のキッチンは風通しよく健康運上がる
-            if ((room_direction_ == Direction.East || room_direction_ == Direction.SouthEast) || room_direction_ == Direction.NorthWest )
+            if ((room_direction_ == Direction.East || room_direction_ == Direction.SouthEast) || room_direction_ == Direction.NorthWest)
             {
                 plus_luck_[2] += 20;
             }
             else
             {
                 //キッチンを東，南東，北西にすれば風通しよく健康運上がる(いらんコメント？)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenAiry, 20, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenAiry, 20, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenAiry, 20 / 2, 2));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.KitchenAiry, 20 / 2, 5));
             }
 
         }
@@ -1317,27 +1165,27 @@ public partial class Evaluation : MonoBehaviour
             else
             {
                 //仕事部屋を北西にすれば仕事運上がる(いらんコメント？)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.WorkroomNorthWest, 30, 0));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.WorkroomNorthWest, 30, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.WorkroomNorthWest, 30 / 2, 0));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.WorkroomNorthWest, 30 / 2, 5));
             }
 
         }
         else if (room_role_ == Room.Bathroom)
         {
             //東，南東の風呂は健康運上がる
-            if (room_direction_ == Direction.East || room_direction_ == Direction.SouthEast )
+            if (room_direction_ == Direction.East || room_direction_ == Direction.SouthEast)
             {
                 plus_luck_[2] += 30;
             }
             else
             {
                 //風呂を東，南東にすれば健康運上がる(いらんコメント？)
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BathroomAiry, 30, 0));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.BathroomAiry, 30, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BathroomAiry, 30 / 2, 0));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.BathroomAiry, 30 / 2, 5));
             }
 
             //陰気が強い風呂は恋愛運ダウン
-            if( yin_yang_ < -30 )
+            if (yin_yang_ < -30)
             {
                 minus_luck_[4] += 30;
 
@@ -1382,10 +1230,11 @@ public partial class Evaluation : MonoBehaviour
                 comment_flag_.Add(new CommentFlag(CommentIdentifier.WeakNorth, 100 - direction_power, 5));
             }
 
-            //元々健康運に悪影響
+            //元々健康運，人気運に悪影響
+            minus_luck_[1] += 50;
             minus_luck_[2] += 50;
 
-            //温かみのある家具一つにつき健康運アップ
+            //温かみのある家具一つにつき健康運, 人気運アップ
             int warm_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
@@ -1394,13 +1243,15 @@ public partial class Evaluation : MonoBehaviour
                     ++warm_item;
                 }
             }
+            plus_luck_[1] += warm_item * 10;
             plus_luck_[2] += warm_item * 10;
 
             if (warm_item < 5)
             {
-                //温かみのある家具が少なすぎて健康運に悪影響
+                //温かみのある家具が少なすぎて健康運，人気運に悪影響
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthCold, 50 - warm_item * 10, 1));
                 comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthCold, 50 - warm_item * 10, 2));
-                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthCold, 50 - warm_item * 10, 5));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthCold, 100 - warm_item * 20, 5));
             }
 
             //ピンクの家具一つにつき恋愛運がアップ
@@ -1813,7 +1664,39 @@ public partial class Evaluation : MonoBehaviour
                 comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestLuxuryZero, 60, 5));
             }
 
+            //銀 灰の家具一つにつき仕事運アップ
+            int silver_gray_item = 0;
+            for (int i = 0; i < furniture_grid_.Count; ++i)
+            {
+                if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Silver) >= 0
+                    || Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Gray) >= 0)
+                {
+                    ++silver_gray_item;
+                }
+            }
 
+            if (silver_gray_item > 0)
+            {
+                plus_luck_[0] += silver_gray_item * 10;
+
+                if (silver_gray_item < 3)
+                {
+                    //銀 灰の家具をもっと置けば仕事運アップ
+                    comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestSilverGray, 30 - silver_gray_item * 10, 0));
+                    comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestSilverGray, 30 - silver_gray_item * 10, 5));
+                }
+            }
+
+            //北西の金の気が強すぎると仕事運，人気運下がる
+            if(elements_[3] > 300)
+            {
+                minus_luck_[0] = elements_[3] - 300;
+                minus_luck_[1] = elements_[3] - 300;
+
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestVain, elements_[3] - 300, 0));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestVain, elements_[3] - 300, 1));
+                comment_flag_.Add(new CommentFlag(CommentIdentifier.NorthWestVain, (elements_[3] - 300) * 2, 5));
+            }
         }
         else
         {
@@ -1975,14 +1858,12 @@ public partial class Evaluation : MonoBehaviour
     //***********************************************************************************************************************************************************************************************
 
     //仕上げの運勢補正(鏡による運勢増減など)
-    //
-    //ここでは運勢に対し加算ではなく乗算による補正が行われる
     private void FortuneLast()
     {
         int[] displacement_plus_stock = new int[5] { 0, 0, 0, 0, 0 };
 
         int[] displacement_minus_stock = new int[5] { 0, 0, 0, 0, 0 };
-        
+
 
 
         if (room_role_ == Room.Entrance)
@@ -2156,5 +2037,6 @@ public partial class Evaluation : MonoBehaviour
     }
 
     partial void EvaluationTotaTestDummy();
+    partial void CommentMini();
     partial void Comment();
 }
