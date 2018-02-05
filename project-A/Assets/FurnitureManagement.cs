@@ -117,7 +117,7 @@ public class FurnitureManagement : MonoBehaviour
     }
 
     //値を代入して家具グリッドを追加(基本的に外部で呼び出される)
-    public void AddFurniture(int grid_ID)
+    public void AddFurniture(int category_ID , int furniture_ID)
     {
         //ここでも50までで制限しているが，本来は最大数判定を外側でやる．
         if (furniture_grid_.Count < MaxFurnitureNum() )
@@ -126,7 +126,7 @@ public class FurnitureManagement : MonoBehaviour
             string object_name = "furniture_grid_" + object_number_.ToString();
 
             furniture_grid_.Add(gameObject.AddComponent<FurnitureGrid>());
-            furniture_grid_[furniture_grid_.Count - 1].Init(grid_ID, object_name);
+            furniture_grid_[furniture_grid_.Count - 1].Init(category_ID, furniture_ID, object_name);
         }
     }
 
@@ -228,43 +228,43 @@ public class FurnitureManagement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                AddFurniture(9); //家具グリッド追加
+                AddFurniture(10, 1); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad1))
             {
-                AddFurniture(10); //家具グリッド追加
+                AddFurniture(10, 2); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad2))
             {
-                AddFurniture(11); //家具グリッド追加
+                AddFurniture(6, 3); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad3))
             {
-                AddFurniture(12); //家具グリッド追加
+                AddFurniture(6, 4); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad4)) //カーペット
+            else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                AddFurniture(15); //家具グリッド追加
+                AddFurniture(6, 5); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad5)) //壁掛け
+            else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                AddFurniture(16); //家具グリッド追加
+                AddFurniture(2, 6); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad6)) //ドア
+            else if (Input.GetKeyDown(KeyCode.Keypad6))
             {
-                AddFurniture(18); //家具グリッド追加
+                AddFurniture(2, 7); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad7)) //天井
+            else if (Input.GetKeyDown(KeyCode.Keypad7))
             {
-                AddFurniture(21); //家具グリッド追加
+                AddFurniture(2, 8); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad8)) //窓
+            else if (Input.GetKeyDown(KeyCode.Keypad8))
             {
-                AddFurniture(8); //家具グリッド追加
+                AddFurniture(2, 9); //家具グリッド追加
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad9)) //ベッド
+            else if (Input.GetKeyDown(KeyCode.Keypad9))
             {
-                AddFurniture(9); //家具グリッド追加
+                AddFurniture(2, 10); //家具グリッド追加
             }
         }
         else

@@ -64,8 +64,8 @@ public partial class FurnitureGrid : MonoBehaviour
 
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
-                triangles = new int[children_number_][];
-                triangles[0] = new int[4] { 0, 1, 2, 3 };
+                triangles_ = new int[children_number_][];
+                triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                 //パラメータの設定
                 parameta_[0] = 0; //ダミー
@@ -144,8 +144,8 @@ public partial class FurnitureGrid : MonoBehaviour
 
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
-                triangles = new int[children_number_][];
-                triangles[0] = new int[4] { 0, 1, 2, 3 };
+                triangles_ = new int[children_number_][];
+                triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                 //パラメータの設定
                 parameta_[0] = 0; //ダミー
@@ -223,8 +223,8 @@ public partial class FurnitureGrid : MonoBehaviour
 
                 children_grid_ = new GameObject[children_number_];
                 //頂点インデックス生成
-                triangles = new int[children_number_][];
-                triangles[0] = new int[4] { 0, 1, 2, 3 };
+                triangles_ = new int[children_number_][];
+                triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                 //パラメータの設定
                 parameta_[0] = 0; //ダミー

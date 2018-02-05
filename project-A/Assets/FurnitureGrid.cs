@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events; //UnityEventを使用するため
 using UnityEngine.EventSystems; //
+using UnityEngine.UI;
 
 //このクラスは始めにInitしなければならない
 //また，エラーフラグはオブジェクトの色で判断すること
@@ -37,35 +38,41 @@ public partial class FurnitureGrid : MonoBehaviour
     //家具のタイプ
     //ベッド，机，テーブル,ソファ，観葉植物，造花，水槽，カーペット，カーテン，家電(TV,PC,冷蔵庫,レンジ,洗濯機,ストーブ,エアコン,加湿器),
     //鏡，照明，電気スタンド，椅子，額縁，ぬいぐるみ，窓，ドア，タンス, その他
-    public enum FurnitureType { Bed, Desk, Table, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
-        ConsumerElectronics, Dresser, Illumination, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Bureau ,Otherwise};
+    public enum FurnitureType
+    {
+        Bed, Desk, Table, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
+        ConsumerElectronics, Dresser, CeilLamp, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Cabinet, Otherwise
+    };
 
     //カラー
     //白，黒，灰，赤，ピンク，青，オレンジ，黄色，緑，ベージュ，クリーム，茶，金，銀，紫, その他
-    public enum ColorName { White, Black, Gray, Red, Pink, Blue, Orange, Yellow, Green, Beige, Cream, Brown, Gold, Silver, Purple, Othrewise};
+    public enum ColorName { White, Black, Gray, Red, Pink, Blue, Orange, Yellow, Green, Beige, Cream, Brown, Gold, Silver, Purple, Othrewise };
 
     //材質
     //木製，天然素材，化学素材，プラスチック，陶磁器，大理石，金属，鉱物, ガラス，水, その他
-    public enum MaterialType { Wooden, Natural, Chemical, Plastic, Ceramic, Marble, Metal, Mineral, Glass, Water, Othrewise};
+    public enum MaterialType { Wooden, Natural, Chemical, Plastic, Ceramic, Marble, Metal, Mineral, Glass, Water, Othrewise };
 
     //模様
     //ストライプ，リーフパターン，花柄，星柄，ダイヤ柄，アニマル柄，ジグザグ，ボーダー，チェック(市松)，
     //ドット(水玉)，アーチ，フルーツ，光沢，ウェーブストライプ，不規則パターン，雲柄, その他
-    public enum PatternType { Stripe, Leaf, Flower, Star, Diamond, Animal, Zigzag, Border, Check,
-    Dot, Arch, Fruits, Luster, Wave, Irregularity, Cloud, Othrewise};
+    public enum PatternType
+    {
+        Stripe, Leaf, Flower, Star, Diamond, Animal, Zigzag, Border, Check,
+        Dot, Arch, Fruits, Luster, Wave, Irregularity, Cloud, Othrewise
+    };
 
     //形状
     //背が高い，背が低い，縦長, 横長，正方形，長方形，円形，楕円形，尖っている,その他
-    public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Sharp,Othrewise};
+    public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Sharp, Othrewise };
 
     //その他特性
     //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，花関連, 風関連, 西洋風, その他(特性なし)
-    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Wind, Western, Otherwise};
+    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Wind, Western, Otherwise };
 
 
 
     //部屋中から見た家具の置かれている方角
-    public enum PlacedDirection { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest, Othrewise};
+    public enum PlacedDirection { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest, Othrewise };
 
     //家具の挙動
     //
@@ -77,7 +84,8 @@ public partial class FurnitureGrid : MonoBehaviour
     //*********************************************************************************************************************************************************************************
 
     //ここから持っているデータ
-    private int furniture_ID_; //仮家具グリッドID
+    private int category_ID_; //家具のカテゴリーID
+    private int furniture_ID_; //家具カテゴリーの中の家具ID
     private FurnitureType furniture_type_; //家具の種類(ベッド，机など)
     //家具のタイプごとのパラメータ(要素は家具タイプによって異なる)
     private float[] parameta_;
@@ -107,20 +115,27 @@ public partial class FurnitureGrid : MonoBehaviour
     private int yin_yang_ = 0; //陰陽(プラス=陽，マイナス=陰)
 
     //ここからアクセス不可能
-    private float rate_ = 0.2F; //仮比率(基本ここでしか変更しない) (アクセス不可)
+    private float rate_ = 0.1F; //仮比率(基本ここでしか変更しない) (アクセス不可)
     private int[] center_point_;
     private int[] put_point_; //乗せるためのグリッド点
     private int[][] grid_point_;
     private Vector2[] uv_coordinate_;
     private Texture2D texture_;
-    private int[][] triangles;
+    private int[][] triangles_;
+    private int[] outline_index_;
     private ObjectType object_type_;
     private int children_number_; //子オブジェクトの数
     private GameObject[] children_grid_; //家具グリッド子オブジェクト
     private int vertices_number_; //頂点の数
 
 
-    //仮家具グリッドID(取得用)
+    //家具のカテゴリーID(取得用)
+    public int category_ID()
+    {
+        return category_ID_;
+    }
+
+    //家具の種類ID(取得用)
     public int furniture_ID()
     {
         return furniture_ID_;
@@ -206,7 +221,7 @@ public partial class FurnitureGrid : MonoBehaviour
         {
             return vertices_all_[index];
         }
-       else
+        else
         {
             return vertices_all_[0];
         }
@@ -285,57 +300,88 @@ public partial class FurnitureGrid : MonoBehaviour
 
 
     //データ初期化(FurnitureGridをインスタンス化したとき，このメソッドを使って初期化する)
-    public void Init(int grid_ID, string object_name)
+    public void Init(int category_ID, int furniture_ID, string object_name)
     {
-        furniture_ID_ = grid_ID;
+        category_ID_ = category_ID;
+        furniture_ID_ = furniture_ID;
         furniture_grid_ = new GameObject();
 
-        //ここから個別に家具グリッドを取得
-        if (grid_ID >= 0 && grid_ID <= 8) //そのうち消す
+        if (category_ID_ == 0)
         {
-            GetGridData(grid_ID);
-        }
-        else if (grid_ID == 9) //該当するのはベッド
-        {
+            //ベッド
             furniture_type_ = FurnitureType.Bed;
             parameta_ = new float[6];
-            GetGridDataBed(grid_ID);
+            GetGridDataBed(furniture_ID_);
         }
-        else if (grid_ID == 10) //該当するのはソファ
+        else if (category_ID_ == 1)
         {
-            furniture_type_ = FurnitureType.Sofa;
+            //タンス
+            furniture_type_ = FurnitureType.Cabinet;
             parameta_ = new float[1];
-            GetGridDataSofa(grid_ID);
+            GetGridDataCabinet(furniture_ID_);
         }
-        else if (grid_ID == 11) //該当するのは机
+        else if (category_ID_ == 2)
         {
-            furniture_type_ = FurnitureType.Desk;
-            parameta_ = new float[1];
-            GetGridDataDesk(grid_ID);
-        }
-        else if (grid_ID >= 12 && grid_ID < 15) //該当するのはテーブル
-        {
-            furniture_type_ = FurnitureType.Table;
-            parameta_ = new float[1];
-            GetGridDataTable(grid_ID);
-        }
-        else if (grid_ID >= 15 && grid_ID < 18) //該当するのはカーペット
-        {
+            //カーペット
             furniture_type_ = FurnitureType.Carpet;
             parameta_ = new float[1];
-            GetGridDataCarpet(grid_ID);
+            GetGridDataCarpet(furniture_ID_);
         }
-        else if (grid_ID >= 18 && grid_ID < 21) //該当するのは鏡
+        else if (category_ID_ == 3)
         {
-            furniture_type_ = FurnitureType.Dresser;
+            //机
+            furniture_type_ = FurnitureType.Desk;
             parameta_ = new float[1];
-            GetGridDataDresser(grid_ID);
+            GetGridDataDesk(furniture_ID_);
         }
-        else if (grid_ID == 21) //該当するのは家電(TV)
+        else if (category_ID_ == 4)
         {
+            //観葉植物(現在未実装)
+            furniture_type_ = FurnitureType.FoliagePlant;
+            parameta_ = new float[1];
+            GetGridDataFoliagePlant(furniture_ID_);
+        }
+        else if (category_ID_ == 5)
+        {
+            //天井ランプ
+            furniture_type_ = FurnitureType.CeilLamp;
+            parameta_ = new float[1];
+            GetGridDataCeilLamp(furniture_ID_);
+        }
+        else if (category_ID_ == 6)
+        {
+            //机ランプ
+            furniture_type_ = FurnitureType.DeskLamp;
+            parameta_ = new float[1];
+            GetGridDataDeskLamp(furniture_ID_);
+        }
+        else if (category_ID_ == 7)
+        {
+            //ソファー
+            furniture_type_ = FurnitureType.Sofa;
+            parameta_ = new float[1];
+            GetGridDataSofa(furniture_ID_);
+        }
+        else if (category_ID_ == 8)
+        {
+            //テーブル
+            furniture_type_ = FurnitureType.Table;
+            parameta_ = new float[1];
+            GetGridDataTable(furniture_ID_);
+        }
+        else if (category_ID_ == 9)
+        {
+            //家電
             furniture_type_ = FurnitureType.ConsumerElectronics;
             parameta_ = new float[1];
-            GetGridDataConsumerElectronics(grid_ID);
+            GetGridDataConsumerElectronics(furniture_ID_);
+        }
+        else if (category_ID_ == 10)
+        {
+            //カーテン
+            furniture_type_ = FurnitureType.Curtain;
+            parameta_ = new float[1];
+            GetGridDataCurtain(furniture_ID_);
         }
         //ここまで個別に家具グリッドを取得
 
@@ -361,20 +407,19 @@ public partial class FurnitureGrid : MonoBehaviour
             Vector3[] vertices = new Vector3[4];
             for (int j = 0; j < 4; ++j)
             {
-                vertices[j] = vertices_all_[triangles[i][j]];
+                vertices[j] = vertices_all_[triangles_[i][j]];
             }
             mesh.vertices = vertices;
             mesh.triangles = triangles_static;
             mesh.normals = normals_;
-            if (grid_ID >= 9)
+
+            Vector2[] uv_modified = new Vector2[4];
+            for (int j = 0; j < 4; ++j)
             {
-                Vector2[] uv_modified = new Vector2[4];
-                for (int j = 0; j < 4; ++j)
-                {
-                    uv_modified[j] = uv_coordinate_[triangles[i][j]];
-                }
-                mesh.uv = uv_modified;
+                uv_modified[j] = uv_coordinate_[triangles_[i][j]];
             }
+            mesh.uv = uv_modified;
+
             mesh.RecalculateBounds();
             string children_name = "_children_" + i.ToString();
             children_grid_[i] = new GameObject();
@@ -384,15 +429,20 @@ public partial class FurnitureGrid : MonoBehaviour
             children_grid_[i].GetComponent<MeshFilter>().sharedMesh.name = object_name;
             children_grid_[i].AddComponent<MeshRenderer>();
 
-            if (grid_ID >= 9)
-            {
-                children_grid_[i].GetComponent<MeshRenderer>().material.mainTexture = texture_;
-                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
-            }
-            else
-            {
-                children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
-            }
+
+            children_grid_[i].GetComponent<MeshRenderer>().material.mainTexture = texture_;
+            children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2, 1);
+
+            //ここからグリッドの透明化処理(シェーダモードをcutout化)
+            children_grid_[i].GetComponent<MeshRenderer>().material.SetOverrideTag("RenderType", "TransparentCutout");
+            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_ZWrite", 1);
+            children_grid_[i].GetComponent<MeshRenderer>().material.EnableKeyword("_ALPHATEST_ON");
+            children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHABLEND_ON");
+            children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            children_grid_[i].GetComponent<MeshRenderer>().material.renderQueue = 2450;
+            //ここまでグリッドの透明化処理
 
             float quad_horizontal = (vertices[2] - vertices[0]).magnitude; //四角形の横の長さ
             float quad_vertical = (vertices[1] - vertices[0]).magnitude; //四角形の縦の長さ
@@ -407,7 +457,7 @@ public partial class FurnitureGrid : MonoBehaviour
             children_grid_[i].transform.parent = furniture_grid_.transform; //親オブジェクトに登録
         }
         furniture_grid_.name = object_name;
-      
+
         if (object_type_ == ObjectType.Normal)
         {
             furniture_grid_.tag = "furniture_grid"; //家具の上においてもよい
@@ -430,36 +480,84 @@ public partial class FurnitureGrid : MonoBehaviour
         }
 
         furniture_grid_.AddComponent<MeshRenderer>();
-       
+
         furniture_grid_.AddComponent<GridError>(); //家具オブジェクトにGridError.cs(家具グリッド同士の衝突判定)をアタッチ
         furniture_grid_.GetComponent<BoxCollider>().isTrigger = true;
         furniture_grid_.AddComponent<Rigidbody>();
         furniture_grid_.GetComponent<Rigidbody>().isKinematic = true;
         furniture_grid_.SetActive(true);
+
+        furniture_grid_.AddComponent<LineRenderer>();
+        furniture_grid_.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+        furniture_grid_.GetComponent<LineRenderer>().SetVertexCount(outline_index_.Length);
+
+        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
+        for (int i = 0; i < outline_index_.Length; ++i)
+        {
+            outline_vertices[i] = vertices_all_[outline_index_[i]];
+        }
+        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
+        furniture_grid_.GetComponent<LineRenderer>().enabled = false;
     }
 
     //マウス移動
     public void Translate(Vector3 new_position)
     {
         furniture_grid_.transform.position = new_position;
+
+        for (int i = 0; i < vertices_all_.Length; ++i)
+        {
+            vertices_all_[i] = (new_position - grid_position_) + vertices_all_[i];
+        }
+
+        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
+        for (int i = 0; i < outline_index_.Length; ++i)
+        {
+            outline_vertices[i] = vertices_all_[outline_index_[i]];
+        }
+        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
+
         grid_position_ = new_position;
     }
 
     //マウス回転
     public void Rotate()
     {
-        furniture_grid_.transform.Rotate(0,0,90);
-        Quaternion quaternion = Quaternion.AngleAxis(90,Vector3.forward);
+        furniture_grid_.transform.Rotate(0, 0, 90);
+        Quaternion quaternion = Quaternion.AngleAxis(90, Vector3.forward);
+
+        for (int i= 0; i < vertices_all_.Length; ++i)
+        {
+            vertices_all_[i] = quaternion * (vertices_all_[i] - grid_position_) + grid_position_;
+        }
+
+        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
+        for (int i = 0; i < outline_index_.Length; ++i)
+        {
+            outline_vertices[i] = vertices_all_[outline_index_[i]];
+        }
+        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
+
+      
         up_direction_ = quaternion * up_direction_;
         right_direction_ = quaternion * right_direction_;
     }
 
-    partial void GetGridData(int grid_ID); //初期実験用(そのうち消す)
-    partial void GetGridDataBed(int grid_ID); //ベッド実験
-    partial void GetGridDataSofa(int grid_ID); //ソファ実験
-    partial void GetGridDataDesk(int grid_ID); //机実験
-    partial void GetGridDataTable(int grid_ID); //テーブル
-    partial void GetGridDataCarpet(int grid_ID); //カーペット
+    partial void GetGridDataBed(int furniture_ID); // 0 ---ベッド
+    partial void GetGridDataCabinet(int furniture_ID); // 1 ---キャビネット
+    partial void GetGridDataCarpet(int furniture_ID); // 2 ---カーペット
+    partial void GetGridDataDesk(int furniture_ID); // 3 ---机
+    partial void GetGridDataFoliagePlant(int furniture_ID); // 4 ---観葉植物
+    partial void GetGridDataCeilLamp(int furniture_ID); // 5 ---天井ランプ
+    partial void GetGridDataDeskLamp(int furniture_ID); // 6 ---机ランプ
+    partial void GetGridDataSofa(int furniture_ID); // 7 ---ソファー
+    partial void GetGridDataTable(int furniture_ID); // 8 ---テーブル
+    partial void GetGridDataConsumerElectronics(int furniture_ID); // 9 ---家電
+    partial void GetGridDataCurtain(int furniture_ID); // 10 ---カーテン
+
+    //ここから未実装
     partial void GetGridDataDresser(int grid_ID); //鏡(ドレッサー)
-    partial void GetGridDataConsumerElectronics(int grid_ID); //家電
 }
+
+
+

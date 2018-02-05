@@ -74,13 +74,32 @@ public class GridError : MonoBehaviour {
             int up_down = 0;
 
 
-            if( (transform.tag == "furniture_grid_wall" 
-               || transform.tag == "furniture_grid_door" )
+            if( transform.tag == "furniture_grid_door" 
                || transform.tag == "furniture_grid_window")
             {
                 //壁掛け，ドア，窓は詳しく決めていない
                 //詳しく決めていない
 
+            }
+            else if(transform.tag == "furniture_grid_wall") //自分が壁掛けの場合
+            {
+                if (collider.transform.tag == "furniture_grid_wall")
+                {
+                    //相手が壁掛けならばエラー
+                    error_flag = true;
+                }
+                else if(collider.transform.tag == "furniture_grid_ceil")
+                {
+                    //相手が天井掛けなら自分が下になる
+                    error_flag = false;
+                    up_down = 1;
+                }
+                else
+                {
+                    //他は自分が上になる
+                    error_flag = false;
+                    up_down = 2;
+                }
             }
             else if (transform.tag == "furniture_grid_rugs" ) //自分が敷物の場合
             {
@@ -148,7 +167,7 @@ public class GridError : MonoBehaviour {
                 {
                     for (int i = 0; i < transform.childCount; ++i)
                     {
-                        transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
+                        transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2, 1);
                     } //i
                     errored_ = false;
                 }
@@ -211,7 +230,7 @@ public class GridError : MonoBehaviour {
 
                 for (int i = 0; i < my_child_number; ++i)
                 {
-                   transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 0, 0);
+                   transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 0, 0, 1);
                 } //i
                 errored_ = true;
             }
@@ -290,7 +309,7 @@ public class GridError : MonoBehaviour {
         {
             for (int i = 0; i < transform.childCount; ++i)
             {
-               transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2);
+               transform.GetChild(i).GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2, 1);
             } //i
             errored_ = false;
             Vector3 buffer_position = transform.position;
