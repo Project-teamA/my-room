@@ -228,43 +228,43 @@ public class FurnitureManagement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                AddFurniture(10, 1); //家具グリッド追加
+                AddFurniture(0, 1); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad1))
             {
-                AddFurniture(10, 2); //家具グリッド追加
+                AddFurniture(0, 2); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad2))
             {
-                AddFurniture(6, 3); //家具グリッド追加
+                AddFurniture(0, 3); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad3))
             {
-                AddFurniture(6, 4); //家具グリッド追加
+                AddFurniture(0, 4); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                AddFurniture(6, 5); //家具グリッド追加
+                AddFurniture(0, 5); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                AddFurniture(2, 6); //家具グリッド追加
+                AddFurniture(0, 6); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {
-                AddFurniture(2, 7); //家具グリッド追加
+                AddFurniture(0, 7); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad7))
             {
-                AddFurniture(2, 8); //家具グリッド追加
+                AddFurniture(9, 8); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad8))
             {
-                AddFurniture(2, 9); //家具グリッド追加
+                AddFurniture(9, 9); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad9))
             {
-                AddFurniture(2, 10); //家具グリッド追加
+                AddFurniture(0, 10); //家具グリッド追加
             }
         }
         else
