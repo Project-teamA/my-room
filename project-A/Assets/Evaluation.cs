@@ -806,8 +806,8 @@ public partial class Evaluation : MonoBehaviour
         //プラスチック, または化学繊維の家具があるかどうか(CommentSupport用).
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Chemical) >= 0
-                || Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Plastic) >= 0)
+            if ( furniture_grid_[i].material_type().IndexOf( FurnitureGrid.MaterialType.Chemical ) >= 0
+                || furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Plastic) >= 0)
             {
                 comment_support_.Add(CommentSupport.ChemicalOrPlastic);
                 break;
@@ -820,7 +820,7 @@ public partial class Evaluation : MonoBehaviour
         //赤い家具1つでも置くと仕事，人気，健康，恋愛アップ
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Red) >= 0)
+            if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Red) >= 0)
             {
                 color_luck_plus_stock[0] += 10;
                 color_luck_plus_stock[1] += 30;
@@ -844,7 +844,7 @@ public partial class Evaluation : MonoBehaviour
         bool pink_at_least = false;
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Pink) >= 0)
+            if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Pink) >= 0)
             {
                 color_luck_plus_stock[4] += 50;
                 pink_at_least = true;
@@ -863,7 +863,7 @@ public partial class Evaluation : MonoBehaviour
         bool blue_at_least = false;
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Blue) >= 0)
+            if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Blue) >= 0)
             {
                 color_luck_plus_stock[0] += 30;
                 blue_at_least = true;
@@ -882,7 +882,7 @@ public partial class Evaluation : MonoBehaviour
         bool orange_at_least = false;
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Blue) >= 0)
+            if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Blue) >= 0)
             {
                 orange_at_least = true;
                 break;
@@ -932,7 +932,7 @@ public partial class Evaluation : MonoBehaviour
         int beige_item = 0;
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Beige) >= 0)
+            if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Beige) >= 0)
             {
                 ++beige_item;
             }
@@ -961,7 +961,7 @@ public partial class Evaluation : MonoBehaviour
 
     //部屋による運勢補正
     private void FortuneRoom()
-    {
+    { 
         if (room_role_ == Room.Entrance)
         {
             if (room_direction_ == Direction.NorthEast)
@@ -1013,7 +1013,7 @@ public partial class Evaluation : MonoBehaviour
             //良い香りのするものを一つでも玄関に置くと運気アップ
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Smell) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Smell) >= 0)
                 {
                     for (int j = 0; j < 5; ++j)
                     {
@@ -1089,8 +1089,8 @@ public partial class Evaluation : MonoBehaviour
             int wood_natural_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Wooden) >= 0
-                    || Array.IndexOf(furniture_grid_[i].material_type(), FurnitureGrid.MaterialType.Natural) >= 0)
+                if (furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Wooden) >= 0
+                    || furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Natural) >= 0)
                 {
                     ++wood_natural_item;
                 }
@@ -1109,7 +1109,7 @@ public partial class Evaluation : MonoBehaviour
             int blue_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Blue) >= 0)
+                if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Blue) >= 0)
                 {
                     ++blue_item;
                 }
@@ -1204,7 +1204,7 @@ public partial class Evaluation : MonoBehaviour
 
     //部屋の方位による運勢補正
     private void FortuneDirection()
-    {
+    { 
         if (room_direction_ == Direction.North)
         {
             //北は水の気でパワーアップ
@@ -1238,7 +1238,7 @@ public partial class Evaluation : MonoBehaviour
             int warm_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Warm) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Warm) >= 0)
                 {
                     ++warm_item;
                 }
@@ -1258,7 +1258,7 @@ public partial class Evaluation : MonoBehaviour
             int pink_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Pink) >= 0)
+                if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Pink) >= 0)
                 {
                     ++pink_item;
                 }
@@ -1327,7 +1327,7 @@ public partial class Evaluation : MonoBehaviour
             int high_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].form_type(), FurnitureGrid.FormType.High) >= 0)
+                if (furniture_grid_[i].form_type().IndexOf(FurnitureGrid.FormType.High) >= 0)
                 {
                     ++high_item;
                 }
@@ -1377,8 +1377,8 @@ public partial class Evaluation : MonoBehaviour
             int wind_sound_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Wind) >= 0
-                    || Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Wind) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Wind) >= 0
+                    || furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Sound) >= 0)
                 {
                     ++wind_sound_item;
                 }
@@ -1424,8 +1424,8 @@ public partial class Evaluation : MonoBehaviour
             int wind_sound_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Wind) >= 0
-                    || Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Wind) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Wind) >= 0
+                    || furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Sound)  >= 0)
                 {
                     ++wind_sound_item;
                 }
@@ -1445,7 +1445,7 @@ public partial class Evaluation : MonoBehaviour
             int orange_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Orange) >= 0)
+                if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Orange) >= 0)
                 {
                     ++orange_item;
                 }
@@ -1520,7 +1520,7 @@ public partial class Evaluation : MonoBehaviour
             int low_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].form_type(), FurnitureGrid.FormType.Low) >= 0)
+                if (furniture_grid_[i].form_type().IndexOf(FurnitureGrid.FormType.Low) >= 0)
                 {
                     ++low_item;
                 }
@@ -1572,7 +1572,7 @@ public partial class Evaluation : MonoBehaviour
             int western_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Western) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Western) >= 0)
                 {
                     ++western_item;
                 }
@@ -1590,7 +1590,7 @@ public partial class Evaluation : MonoBehaviour
             int luxury_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Luxury) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Luxury) >= 0)
                 {
                     ++luxury_item;
                 }
@@ -1634,7 +1634,7 @@ public partial class Evaluation : MonoBehaviour
             int luxury_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].characteristic(), FurnitureGrid.Characteristic.Luxury) >= 0)
+                if (furniture_grid_[i].characteristic().IndexOf(FurnitureGrid.Characteristic.Luxury) >= 0)
                 {
                     ++luxury_item;
                 }
@@ -1668,8 +1668,8 @@ public partial class Evaluation : MonoBehaviour
             int silver_gray_item = 0;
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
-                if (Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Silver) >= 0
-                    || Array.IndexOf(furniture_grid_[i].color_name(), FurnitureGrid.ColorName.Gray) >= 0)
+                if (furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Silver) >= 0
+                    || furniture_grid_[i].color_name().IndexOf(FurnitureGrid.ColorName.Gray) >= 0)
                 {
                     ++silver_gray_item;
                 }

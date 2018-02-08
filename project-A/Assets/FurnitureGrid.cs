@@ -1,38 +1,19 @@
 ﻿//FurnitureGrid.cs(家具グリッド用クラス)
-//
-// 2018年1月17日以降変更した箇所(菅原涼太)
-// FurnitureTypeにTable(テーブル追加)
-// 家具の部屋ない方角位置の書き込み関数を追加
-//
-// 2018年1月21日以降更新した箇所(菅原涼太)
-//
+
+//このままでは向きが分かりません．わかるように矢印付けましょう
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events; //UnityEventを使用するため
-using UnityEngine.EventSystems; //
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //このクラスは始めにInitしなければならない
-//また，エラーフラグはオブジェクトの色で判断すること
-//オブジェクトの重なりの順番はobjectのz位置で判断(z値が小さいほど上に載っている判定)
-//オブジェクトのエラー判定はオブジェクトの色で判断すること
-//
-//2018年1月19日更新事項    
-//花関連 = flowerを追加
-//色(温かみのある色を削除，その他の特性に[温かみ]があるのでそれで代用)
-
-
 
 public partial class FurnitureGrid : MonoBehaviour
 {
-    //Normal = この家具グリッドは普通の家具グリッドである．
-    //Rugs = この家具グリッドは敷物である
-    //CeilingHook = この家具グリッドは天井掛けである
-    //WallMounted = この家具グリッドは壁掛けである(派生はカーテン)
-    //Door = この家具グリッドはドアである
-    //Window = この家具グリッドは窓である
+
     public enum ObjectType { Normal, Rugs, CeilingHook, WallMounted, Door, Window };
 
     //家具のタイプ
@@ -43,6 +24,12 @@ public partial class FurnitureGrid : MonoBehaviour
         Bed, Desk, Table, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
         ConsumerElectronics, Dresser, CeilLamp, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Cabinet, Otherwise
     };
+
+
+
+
+
+    //*************************************************************************************************************************************************************************************
 
     //カラー
     //白，黒，灰，赤，ピンク，青，オレンジ，黄色，緑，ベージュ，クリーム，茶，金，銀，紫, その他
@@ -69,6 +56,10 @@ public partial class FurnitureGrid : MonoBehaviour
     //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，花関連, 風関連, 西洋風, その他(特性なし)
     public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Wind, Western, Otherwise };
 
+    //*************************************************************************************************************************************************************************************
+
+
+
 
 
     //部屋中から見た家具の置かれている方角
@@ -89,11 +80,29 @@ public partial class FurnitureGrid : MonoBehaviour
     private FurnitureType furniture_type_; //家具の種類(ベッド，机など)
     //家具のタイプごとのパラメータ(要素は家具タイプによって異なる)
     private float[] parameta_;
-    private ColorName[] color_name_; //色(複数指定可能)
-    private MaterialType[] material_type_; //材質タイプ(複数指定可能)
-    private PatternType[] pattern_type_; //模様タイプ(複数指定可能)
-    private FormType[] form_type_; //形状タイプ(複数指定可能)
-    private Characteristic[] characteristic_; //その他特性(複数指定可能)
+
+    //特徴抽出機能(クラスにする方法もあったが要素が含まれているかの実装が面倒だったのでクラスにしていない)********************
+
+    private List<FurnitureType> furniture_subtype_ = new List<FurnitureType>(); //色識別子
+    private List<int> furniture_subtype_weight_ = new List<int>(); //比重(1以上)
+
+    private List<ColorName> color_name_ = new List<ColorName>(); //色識別子
+    private List<int> color_name_weight_ = new List<int>(); //比重(1以上)
+
+    private List<MaterialType> material_type_ = new List<MaterialType>(); //材質識別子
+    private List<int> material_type_weight_ = new List<int>(); //比重(1以上)
+
+    private List<PatternType> pattern_type_ = new List<PatternType>(); //模様識別子
+    private List<int> pattern_type_weight_ = new List<int>(); //比重(1以上)
+
+    private List<FormType> form_type_ = new List<FormType>(); //形状識別子
+    private List<int> form_type_weight_ = new List<int>(); //比重(1以上)
+
+    private List<Characteristic> characteristic_ = new List<Characteristic>(); //その他特性識別子
+    private List<int> characteristic_weight_ = new List<int>(); //比重(1以上)
+
+    //************************************************************************************************************************
+
 
     private GameObject furniture_grid_; //家具グリッド親オブジェクト
     private Vector3 grid_position_ = new Vector3(0f, 0f, 0f); //グリッド(中心)の3次元位置
@@ -156,35 +165,82 @@ public partial class FurnitureGrid : MonoBehaviour
         return parameta_[parameta_number];
     }
 
-    //色(取得用)
-    public ColorName[] color_name()
+
+
+
+
+    //******************************************************************************************************************
+
+
+
+    //色情報(識別子のみ取得)
+    public List<ColorName> color_name()
     {
         return color_name_;
     }
 
-    //材質タイプ(取得用)
-    public MaterialType[] material_type()
+    public List<int> color_name_weight()
+    {
+        return color_name_weight_;
+    }
+
+
+
+    //材質情報(識別子のみ取得)
+    public List<MaterialType> material_type()
     {
         return material_type_;
     }
 
-    //形状タイプ(取得用)
-    public FormType[] form_type()
+    public List<int> material_type_weight()
     {
-        return form_type_;
+        return material_type_weight_;
     }
 
-    //模様タイプ(取得用)
-    public PatternType[] pattern_type()
+
+
+    //模様情報(識別子のみ取得)
+    public List<PatternType> pattern_type()
     {
         return pattern_type_;
     }
 
-    //その他特性(取得用)
-    public Characteristic[] characteristic()
+    public List<int> pattern_type_weight()
+    {
+        return pattern_type_weight_;
+    }
+
+
+
+
+    //形状情報(識別子のみ取得)
+    public List<FormType> form_type()
+    {
+        return form_type_;
+    }
+
+    public List<int> form_type_weight()
+    {
+        return form_type_weight_;
+    }
+
+
+
+
+    //その他特性(識別子のみ取得)
+    public List<Characteristic> characteristic()
     {
         return characteristic_;
     }
+
+    public List<int> characteristic_weight()
+    {
+        return characteristic_weight_;
+    }
+
+
+
+    //******************************************************************************************************************
 
 
 
@@ -385,6 +441,9 @@ public partial class FurnitureGrid : MonoBehaviour
         }
         //ここまで個別に家具グリッドを取得
 
+        CreateEnergy();
+
+
         vertices_all_ = new Vector3[vertices_number_];
         for (int i = 0; i < vertices_number_; ++i)
         {
@@ -434,14 +493,14 @@ public partial class FurnitureGrid : MonoBehaviour
             children_grid_[i].GetComponent<MeshRenderer>().material.color = new Color(2, 2, 2, 1);
 
             //ここからグリッドの透明化処理(シェーダモードをcutout化)
-            children_grid_[i].GetComponent<MeshRenderer>().material.SetOverrideTag("RenderType", "TransparentCutout");
-            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_ZWrite", 1);
-            children_grid_[i].GetComponent<MeshRenderer>().material.EnableKeyword("_ALPHATEST_ON");
-            children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHABLEND_ON");
-            children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            children_grid_[i].GetComponent<MeshRenderer>().material.renderQueue = 2450;
+            //children_grid_[i].GetComponent<MeshRenderer>().material.SetOverrideTag("RenderType", "TransparentCutout");
+            //children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            //children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            //children_grid_[i].GetComponent<MeshRenderer>().material.SetInt("_ZWrite", 1);
+            //children_grid_[i].GetComponent<MeshRenderer>().material.EnableKeyword("_ALPHATEST_ON");
+            //children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHABLEND_ON");
+            //children_grid_[i].GetComponent<MeshRenderer>().material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            //children_grid_[i].GetComponent<MeshRenderer>().material.renderQueue = 2450;
             //ここまでグリッドの透明化処理
 
             float quad_horizontal = (vertices[2] - vertices[0]).magnitude; //四角形の横の長さ
@@ -526,7 +585,7 @@ public partial class FurnitureGrid : MonoBehaviour
         furniture_grid_.transform.Rotate(0, 0, 90);
         Quaternion quaternion = Quaternion.AngleAxis(90, Vector3.forward);
 
-        for (int i= 0; i < vertices_all_.Length; ++i)
+        for (int i = 0; i < vertices_all_.Length; ++i)
         {
             vertices_all_[i] = quaternion * (vertices_all_[i] - grid_position_) + grid_position_;
         }
@@ -538,7 +597,7 @@ public partial class FurnitureGrid : MonoBehaviour
         }
         furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
 
-      
+
         up_direction_ = quaternion * up_direction_;
         right_direction_ = quaternion * right_direction_;
     }
@@ -557,4 +616,7 @@ public partial class FurnitureGrid : MonoBehaviour
 
     //ここから未実装
     partial void GetGridDataDresser(int grid_ID); //鏡(ドレッサー)
+    //ここまで未実装
+
+    partial void CreateEnergy(); //特徴を参考に五行陰陽を自動生成
 }

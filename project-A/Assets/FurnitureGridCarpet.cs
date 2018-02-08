@@ -76,37 +76,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -161,37 +130,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -246,37 +184,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -331,37 +238,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -416,37 +292,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -501,37 +346,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -586,37 +400,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -671,37 +454,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -756,37 +508,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -841,37 +562,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
 
@@ -926,37 +616,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[3]; //色
-                    color_name_[0] = ColorName.Blue;
-                    color_name_[1] = ColorName.Green;
-                    color_name_[2] = ColorName.White;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Natural;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Dot;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Soft;
-
-                    //五行の設定
-                    elements_wood_ = 18; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 18; //土の気
-                    elements_metal_ = 10; //金の気
-                    elements_water_ = 26; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = -12; //陰陽の設定
                     break;
                 }
         }

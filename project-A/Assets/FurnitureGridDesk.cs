@@ -85,35 +85,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[1]; //色
-                    color_name_[0] = ColorName.Brown;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Wooden;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Othrewise;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Otherwise;
-
-                    //五行の設定
-                    elements_wood_ = 45; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 5; //土の気
-                    elements_metal_ = 0; //金の気
-                    elements_water_ = 0; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = 0; //陰陽の設定
                     break;
                 }
 
@@ -166,35 +137,6 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[1]; //色
-                    color_name_[0] = ColorName.Brown;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Wooden;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Othrewise;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Otherwise;
-
-                    //五行の設定
-                    elements_wood_ = 45; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 5; //土の気
-                    elements_metal_ = 0; //金の気
-                    elements_water_ = 0; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = 0; //陰陽の設定
                     break;
                 }
 
@@ -258,35 +200,61 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[1]; //色
-                    color_name_[0] = ColorName.Brown;
+                    break;
+                }
 
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Wooden;
+            case 4:
+                {
+                    //机タイプ4
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    //
+                  
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 2;
+                    center_point_ = new int[2] { 8, 9 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 9 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 8;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 14 }; //1
+                    grid_point_[2] = new int[2] { 14, 0 }; //2
+                    grid_point_[3] = new int[2] { 14, 14 }; //3
 
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Othrewise;
+                    grid_point_[4] = new int[2] { 0, 14 }; //4
+                    grid_point_[5] = new int[2] { 0, 28 }; //5
+                    grid_point_[6] = new int[2] { 35, 14 }; //6
+                    grid_point_[7] = new int[2] { 35, 28 }; //7
 
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
+                    texture_ = Resources.Load<Texture2D>("desk/desk_4_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 0.5F); //1
+                    uv_coordinate_[2] = new Vector2(0.4F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(0.4F, 0.5F); //3
 
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Otherwise;
+                    uv_coordinate_[4] = new Vector2(0.0F, 0.5F); //4
+                    uv_coordinate_[5] = new Vector2(0.0F, 1.0F); //5
+                    uv_coordinate_[6] = new Vector2(1.0F, 0.5F); //6
+                    uv_coordinate_[7] = new Vector2(1.0F, 1.0F); //7
 
-                    //五行の設定
-                    elements_wood_ = 45; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 5; //土の気
-                    elements_metal_ = 0; //金の気
-                    elements_water_ = 0; //水の気
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+                    triangles_[1] = new int[4] { 4, 5, 6, 7 };
 
-                    //陰陽の設定
-                    yin_yang_ = 0; //陰陽の設定
+                    //枠線
+                    outline_index_ = new int[9] { 0, 2, 3, 6, 7, 5, 4, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
                     break;
                 }
 
@@ -339,35 +307,138 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[1]; //色
-                    color_name_[0] = ColorName.Brown;
+                    break;
+                }
 
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Wooden;
+            case 6:
+                {
+                    //机タイプ6
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    //
+                   
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 1;
+                    center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 4 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 4;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 8 }; //1
+                    grid_point_[2] = new int[2] { 17, 0 }; //2
+                    grid_point_[3] = new int[2] { 17, 8 }; //3
 
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Othrewise;
+                    texture_ = Resources.Load<Texture2D>("desk/desk_6_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 1.0F); //1
+                    uv_coordinate_[2] = new Vector2(1.0F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(1.0F, 1.0F); //3
 
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Otherwise;
+                    //枠線
+                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
 
-                    //五行の設定
-                    elements_wood_ = 45; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 5; //土の気
-                    elements_metal_ = 0; //金の気
-                    elements_water_ = 0; //水の気
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
 
-                    //陰陽の設定
-                    yin_yang_ = 0; //陰陽の設定
+                    break;
+                }
+
+            case 7:
+                {
+                    //机タイプ7
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    //
+
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 1;
+                    center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 4 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 4;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 8 }; //1
+                    grid_point_[2] = new int[2] { 17, 0 }; //2
+                    grid_point_[3] = new int[2] { 17, 8 }; //3
+
+                    texture_ = Resources.Load<Texture2D>("desk/desk_7_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 1.0F); //1
+                    uv_coordinate_[2] = new Vector2(1.0F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(1.0F, 1.0F); //3
+
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+
+                    //枠線
+                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
+                    break;
+                }
+
+            case 8:
+                {
+                    //机タイプ8
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    //
+
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 1;
+                    center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 4 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 4;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 9 }; //1
+                    grid_point_[2] = new int[2] { 24, 0 }; //2
+                    grid_point_[3] = new int[2] { 24, 9 }; //3
+
+                    texture_ = Resources.Load<Texture2D>("desk/desk_8_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 1.0F); //1
+                    uv_coordinate_[2] = new Vector2(1.0F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(1.0F, 1.0F); //3
+
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+
+                    //枠線
+                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
                     break;
                 }
 
@@ -420,37 +491,150 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
-                    //色の指定
-                    color_name_ = new ColorName[1]; //色
-                    color_name_[0] = ColorName.Brown;
-
-                    //材質の指定
-                    material_type_ = new MaterialType[1]; //マテリアルタイプ
-                    material_type_[0] = MaterialType.Wooden;
-
-                    //模様の指定
-                    pattern_type_ = new PatternType[1]; //模様タイプ
-                    pattern_type_[0] = PatternType.Othrewise;
-
-                    //形状指定
-                    form_type_ = new FormType[1]; //形状タイプ
-                    form_type_[0] = FormType.Rectangle;
-
-                    //その他特性の指定
-                    characteristic_ = new Characteristic[1]; //その他特性
-                    characteristic_[0] = Characteristic.Otherwise;
-
-                    //五行の設定
-                    elements_wood_ = 45; //木の気
-                    elements_fire_ = 0; //火の気
-                    elements_earth_ = 5; //土の気
-                    elements_metal_ = 0; //金の気
-                    elements_water_ = 0; //水の気
-
-                    //陰陽の設定
-                    yin_yang_ = 0; //陰陽の設定
                     break;
                 }
+
+            case 10:
+                {
+                    //机タイプ10
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 1;
+                    center_point_ = new int[2] { 8, 5 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 5 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 4;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 11 }; //1
+                    grid_point_[2] = new int[2] { 17, 0 }; //2
+                    grid_point_[3] = new int[2] { 17, 11 }; //3
+
+                    texture_ = Resources.Load<Texture2D>("desk/desk_10_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 1.0F); //1
+                    uv_coordinate_[2] = new Vector2(1.0F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(1.0F, 1.0F); //3
+
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+
+                    //枠線
+                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
+                    break;
+                }
+
+            case 11:
+                {
+                    //机タイプ11
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 1;
+                    center_point_ = new int[2] { 15, 24 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 15, 24 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 4;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 49 }; //1
+                    grid_point_[2] = new int[2] { 31, 0 }; //2
+                    grid_point_[3] = new int[2] { 31, 49 }; //3
+
+                    texture_ = Resources.Load<Texture2D>("desk/desk_11_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 1.0F); //1
+                    uv_coordinate_[2] = new Vector2(1.0F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(1.0F, 1.0F); //3
+
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+
+                    //枠線
+                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
+                    break;
+                }
+
+            case 12:
+                {
+                    //机タイプ12
+                    //カラー = 
+                    //材質 = 
+                    //模様 = 
+                    //形状 = 
+                    //その他 = 
+                    //
+
+                    object_type_ = ObjectType.Normal;
+                    children_number_ = 2;
+                    center_point_ = new int[2] { 8, 9 }; //中心のグリッド座標
+                    put_point_ = new int[2] { 8, 9 }; //上に乗る家具の中心が合わせる座標
+                                                      //使用する頂点グリッド
+                    vertices_number_ = 8;
+                    grid_point_ = new int[vertices_number_][];
+                    grid_point_[0] = new int[2] { 0, 0 }; //0
+                    grid_point_[1] = new int[2] { 0, 12 }; //1
+                    grid_point_[2] = new int[2] { 11, 0 }; //2
+                    grid_point_[3] = new int[2] { 11, 12}; //3
+
+                    grid_point_[4] = new int[2] { 0, 12 }; //4
+                    grid_point_[5] = new int[2] { 0, 22 }; //5
+                    grid_point_[6] = new int[2] { 24, 12 }; //6
+                    grid_point_[7] = new int[2] { 24, 22 }; //7
+
+                    texture_ = Resources.Load<Texture2D>("desk/desk_12_grid"); //テクスチャはそのうち変える
+                    Debug.Log(texture_);
+                    uv_coordinate_ = new Vector2[vertices_number_];
+                    uv_coordinate_[0] = new Vector2(0.0F, 0.0F); //0
+                    uv_coordinate_[1] = new Vector2(0.0F, 0.544F); //1
+                    uv_coordinate_[2] = new Vector2(0.458F, 0.0F); //2
+                    uv_coordinate_[3] = new Vector2(0.458F, 0.544F); //3
+
+                    uv_coordinate_[4] = new Vector2(0.0F, 0.544F); //4
+                    uv_coordinate_[5] = new Vector2(0.0F, 1.0F); //5
+                    uv_coordinate_[6] = new Vector2(1.0F, 0.544F); //6
+                    uv_coordinate_[7] = new Vector2(1.0F, 1.0F); //7
+
+                    children_grid_ = new GameObject[children_number_];
+                    //頂点インデックス生成
+                    triangles_ = new int[children_number_][];
+                    triangles_[0] = new int[4] { 0, 1, 2, 3 };
+                    triangles_[1] = new int[4] { 4, 5, 6, 7 };
+
+                    //枠線
+                    outline_index_ = new int[9] { 0, 2, 3, 6, 7, 5, 4, 1, 0 };
+
+                    //パラメータの設定
+                    parameta_[0] = 0; //ダミー
+
+                    break;
+                }
+
         }
     }
 }
