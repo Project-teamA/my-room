@@ -37,21 +37,7 @@ public partial class FurnitureGrid : MonoBehaviour
             default:
                 {
                     //家電1(エアコン)
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                   
                     object_type_ = ObjectType.WallMounted;
                     children_number_ = 1;
                     center_point_ = new int[2] { 4, 1 }; //中心のグリッド座標
@@ -78,7 +64,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -89,22 +76,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 2:
                 {
                     //家電2(エアコン)
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 =
-                    
+                 
                     object_type_ = ObjectType.WallMounted;
                     children_number_ = 1;
                     center_point_ = new int[2] { 4, 1 }; //中心のグリッド座標
@@ -131,7 +103,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -142,22 +115,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 3:
                 {
                     //家電2(エアコン)
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 =
-
+                  
                     object_type_ = ObjectType.WallMounted;
                     children_number_ = 1;
                     center_point_ = new int[2] { 1, 1 }; //中心のグリッド座標
@@ -184,7 +142,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -195,21 +154,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 15:
                 {
                     //家電15(テレビ)
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                
                     object_type_ = ObjectType.WallMounted;
                     children_number_ = 1;
                     center_point_ = new int[2] { 4, 1 }; //中心のグリッド座標
@@ -236,7 +181,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー

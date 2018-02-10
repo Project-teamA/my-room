@@ -27,22 +27,7 @@ public partial class FurnitureGrid : MonoBehaviour
             default:
                 {
                     //テーブルタイプ1(木製)
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 =
-                    //火 = 
-                    //土 = 
-                    //金 =
-                    //水 =
-                    //
-                    //陰陽 = 0
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 13, 13 }; //中心のグリッド座標
@@ -69,7 +54,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -80,22 +66,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 2:
                 {
                     //テーブルタイプ2(木製)
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 =
-                    //火 = 
-                    //土 = 
-                    //金 =
-                    //水 =
-                    //
-                    //陰陽 = 0
-
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 10, 12 }; //中心のグリッド座標
@@ -122,7 +93,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -133,22 +105,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 3:
                 {
                     //テーブルタイプ2(木製)
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 =
-                    //火 = 
-                    //土 = 
-                    //金 =
-                    //水 =
-                    //
-                    //陰陽 = 0
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 12, 12 }; //中心のグリッド座標
@@ -175,7 +132,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -186,13 +144,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 4:
                 {
                     //テーブルタイプ4
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 8, 6 }; //中心のグリッド座標
@@ -219,7 +171,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -230,13 +183,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 6:
                 {
                     //テーブルタイプ6
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 12, 12 }; //中心のグリッド座標
@@ -263,7 +210,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -274,22 +222,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 7:
                 {
                     //テーブルタイプ7
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 =
-                    //火 = 
-                    //土 = 
-                    //金 =
-                    //水 =
-                    //
-                    //陰陽 = 0
-
+                 
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 15, 11 }; //中心のグリッド座標
@@ -316,7 +249,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -327,13 +261,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 8:
                 {
                     //テーブルタイプ8
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 16, 9 }; //中心のグリッド座標
@@ -360,7 +288,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -371,22 +300,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 9:
                 {
                     //テーブルタイプ2(木製)
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 =
-                    //火 = 
-                    //土 = 
-                    //金 =
-                    //水 =
-                    //
-                    //陰陽 = 0
-
+                 
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 12, 12 }; //中心のグリッド座標
@@ -413,7 +327,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -424,13 +339,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 10:
                 {
                     //テーブルタイプ10
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                    
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 13, 13 }; //中心のグリッド座標
@@ -457,7 +366,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
@@ -468,13 +378,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 11:
                 {
                     //テーブルタイプ11
-                    //カラー =
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 12, 10 }; //中心のグリッド座標
@@ -501,7 +405,8 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー

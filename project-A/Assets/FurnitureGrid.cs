@@ -17,11 +17,11 @@ public partial class FurnitureGrid : MonoBehaviour
     public enum ObjectType { Normal, Rugs, CeilingHook, WallMounted, Door, Window };
 
     //家具のタイプ
-    //ベッド，机，テーブル,ソファ，観葉植物，造花，水槽，カーペット，カーテン，家電(TV,PC,冷蔵庫,レンジ,洗濯機,ストーブ,エアコン,加湿器),
+    //ベッド，机，テーブル,ソファ，観葉植物，水槽，カーペット，カーテン，家電(TV,PC,冷蔵庫,レンジ,洗濯機,ストーブ,エアコン,加湿器),
     //鏡，照明，電気スタンド，椅子，額縁，ぬいぐるみ，窓，ドア，タンス, その他
     public enum FurnitureType
     {
-        Bed, Desk, Table, Sofa, FoliagePlant, ArtificialFlower, WaterTank, Carpet, Curtain,
+        Bed, Desk, Table, Sofa, FoliagePlant, WaterTank, Carpet, Curtain,
         ConsumerElectronics, Dresser, CeilLamp, DeskLamp, Chair, PictureFrame, PlushDoll, Window, Door, Cabinet, Otherwise
     };
 
@@ -32,29 +32,29 @@ public partial class FurnitureGrid : MonoBehaviour
     //*************************************************************************************************************************************************************************************
 
     //カラー
-    //白，黒，灰，赤，ピンク，青，オレンジ，黄色，緑，ベージュ，クリーム，茶，金，銀，紫, その他
-    public enum ColorName { White, Black, Gray, Red, Pink, Blue, Orange, Yellow, Green, Beige, Cream, Brown, Gold, Silver, Purple, Othrewise };
+    //白，黒，灰，濃い灰色, 赤，ピンク，青，水色, オレンジ，黄色，緑，黄緑, ベージュ，クリーム, 茶，黄土色, 金，銀，紫, その他
+    public enum ColorName { White, Black, Gray, DarkGray, Red, Pink, Blue, LightBlue, Orange, Yellow, Green, LightGreen, Beige, Cream, Brown, Ocher, Gold, Silver, Purple, Othrewise };
 
     //材質
-    //木製，天然素材，化学素材，プラスチック，陶磁器，大理石，金属，鉱物, ガラス，水, その他
-    public enum MaterialType { Wooden, Natural, Chemical, Plastic, Ceramic, Marble, Metal, Mineral, Glass, Water, Othrewise };
+    //人工観葉植物 木製，紙, 革, 天然繊維，化学繊維，綿,プラスチック，陶磁器，大理石，金属，鉱物, ガラス，水, その他
+    public enum MaterialType { ArtificialFoliage, Wooden, Paper, Leather, NaturalFibre, ChemicalFibre, Cotton, Plastic, Ceramic, Marble, Metal, Mineral, Glass, Water, Othrewise };
 
     //模様
-    //ストライプ，リーフパターン，花柄，星柄，ダイヤ柄，アニマル柄，ジグザグ，ボーダー，チェック(市松)，
-    //ドット(水玉)，アーチ，フルーツ，光沢，ウェーブストライプ，不規則パターン，雲柄, その他
+    //ストライプ，リーフパターン，花柄，星柄，ダイヤ柄，アニマル柄，ジグザグ，奇抜，ボーダー，チェック(市松)，タイル柄
+    //ドット, 丸柄, アーチ，フルーツ，光沢，ウェーブストライプ，不規則パターン，雲柄, その他
     public enum PatternType
     {
-        Stripe, Leaf, Flower, Star, Diamond, Animal, Zigzag, Border, Check,
-        Dot, Arch, Fruits, Luster, Wave, Irregularity, Cloud, Othrewise
+        Stripe, Leaf, Flower, Star, Diamond, Animal, Zigzag, Novel, Border, Check, Tile,
+        Dot, Round, Arch, Fruits, Luster, Wave, Irregularity, Cloud, Othrewise
     };
 
     //形状
-    //背が高い，背が低い，縦長, 横長，正方形，長方形，円形，楕円形，尖っている,その他
-    public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Sharp, Othrewise };
+    //背が高い，背が低い，縦長, 横長，正方形，長方形，円形，楕円形，三角形, 尖っている, 奇抜な形状 その他
+    public enum FormType { High, Low, Vertical, Oblong, Square, Rectangle, Round, Ellipse, Triangle, Sharp, Novel, Othrewise };
 
     //その他特性
-    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，花関連, 風関連, 西洋風, その他(特性なし)
-    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Wind, Western, Otherwise };
+    //高級そう, 音が出る，(いい)におい, 発光，硬い，やわらかい，温かみ，冷たさ，花関連, 風関連, 西洋風, 奇抜, 乱雑, その他(特性なし)
+    public enum Characteristic { Luxury, Sound, Smell, Light, Hard, Soft, Warm, Cold, Flower, Wind, Western,  Clutter, Otherwise };
 
     //*************************************************************************************************************************************************************************************
 
@@ -104,7 +104,8 @@ public partial class FurnitureGrid : MonoBehaviour
     //************************************************************************************************************************
 
 
-    private GameObject furniture_grid_; //家具グリッド親オブジェクト
+    private GameObject furniture_grid_; //家具グリッド親オブジェク
+    private GameObject line_parent_; //枠線用オブジェクト
     private Vector3 grid_position_ = new Vector3(0f, 0f, 0f); //グリッド(中心)の3次元位置
     private Vector3 put_position_ = new Vector3(0f, 0f, 0f); //別のグリッドが乗るときに乗るグリッドの中心と合わせる点
     private Vector3[] vertices_all_; //頂点
@@ -123,6 +124,7 @@ public partial class FurnitureGrid : MonoBehaviour
 
     private int yin_yang_ = 0; //陰陽(プラス=陽，マイナス=陰)
 
+
     //ここからアクセス不可能
     private float rate_ = 0.1F; //仮比率(基本ここでしか変更しない) (アクセス不可)
     private int[] center_point_;
@@ -132,6 +134,7 @@ public partial class FurnitureGrid : MonoBehaviour
     private Texture2D texture_;
     private int[][] triangles_;
     private int[] outline_index_;
+    private bool[] blueflag_index_;
     private ObjectType object_type_;
     private int children_number_; //子オブジェクトの数
     private GameObject[] children_grid_; //家具グリッド子オブジェクト
@@ -250,6 +253,12 @@ public partial class FurnitureGrid : MonoBehaviour
     public GameObject furniture_grid()
     {
         return furniture_grid_;
+    }
+
+    //枠線オブジェクト(取得用)
+    public GameObject line_parent()
+    {
+        return line_parent_;
     }
 
     //グリッド(中心)の3次元位置(取得用)
@@ -546,43 +555,51 @@ public partial class FurnitureGrid : MonoBehaviour
         furniture_grid_.GetComponent<Rigidbody>().isKinematic = true;
         furniture_grid_.SetActive(true);
 
-        furniture_grid_.AddComponent<LineRenderer>();
-        furniture_grid_.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
-        furniture_grid_.GetComponent<LineRenderer>().SetVertexCount(outline_index_.Length);
-
-        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
-        for (int i = 0; i < outline_index_.Length; ++i)
+        line_parent_ = new GameObject();
+        GameObject[] outline = new GameObject[outline_index_.Length / 2];
+        for (int i = 0; i < outline.Length; ++i)
         {
-            outline_vertices[i] = vertices_all_[outline_index_[i]];
+            outline[i] = new GameObject();
+            outline[i].AddComponent<LineRenderer>();
+            outline[i].GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+            outline[i].GetComponent<LineRenderer>().SetVertexCount(2);
+            if (blueflag_index_[i] == true)
+            {
+                outline[i].GetComponent<LineRenderer>().material.color = new Color(1, 1, 3, 1);
+            }
+            else
+            {
+                outline[i].GetComponent<LineRenderer>().material.color = new Color(3, 1, 1, 1);
+            }
+            outline[i].GetComponent<LineRenderer>().SetPosition(0, vertices_all_[outline_index_[2 * i]] + new Vector3(0, 0, -0.005F));
+            outline[i].GetComponent<LineRenderer>().SetPosition(1, vertices_all_[outline_index_[2 * i + 1]] + new Vector3(0, 0, -0.005F));
+            outline[i].transform.parent = line_parent_.transform; //親オブジェクトに登録
         }
-        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
-        furniture_grid_.GetComponent<LineRenderer>().enabled = false;
+
     }
+
+
 
     //マウス移動
     public void Translate(Vector3 new_position)
     {
         furniture_grid_.transform.position = new_position;
-
+        line_parent_.transform.position = new_position;
         for (int i = 0; i < vertices_all_.Length; ++i)
         {
             vertices_all_[i] = (new_position - grid_position_) + vertices_all_[i];
         }
 
-        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
-        for (int i = 0; i < outline_index_.Length; ++i)
-        {
-            outline_vertices[i] = vertices_all_[outline_index_[i]];
-        }
-        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
-
         grid_position_ = new_position;
     }
+
+
 
     //マウス回転
     public void Rotate()
     {
         furniture_grid_.transform.Rotate(0, 0, 90);
+        line_parent_.transform.Rotate(0, 0, 90);
         Quaternion quaternion = Quaternion.AngleAxis(90, Vector3.forward);
 
         for (int i = 0; i < vertices_all_.Length; ++i)
@@ -590,17 +607,33 @@ public partial class FurnitureGrid : MonoBehaviour
             vertices_all_[i] = quaternion * (vertices_all_[i] - grid_position_) + grid_position_;
         }
 
-        Vector3[] outline_vertices = new Vector3[outline_index_.Length];
-        for (int i = 0; i < outline_index_.Length; ++i)
-        {
-            outline_vertices[i] = vertices_all_[outline_index_[i]];
-        }
-        furniture_grid_.GetComponent<LineRenderer>().SetPositions(outline_vertices);
-
-
         up_direction_ = quaternion * up_direction_;
         right_direction_ = quaternion * right_direction_;
     }
+
+
+    //furniture_gridとline_parentの中心を合わせる
+    public void AdjustmentLine()
+    {
+        line_parent_.transform.position = furniture_grid_.transform.position;
+
+        for (int i = 0; i < line_parent_.transform.childCount; ++i)
+        {
+            line_parent_.transform.GetChild(i).GetComponent<LineRenderer>().SetPosition(0, vertices_all_[outline_index_[2 * i]] + new Vector3(0, 0, -0.005F));
+            line_parent_.transform.GetChild(i).GetComponent<LineRenderer>().SetPosition(1, vertices_all_[outline_index_[2 * i + 1]] + new Vector3(0, 0, -0.005F));
+        }
+
+    }
+
+    //枠線の表示非表示切り替え
+    public void SwitchingOutline(bool switching)
+    {
+        for(int i = 0; i < line_parent_.transform.childCount; ++i)
+        {
+            line_parent_.transform.GetChild(i).GetComponent<LineRenderer>().enabled = switching;
+        }
+    }
+
 
     partial void GetGridDataBed(int furniture_ID); // 0 ---ベッド
     partial void GetGridDataCabinet(int furniture_ID); // 1 ---キャビネット
@@ -619,4 +652,6 @@ public partial class FurnitureGrid : MonoBehaviour
     //ここまで未実装
 
     partial void CreateEnergy(); //特徴を参考に五行陰陽を自動生成
+
+    
 }

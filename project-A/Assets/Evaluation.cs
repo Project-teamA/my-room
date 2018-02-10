@@ -806,7 +806,7 @@ public partial class Evaluation : MonoBehaviour
         //プラスチック, または化学繊維の家具があるかどうか(CommentSupport用).
         for (int i = 0; i < furniture_grid_.Count; ++i)
         {
-            if ( furniture_grid_[i].material_type().IndexOf( FurnitureGrid.MaterialType.Chemical ) >= 0
+            if ( furniture_grid_[i].material_type().IndexOf( FurnitureGrid.MaterialType.ChemicalFibre ) >= 0
                 || furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Plastic) >= 0)
             {
                 comment_support_.Add(CommentSupport.ChemicalOrPlastic);
@@ -1090,7 +1090,7 @@ public partial class Evaluation : MonoBehaviour
             for (int i = 0; i < furniture_grid_.Count; ++i)
             {
                 if (furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Wooden) >= 0
-                    || furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.Natural) >= 0)
+                    || furniture_grid_[i].material_type().IndexOf(FurnitureGrid.MaterialType.NaturalFibre) >= 0)
                 {
                     ++wood_natural_item;
                 }

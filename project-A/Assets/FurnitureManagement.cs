@@ -136,6 +136,7 @@ public class FurnitureManagement : MonoBehaviour
         if (target_number > -1 && target_number < furniture_grid_.Count)
         {
             Destroy(furniture_grid_[target_number].furniture_grid());
+            Destroy(furniture_grid_[target_number].line_parent());
             furniture_grid_.RemoveAt(target_number);
         }
     }
@@ -213,6 +214,12 @@ public class FurnitureManagement : MonoBehaviour
     //家具グリッドを右クリックで家具グリッド削除
     private void Update()
     {
+        //これを入れないと枠線とグリッドが合わない
+        for (int i =0; i < furniture_grid_.Count; ++i )
+        {
+            furniture_grid_[i].AdjustmentLine();
+        }
+
         //ここからそのうち削除する部分----------------------------------------------------------------------------------------------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -228,43 +235,43 @@ public class FurnitureManagement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                AddFurniture(10, 1); //家具グリッド追加
+                AddFurniture(6, 1); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad1))
             {
-                AddFurniture(10, 2); //家具グリッド追加
+                AddFurniture(6, 2); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad2))
             {
-                AddFurniture(10, 3); //家具グリッド追加
+                AddFurniture(6, 3); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad3))
             {
-                AddFurniture(10, 4); //家具グリッド追加
+                AddFurniture(6, 4); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                AddFurniture(10, 5); //家具グリッド追加
+                AddFurniture(6, 5); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                AddFurniture(10, 6); //家具グリッド追加
+                AddFurniture(6, 6); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {
-                AddFurniture(10, 7); //家具グリッド追加
+                AddFurniture(6, 7); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad7))
             {
-                AddFurniture(10, 8); //家具グリッド追加
+                AddFurniture(6, 8); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad8))
             {
-                AddFurniture(10, 9); //家具グリッド追加
+                AddFurniture(6, 9); //家具グリッド追加
             }
             else if (Input.GetKeyDown(KeyCode.Keypad9))
             {
-                AddFurniture(10, 10); //家具グリッド追加
+                AddFurniture(6, 10); //家具グリッド追加
             }
         }
         else

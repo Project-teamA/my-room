@@ -30,22 +30,7 @@ public partial class FurnitureGrid : MonoBehaviour
             default:
                 {
                     //天井ランプタイプ1
-                    //カラー = 
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 = 
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
-
+                   
                     object_type_ = ObjectType.CeilingHook;
                     children_number_ = 1;
                     center_point_ = new int[2] { 5, 5 }; //中心のグリッド座標
@@ -72,10 +57,39 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Gold);
+                    color_name_weight_.Add(3);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Round);
+                    form_type_weight_.Add(1);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Light);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Luxury);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Western);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }
@@ -83,22 +97,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 2:
                 {
                     //天井ランプタイプ2
-                    //カラー = 
-                    //材質 =
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 = 
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
-
+                   
                     object_type_ = ObjectType.CeilingHook;
                     children_number_ = 1;
                     center_point_ = new int[2] { 4, 4 }; //中心のグリッド座標
@@ -125,10 +124,33 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(3);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Round);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Light);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }

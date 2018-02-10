@@ -28,21 +28,7 @@ public partial class FurnitureGrid : MonoBehaviour
             default:
                 {
                     //机タイプ1
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 2;
                     center_point_ = new int[2] { 10, 9 }; //中心のグリッド座標
@@ -80,10 +66,46 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[1] = new int[4] { 4, 5, 6, 7 };
 
                     //枠線
-                    outline_index_ = new int[9] { 0, 2, 4, 6, 7, 5, 3, 1, 0 };
+                    outline_index_ = new int[16] { 0, 2, 2, 4, 4, 6, 6, 7, 7, 5, 5, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[8] { false, false, true, false, true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Marble);
+                    material_type_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(4);
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(4);
+
+                    form_type_.Add(FormType.High);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Novel);
+                    form_type_weight_.Add(1);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
+
+                    furniture_subtype_.Add(FurnitureType.Cabinet);
 
                     break;
                 }
@@ -91,21 +113,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 2:
                 {
                     //机タイプ2
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
@@ -132,10 +140,36 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0};
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Ocher);
+                    color_name_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }
@@ -143,21 +177,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 3:
                 {
                     //机タイプ3
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 2;
                     center_point_ = new int[2] { 8, 9 }; //中心のグリッド座標
@@ -195,10 +215,42 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[1] = new int[4] { 4, 5, 6, 7 };
 
                     //枠線
-                    outline_index_ = new int[9] { 0, 2, 3, 6, 7, 5, 4, 1, 0 };
+                    outline_index_ = new int[16] { 0, 2, 2, 3, 3, 6, 6, 7, 7, 5, 5, 4, 4, 1, 1, 0 };
+                    blueflag_index_ = new bool[8] { false, false, true, false, false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Ocher);
+                    color_name_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(5);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(2);
+
+                    form_type_.Add(FormType.High);
+                    form_type_weight_.Add(1);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Clutter);
+                    characteristic_weight_.Add(1);
 
                     break;
                 }
@@ -206,12 +258,6 @@ public partial class FurnitureGrid : MonoBehaviour
             case 4:
                 {
                     //机タイプ4
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 2;
@@ -250,10 +296,42 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[1] = new int[4] { 4, 5, 6, 7 };
 
                     //枠線
-                    outline_index_ = new int[9] { 0, 2, 3, 6, 7, 5, 4, 1, 0 };
+                    outline_index_ = new int[16] { 0, 2, 2, 3, 3, 6, 6, 7, 7, 5, 5, 4, 4, 1, 1, 0 };
+                    blueflag_index_ = new bool[8] { false, true, true, false, false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(6);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(7);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(5);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.High);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Novel);
+                    form_type_weight_.Add(1);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }
@@ -261,21 +339,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 5:
                 {
                     //机タイプ5
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 8, 3 }; //中心のグリッド座標
@@ -302,10 +366,42 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Silver);
+                    color_name_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(3);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }
@@ -313,12 +409,6 @@ public partial class FurnitureGrid : MonoBehaviour
             case 6:
                 {
                     //机タイプ6
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
                    
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
@@ -346,10 +436,55 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Black);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Red);
+                    color_name_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Marble);
+                    material_type_weight_.Add(4);
+
+                    material_type_.Add(MaterialType.Glass);
+                    material_type_weight_.Add(1);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(3);
+
+                    characteristic_.Add(Characteristic.Clutter);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
+
+                    furniture_subtype_.Add(FurnitureType.ConsumerElectronics);
 
                     break;
                 }
@@ -357,13 +492,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 7:
                 {
                     //机タイプ7
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                   
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
@@ -390,10 +519,50 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Silver);
+                    color_name_weight_.Add(1);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(3);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Ellipse);
+                    form_type_weight_.Add(2);
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
 
                     break;
                 }
@@ -401,13 +570,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 8:
                 {
                     //机タイプ8
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                    
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 8, 4 }; //中心のグリッド座標
@@ -434,10 +597,56 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Ocher);
+                    color_name_weight_.Add(3);
+
+                    color_name_.Add(ColorName.DarkGray);
+                    color_name_weight_.Add(3);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(3);
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(3);
+
+                    material_type_.Add(MaterialType.Glass);
+                    material_type_weight_.Add(1);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    material_type_.Add(MaterialType.Paper);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(3);
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
 
                     break;
                 }
@@ -445,21 +654,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 9:
                 {
                     //机タイプ9
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-                    //五行
-                    //
-                    //木 = 
-                    //火 = 
-                    //土 =
-                    //金 = 
-                    //水 = 
-                    //
-                    //陰陽 = 
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 9, 3 }; //中心のグリッド座標
@@ -486,10 +681,53 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Blue);
+                    color_name_weight_.Add(1);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(1);
+
+                    color_name_.Add(ColorName.Ocher);
+                    color_name_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Marble);
+                    material_type_weight_.Add(5);
+
+                    material_type_.Add(MaterialType.Ceramic);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(3);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Luxury);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
 
                     break;
                 }
@@ -497,11 +735,6 @@ public partial class FurnitureGrid : MonoBehaviour
             case 10:
                 {
                     //机タイプ10
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
                     
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
@@ -529,10 +762,50 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Brown);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Gold);
+                    color_name_weight_.Add(1);
+
+                    color_name_.Add(ColorName.Purple);
+                    color_name_weight_.Add(1);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(5);
+
+                    material_type_.Add(MaterialType.Paper);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+                    
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Luxury);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
 
                     break;
                 }
@@ -540,12 +813,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 11:
                 {
                     //机タイプ11
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 1;
                     center_point_ = new int[2] { 15, 24 }; //中心のグリッド座標
@@ -572,10 +840,54 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[0] = new int[4] { 0, 1, 2, 3 };
 
                     //枠線
-                    outline_index_ = new int[5] { 0, 2, 3, 1, 0 };
+                    outline_index_ = new int[8] { 0, 2, 2, 3, 3, 1, 1, 0 };
+                    blueflag_index_ = new bool[4] { true, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Ocher);
+                    color_name_weight_.Add(6);
+
+                    color_name_.Add(ColorName.Black);
+                    color_name_weight_.Add(3);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Wooden);
+                    material_type_weight_.Add(5);
+
+                    material_type_.Add(MaterialType.Glass);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.NaturalFibre);
+                    material_type_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.High);
+                    form_type_weight_.Add(3);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(3);
+
+                    //------------------------------------------------------
+
+                    furniture_subtype_.Add(FurnitureType.Cabinet);
+                    furniture_subtype_.Add(FurnitureType.ConsumerElectronics);
+
 
                     break;
                 }
@@ -583,13 +895,7 @@ public partial class FurnitureGrid : MonoBehaviour
             case 12:
                 {
                     //机タイプ12
-                    //カラー = 
-                    //材質 = 
-                    //模様 = 
-                    //形状 = 
-                    //その他 = 
-                    //
-
+                  
                     object_type_ = ObjectType.Normal;
                     children_number_ = 2;
                     center_point_ = new int[2] { 8, 9 }; //中心のグリッド座標
@@ -627,10 +933,46 @@ public partial class FurnitureGrid : MonoBehaviour
                     triangles_[1] = new int[4] { 4, 5, 6, 7 };
 
                     //枠線
-                    outline_index_ = new int[9] { 0, 2, 3, 6, 7, 5, 4, 1, 0 };
+                    outline_index_ = new int[16] { 0, 2, 2, 3, 3, 6, 6, 7, 7, 5, 5, 4, 4, 1, 1, 0 };
+                    blueflag_index_ = new bool[8] { false, true, true, false, false, false, false, false };
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Black);
+                    color_name_weight_.Add(4);
+
+                    color_name_.Add(ColorName.Red);
+                    color_name_weight_.Add(2);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Marble);
+                    material_type_weight_.Add(6);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(3);
+
+                    form_type_.Add(FormType.High);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    //------------------------------------------------------
+
+                    furniture_subtype_.Add(FurnitureType.Cabinet);
 
                     break;
                 }
