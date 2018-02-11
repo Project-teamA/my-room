@@ -448,6 +448,13 @@ public partial class FurnitureGrid : MonoBehaviour
             parameta_ = new float[1];
             GetGridDataCurtain(furniture_ID_);
         }
+        else
+        {
+            Debug.Log("そんな家具ない");
+            furniture_type_ = FurnitureType.Bed;
+            parameta_ = new float[6];
+            GetGridDataBed(1);
+        }
         //ここまで個別に家具グリッドを取得
 
         CreateEnergy();

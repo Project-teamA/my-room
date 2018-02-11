@@ -70,6 +70,43 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(3);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    pattern_type_.Add(PatternType.Border);
+                    pattern_type_weight_.Add(2);
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(2);
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Wind);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(1);
+
                     break;
                 }
 
@@ -108,6 +145,43 @@ public partial class FurnitureGrid : MonoBehaviour
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Red);
+                    color_name_weight_.Add(2);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(2);
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Wind);
+                    characteristic_weight_.Add(4);
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(1);
 
                     break;
                 }
@@ -148,6 +222,43 @@ public partial class FurnitureGrid : MonoBehaviour
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
 
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Black);
+                    color_name_weight_.Add(2);
+
+                    color_name_.Add(ColorName.DarkGray);
+                    color_name_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    pattern_type_.Add(PatternType.Flower);
+                    pattern_type_weight_.Add(1);
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Oblong);
+                    form_type_weight_.Add(2);
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(1);
+
                     break;
                 }
 
@@ -186,6 +297,43 @@ public partial class FurnitureGrid : MonoBehaviour
 
                     //パラメータの設定
                     parameta_[0] = 0; //ダミー
+
+                    //----------------------------------------------------
+
+                    color_name_.Add(ColorName.Black);
+                    color_name_weight_.Add(2);
+
+                    color_name_.Add(ColorName.White);
+                    color_name_weight_.Add(2);
+
+                    //----------------------------------------------------
+
+                    material_type_.Add(MaterialType.Glass);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.Plastic);
+                    material_type_weight_.Add(2);
+
+                    material_type_.Add(MaterialType.Metal);
+                    material_type_weight_.Add(1);
+
+                    //----------------------------------------------------
+
+                    //------------------------------------------------------
+
+                    form_type_.Add(FormType.Rectangle);
+                    form_type_weight_.Add(2);
+
+                    //-----------------------------------------------------
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(4);
+
+                    characteristic_.Add(Characteristic.Sound);
+                    characteristic_weight_.Add(3);
+
+                    characteristic_.Add(Characteristic.Hard);
+                    characteristic_weight_.Add(2);
 
                     break;
                 }
