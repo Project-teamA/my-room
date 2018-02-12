@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 6a80f70b0e124f44bb7f55dae026bf17
+timeCreated: 1518287618
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: 02UtsukushiMincho
+  fontNames:
+  - 02UtsukushiMincho
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

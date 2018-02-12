@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Tower
+  - Defender
+  - Bullet
+  - LevelUI
+  - CapturePoint
+  - AttackRadius
+  - ActionIcon
+  - furniture_grid
+  - furniture_grid_rugs
+  - Item_Choose
+  - furniture_grid_wall
+  - _TagCanvas
+  - _TagUICamera
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Tower
+  - Enemy
+  - BulletAlly
+  - BulletEnemy
+  - Defender
+  - CapturePoint
+  - AttackEnemy
+  - AttackAlly
+  - 
+  - Furniture
+  - Menu
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 2169594107
+    locked: 1
+  - name: Floor
+    uniqueID: 592008731
+    locked: 0
+  - name: Range
+    uniqueID: 443483113
+    locked: 0
+  - name: Shadow
+    uniqueID: 4265663607
+    locked: 0
+  - name: Dust
+    uniqueID: 2967865075
+    locked: 0
+  - name: UnitsAndTowers
+    uniqueID: 3236399257
+    locked: 0
+  - name: Bullets
+    uniqueID: 3026330151
+    locked: 0
+  - name: Explosions
+    uniqueID: 2783282409
+    locked: 0
+  - name: HealthBars
+    uniqueID: 3302365053
+    locked: 0
