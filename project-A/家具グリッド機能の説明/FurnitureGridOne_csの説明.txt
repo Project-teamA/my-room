@@ -1,6 +1,0 @@
-FurnitureGridOne.csの説明(2017年12月27日 更新)
-
-FurnitureGridOne.csはFutnitureGridクラスの分割クラスであり，家具グリッドの情報を生成する関数GetGridDataの実装部分が記述されている
-
-
-基本的に外部からのアクセス不可
